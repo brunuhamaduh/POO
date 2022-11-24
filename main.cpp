@@ -4,6 +4,7 @@
 #include <vector>
 #include <cctype>
 #include <algorithm>
+#include <random>
 #include "Terminal.h"
 using namespace term;
 using namespace std;
@@ -11,6 +12,23 @@ using namespace std;
 class Coordenadas
 {
     int x, y;
+public:
+    Coordenadas(const int &x, const int &y)
+    {
+        this->x = x;
+        this->y = y;
+    }
+    Coordenadas()
+    {
+        random_device random;
+        mt19937 generator(random());
+        uniform_int_distribution <> distr(0, 100);
+
+        x = distr(generator);
+        y = distr(generator);
+    }
+    int getX() {return x;}
+    int getY() {return y;}
 };
 
 class Alimento
@@ -25,16 +43,16 @@ class Animal
     static int count;
     int ID;
 protected:
-    float Peso;
+    double Peso;
     Coordenadas Location;
     string Especie;
     string EstadoSaude;
 
 public:
-    Animal():ID(++count){}
-    int getID() {return ID;}
-    int getPeso() {return Peso;}
-    string getEspecie() {return Especie;}
+    Animal(const int &x, const int &y) : Location(x,y), ID(++count) {}
+    Animal() : ID(++count) {}
+    int getX() {return Location.getX();}
+    int getY() {return Location.getY();}
 };
 
 class Reserva
@@ -213,6 +231,7 @@ int main()
 
     string input;
     vector<string> listComando;
+    Animal teste;
 
     do
     {
