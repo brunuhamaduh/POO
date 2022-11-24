@@ -3,16 +3,30 @@
 #include <iomanip>
 #include <vector>
 #include <cctype>
+#include <algorithm>
 #include "Terminal.h"
 using namespace term;
 using namespace std;
 
+class Coordenadas
+{
+    int x, y;
+};
+
+class Alimento
+{
+    int ValorNutritivo, Toxicidade, TempodeVida;
+    string Cheiro;
+    Coordenadas Location;
+};
+
 class Animal
 {
     static int count;
-    int ID, x, y;
+    int ID;
 protected:
     float Peso;
+    Coordenadas Location;
     string Especie;
     string EstadoSaude;
 
@@ -21,6 +35,14 @@ public:
     int getID() {return ID;}
     int getPeso() {return Peso;}
     string getEspecie() {return Especie;}
+};
+
+class Reserva
+{
+    int Instante;
+    vector<Coordenadas> Extremos;
+    vector<Animal> Animais;
+    vector<Alimento> Alimentos;
 };
 
 int Animal::count = 0;
@@ -37,7 +59,7 @@ int isNumber(const string &listComando)
     return 1;
 }
 
-bool isValid(const string &comando, vector<string> &listComando, Window &erro)
+bool isValid(const string &comando, vector<string> &listComando, Window &out)
 {
     char letra;
     stringstream Comando(comando);
@@ -56,7 +78,6 @@ bool isValid(const string &comando, vector<string> &listComando, Window &erro)
             letra = listComando[1][0];
             if(isalpha(letra) != 0 && (letra == 'c' || letra == 'o' || letra == 'l' || letra == 'g' || letra == 'm')) //coelho/ovelha/lobo/canguru/misterio
             {
-                erro << "Teste";
                 return true;
             }
         }
@@ -100,22 +121,79 @@ bool isValid(const string &comando, vector<string> &listComando, Window &erro)
             return true;
         }
     }
-
-
+    else if(listComando[0] == "nofood") //remover alimento
+    {
+        if((listComando.size() == 3 && isNumber(listComando[1]) == 1 && isNumber(listComando[2]) == 1) ||(listComando.size() == 2 && isNumber(listComando[1]) == 1) )
+        {
+            return true;
+        }
+    }
+    else if(listComando[0] == "empty") //eliminar o que quer que esteja numa posicao
+    {
+        if(listComando.size() == 3 && isNumber(listComando[1]) == 1 && isNumber(listComando[2]) == 1)
+        {
+            return true;
+        }
+    }
+    else if(listComando[0] == "see") //ver o que se encontra numa posicao
+    {
+        if(listComando.size() == 3 && isNumber(listComando[1]) == 1 && isNumber(listComando[2]) == 1)
+        {
+            return true;
+        }
+    }
+    else if(listComando[0] == "info") //ver informacao acerca de um elemento do simulador (animal ou alimento)
+    {
+        if(listComando.size() == 2 && isNumber(listComando[1]) == 1)
+        {
+            return true;
+        }
+    }
+    else if(listComando[0] == "n") //passar para o instante seguinte da simulacao
+    {
+        if((listComando.size() == 1) || (listComando.size() == 2 && isNumber(listComando[1]) == 1) || (listComando.size() == 3 && isNumber(listComando[1]) == 1 && isNumber(listComando[2]) == 1))
+        {
+            return true;
+        }
+    }
+    else if(listComando[0] == "anim" || listComando[0] == "visanim") //listar id dos animais da reserva ou listar id dos animais visiveis da reserva
+    {
+        if(listComando.size() == 1)
+        {
+            return true;
+        }
+    }
+    else if(listComando[0] == "store" || listComando[0] == "restore" || listComando[0] == "load") //armazenar o estado da reserva em memoria ou reativar um estado de reserva previamente armazenado em memoria
+    {
+        if(listComando.size() == 2)
+        {
+            return true;
+        }
+    }
+    else if(listComando[0] == "slide") //deslocar a area de visualizacao
+    {
+        if((listComando.size() == 4 && isNumber(listComando[2]) == 1 && isNumber(listComando[3]) == 1))
+        {
+            if(listComando[1] == "up" || listComando[1] == "down" || listComando[1] == "right" || listComando[1] == "left")
+            {
+                return true;
+            }
+        }
+    }
     return false;
 }
 
-void limpa(Terminal &t, Window &comando, Window &info, Window &reserva, Window &erro)
+void limpa(Terminal &t, Window &comando, Window &info, Window &reserva, Window &out)
 {
     comando.clear();
     info.clear();
     reserva.clear();
-    erro.clear();
+    out.clear();
 }
 
-void mostra(Terminal &t, Window &comando, Window &info, Window &reserva, Window &erro)
+void mostra(Terminal &t, Window &comando, Window &info, Window &reserva, Window &out)
 {
-    limpa(t, comando, info, reserva, erro);
+    limpa(t, comando, info, reserva, out);
     comando << "Comando: \n";
     info << "Instante: \n";
     info << "Animais Vivos: \n";
@@ -123,14 +201,14 @@ void mostra(Terminal &t, Window &comando, Window &info, Window &reserva, Window 
     info << "Extremos: \n";
 }
 
-int main(void)
+int main()
 {
     //Inicio (30x120)
     Terminal &t = Terminal::instance();
-    Window comando = Window(0, 27, 100, 3);
-    Window info = Window(100, 0, 20, 27);
-    Window reserva = Window(0, 0, 100, 27);
-    Window erro = Window(100,27,20,3);
+    Window comando = Window(0, 27, 90, 3);
+    Window info = Window(90, 0, 30, 6);
+    Window reserva = Window(0, 0, 90, 27);
+    Window out = Window(90,6,30,24);
     //Fim
 
     string input;
@@ -138,19 +216,10 @@ int main(void)
 
     do
     {
-        mostra(t, comando, info, reserva, erro);
+        mostra(t, comando, info, reserva, out);
         comando >> input;
-        isValid(input, listComando, erro);
+        isValid(input, listComando, out);
     } while(input != "exit");
 
     return 0;
 }
-
-
-//Leitura do ficheiro de comandos e também dos valores do ficheiro constantes.txt.
-//Construção da reserva. A representação da reserva irá ser melhorada com matéria dada posteriormente e agora só se pretende algo que possa ser representado no ecrã.
-//Definição do conceito de Animal. Não é preciso considerar as variações inerentes às espécie e deve mesmo limitar-se aquilo que é genérico e comum a todos.
-//Definição do conceito de Alimento. Idem focar apenas o que é comum a todos os alimentos.
-//Representação visual da reserva e conteúdo incluído nesta meta. Inclui-se aqui a questão de ver apenas a área visível da reserva.
-//Implementação da leitura e validação de todos os comandos, seja por teclado, ou seja por leitura do ficheiro de comandos. Os comandos não farão ainda nada, mas devem ser já interpretados e validados, incluindo a sintaxe de todos os parâmetros que tenham.
-//Implementar os comandos para: ver animais e alimentos, deslizar a área visível para o lado/cima/abaixo, executar comandos em ficheiro (que são também validados), e terminar.
