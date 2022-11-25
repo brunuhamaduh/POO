@@ -27,12 +27,18 @@ public:
         x = distr(generator);
         y = distr(generator);
     }
-    int getX() {return x;}
-    int getY() {return y;}
+    ~Coordenadas() {}
+    int getX() const {return x;}
+    int getY() const {return y;}
+    void setX(int xc){x = xc;}
+    void setY(int yc){y = yc;}
+    friend Window & operator<<(Window & o, const Coordenadas &coordenadas);
 };
 
 class Alimento
 {
+    static int count;
+    int ID;
     int ValorNutritivo, Toxicidade, TempodeVida;
     string Cheiro;
     Coordenadas Location;
@@ -43,27 +49,102 @@ class Animal
     static int count;
     int ID;
 protected:
+    string nome;
     double Peso;
-    Coordenadas Location;
     string Especie;
     string EstadoSaude;
 
+    Coordenadas Location;
 public:
-    Animal(const int &x, const int &y) : Location(x,y), ID(++count) {}
+    Animal(const string &nome, const int &x, const int &y) : Location(x,y), ID(++count), nome(nome) {}
     Animal() : ID(++count) {}
-    int getX() {return Location.getX();}
-    int getY() {return Location.getY();}
+    ~Animal() {}
+    int getX() const {return Location.getX();}
+    int getY() const {return Location.getY();}
+    string getName() const {return nome;}
+    friend Window & operator<<(Window & o, const Animal &animais);
 };
 
 class Reserva
 {
-    int Instante;
+    int Instante, animalcount, alimentocount;
     vector<Coordenadas> Extremos;
     vector<Animal> Animais;
     vector<Alimento> Alimentos;
+
+public:
+    Reserva() : Instante(0), animalcount(0), alimentocount(0)
+    {
+        Extremos.emplace_back(Coordenadas(0,0)); //Superior Esquerdo
+        Extremos.emplace_back(Coordenadas(200,0)); //Superior Direito
+        Extremos.emplace_back(Coordenadas(0,200)); //Inferior Esquerdo
+        Extremos.emplace_back(Coordenadas(200,200)); //Inferior Direito
+    }
+    ~Reserva() {}
+    const int getInstante() {return Instante;}
+    const vector<Coordenadas> getCoordenadas() {return Extremos;}
+    const vector<Animal> getAnimais() {return Animais;}
+    const vector<Alimento> getAlimentos() {return Alimentos;}
+    void newAnimal(const int &x, const int &y, const string &nome)
+    {
+        Animais.emplace_back(Animal(nome,x,y));
+        animalcount++;
+    }
+    string getAnimalX() const
+    {
+        ostringstream output;
+        for (auto& it : Animais)
+        {
+            output << it.getX() << endl;
+        }
+        return output.str();
+    }
+    string getAnimalY() const
+    {
+        ostringstream output;
+        for (auto& it : Animais)
+        {
+            output << it.getY() << endl;
+        }
+        return output.str();
+    }
 };
 
 int Animal::count = 0;
+int Alimento::count = 0;
+
+Window & operator<<(Window & o, const Coordenadas &coordenadas)
+{
+    o << coordenadas.x;
+    o << "|";
+    o << coordenadas.y;
+    o << "\n";
+    return o;
+}
+
+Window & operator<<(Window & o, const Animal &animais)
+{
+    o << animais.getName() << " " << animais.getX() << " " << animais.getY();
+    return o;
+}
+
+Window & operator<<(Window & o, const vector<Coordenadas> n)
+{
+    for (auto& it : n)
+    {
+        o << it;
+    }
+    return o;
+}
+
+Window & operator<<(Window & o, const vector<Animal> n)
+{
+    for (auto& it : n)
+    {
+        o << it;
+    }
+    return o;
+}
 
 int isNumber(const string &listComando)
 {
@@ -77,7 +158,7 @@ int isNumber(const string &listComando)
     return 1;
 }
 
-bool isValid(const string &comando, vector<string> &listComando, Window &out)
+bool isValid(const string &comando, vector<string> &listComando)
 {
     char letra;
     stringstream Comando(comando);
@@ -87,6 +168,11 @@ bool isValid(const string &comando, vector<string> &listComando, Window &out)
     while (Comando >> Palavra)
     {
         listComando.push_back(Palavra);
+    }
+
+    if(listComando[0] == "KEY_UP" || listComando[0] == "KEY_DOWN" || listComando[0] == "KEY_RIGHT" || listComando[0] == "KEY_LEFT")
+    {
+        return true;
     }
 
     if(listComando[0] == "animal") //criar animal (posiçao aleatoria / posiçao aleatoria)
@@ -201,43 +287,139 @@ bool isValid(const string &comando, vector<string> &listComando, Window &out)
     return false;
 }
 
-void limpa(Terminal &t, Window &comando, Window &info, Window &reserva, Window &out)
+void mostraReserva(Reserva &principal, Window &reserva, Window &out, string &input)
+{
+    vector<int> XCoordinates;
+    vector<int> YCoordinates;
+    stringstream processa;
+    const vector<Coordenadas> viewablearea = principal.getCoordenadas();
+    static vector<Coordenadas> viewarea;
+    static int x = 0;
+    if(viewarea.empty())
+    {
+        viewarea.emplace_back(Coordenadas(0,0)); //Superior Esquerdo
+        viewarea.emplace_back(Coordenadas(90,0)); //Superior Direito
+        viewarea.emplace_back(Coordenadas(0,27)); //Inferior Esquerdo
+        viewarea.emplace_back(Coordenadas(90,27)); //Inferior Direito
+    }
+
+    int num;
+    processa << principal.getAnimalX();
+
+    while(processa >> num)
+    {
+        XCoordinates.push_back(num);
+    }
+
+    processa.clear();
+    processa.str("");
+
+    processa << principal.getAnimalY();
+
+    while(processa >> num)
+    {
+        YCoordinates.push_back(num);
+    }
+
+    if(input == "KEY_RIGHT" && viewarea[1].getX() < viewablearea[1].getX())
+    {
+        for(int i = 0; i < viewarea.size(); i++)
+        {
+            viewarea[i].setX(viewarea[i].getX()+1);
+        }
+    }
+
+    else if(input == "KEY_LEFT" && viewarea[0].getX() > viewablearea[0].getX())
+    {
+        for(int i = 0; i < viewarea.size(); i++)
+        {
+            viewarea[i].setX(viewarea[i].getX()-1);
+        }
+    }
+
+    else if(input == "KEY_UP" && viewarea[0].getY() > viewablearea[0].getY())
+    {
+        for(int i = 0; i < viewarea.size(); i++)
+        {
+            viewarea[i].setY(viewarea[i].getY()-1);
+        }
+    }
+
+    else if(input == "KEY_DOWN" && viewarea[2].getY() < viewablearea[2].getY())
+    {
+        for(int i = 0; i < viewarea.size(); i++)
+        {
+            viewarea[i].setY(viewarea[i].getY()+1);
+        }
+    }
+
+    reserva.clear();
+    reserva << "";
+    for(int i = 0; i < XCoordinates.size(); i++)
+    {
+        if((XCoordinates[i] >= viewarea[0].getX() && XCoordinates[i] <= viewarea[1].getX()) && (YCoordinates[i] >= viewarea[0].getY()) && (YCoordinates[i] <= viewarea[3].getY()))
+        {
+            reserva << move_to(XCoordinates[i]-viewarea[0].getX(), YCoordinates[i]-viewarea[0].getY());
+            reserva << "X";
+        }
+    }
+}
+
+void mostra(Window &comando, Window &info, Window &out, Reserva &principal)
 {
     comando.clear();
     info.clear();
-    reserva.clear();
-    out.clear();
+    comando << "Comando: ";
+    info << "Instante: " << principal.getInstante() << "\n";
+    //info << "Animais Vivos: " << principal.CountAnimal() << "\n";
+    //info << "Comida: " << principal.CountAlimento() << "\n";
+    info << "Extremos: ";
+    info << principal.getCoordenadas();
 }
 
-void mostra(Terminal &t, Window &comando, Window &info, Window &reserva, Window &out)
+void writeOut(Window &out)
 {
-    limpa(t, comando, info, reserva, out);
-    comando << "Comando: \n";
-    info << "Instante: \n";
-    info << "Animais Vivos: \n";
-    info << "Comida: \n";
-    info << "Extremos: \n";
+    static int x = 0;
+    if(x < 19)
+    {
+        out << "Comando invalido\n";
+        x++;
+    }
+    else
+    {
+        x = 0;
+        out.clear();
+        out << "Comando invalido\n";
+        x++;
+    }
 }
 
 int main()
 {
     //Inicio (30x120)
     Terminal &t = Terminal::instance();
+
     Window comando = Window(0, 27, 90, 3);
-    Window info = Window(90, 0, 30, 6);
+    Window info = Window(90, 0, 30, 9);
     Window reserva = Window(0, 0, 90, 27);
-    Window out = Window(90,6,30,24);
+    Window out = Window(90,9,30,21);
     //Fim
 
     string input;
     vector<string> listComando;
-    Animal teste;
-
+    Reserva principal;
+    principal.newAnimal(5,5,"Francisca");
+    principal.newAnimal(10,10,"Francisca");
+    principal.newAnimal(50,50,"Francisca");
     do
     {
-        mostra(t, comando, info, reserva, out);
+        mostra(comando, info, out, principal);
+        mostraReserva(principal, reserva, out, input);
         comando >> input;
-        isValid(input, listComando, out);
+        if(!isValid(input, listComando))
+        {
+            writeOut(out);
+        }
     } while(input != "exit");
 
     return 0;
