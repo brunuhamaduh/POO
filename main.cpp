@@ -5,6 +5,7 @@
 #include <cctype>
 #include <algorithm>
 #include <random>
+#include <fstream>
 #include "Terminal.h"
 using namespace term;
 using namespace std;
@@ -27,7 +28,7 @@ public:
         x = distr(generator);
         y = distr(generator);
     }
-    ~Coordenadas() {}
+    ~Coordenadas() = default;
     int getX() const {return x;}
     int getY() const {return y;}
     void setX(int xc){x = xc;}
@@ -42,6 +43,12 @@ class Alimento
     int ValorNutritivo, Toxicidade, TempodeVida;
     string Cheiro;
     Coordenadas Location;
+
+public:
+    Alimento(const int &x, const int &y) : Location(x,y), ID(++count), ValorNutritivo(0), Toxicidade(0), TempodeVida(0) {}
+    ~Alimento() = default;
+    int getX() const {return Location.getX();}
+    int getY() const {return Location.getY();}
 };
 
 class Animal
@@ -49,46 +56,49 @@ class Animal
     static int count;
     int ID;
 protected:
-    string nome;
     double Peso;
-    string Especie;
-    string EstadoSaude;
-
+    char Especie;
+    int HP;
     Coordenadas Location;
 public:
-    Animal(const string &nome, const int &x, const int &y) : Location(x,y), ID(++count), nome(nome) {}
-    Animal() : ID(++count) {}
-    ~Animal() {}
+    Animal(const int &x, const int &y) : Location(x,y), ID(++count), Peso(0), Especie('C'), HP(100){}
+    ~Animal() = default;
     int getX() const {return Location.getX();}
     int getY() const {return Location.getY();}
-    string getName() const {return nome;}
-    friend Window & operator<<(Window & o, const Animal &animais);
+    int getID() const {return ID;}
+    char getEspecie() const {return Especie;}
+    int getHP() const {return HP;}
 };
 
 class Reserva
 {
-    int Instante, animalcount, alimentocount;
+    int Instante;
     vector<Coordenadas> Extremos;
     vector<Animal> Animais;
     vector<Alimento> Alimentos;
 
 public:
-    Reserva() : Instante(0), animalcount(0), alimentocount(0)
+    Reserva() : Instante(0){ }
+    ~Reserva() = default;
+    int getInstante() const {return Instante;}
+    vector<Coordenadas> getCoordenadas() const {return Extremos;}
+    void newAnimal(const int &x, const int &y) {Animais.emplace_back(Animal(x,y));}
+    void newAlimento(const int &x, const int &y) {Alimentos.emplace_back(Alimento(x,y));}
+    void setLimits(const int &x, const int &y)
     {
         Extremos.emplace_back(Coordenadas(0,0)); //Superior Esquerdo
-        Extremos.emplace_back(Coordenadas(200,0)); //Superior Direito
-        Extremos.emplace_back(Coordenadas(0,200)); //Inferior Esquerdo
-        Extremos.emplace_back(Coordenadas(200,200)); //Inferior Direito
+        Extremos.emplace_back(Coordenadas(x,0)); //Superior Direito
+        Extremos.emplace_back(Coordenadas(0,y)); //Inferior Esquerdo
+        Extremos.emplace_back(Coordenadas(x,y)); //Inferior Direito
     }
-    ~Reserva() {}
-    const int getInstante() {return Instante;}
-    const vector<Coordenadas> getCoordenadas() {return Extremos;}
-    const vector<Animal> getAnimais() {return Animais;}
-    const vector<Alimento> getAlimentos() {return Alimentos;}
-    void newAnimal(const int &x, const int &y, const string &nome)
+    string getAnimais()
     {
-        Animais.emplace_back(Animal(nome,x,y));
-        animalcount++;
+        ostringstream output;
+        for (auto& it : Animais)
+        {
+            output << it.getID() << " " << it.getEspecie() << " " << it.getHP() << endl;
+        }
+        return output.str();
     }
     string getAnimalX() const
     {
@@ -108,6 +118,32 @@ public:
         }
         return output.str();
     }
+    string getAlimentoX() const
+    {
+        ostringstream output;
+        for (auto& it : Alimentos)
+        {
+            output << it.getX() << endl;
+        }
+        return output.str();
+    }
+    string getAlimentoY() const
+    {
+        ostringstream output;
+        for (auto& it : Alimentos)
+        {
+            output << it.getY() << endl;
+        }
+        return output.str();
+    }
+    int countAnimal() const
+    {
+        return Animais.size();
+    }
+    int countAlimento() const
+    {
+        return Alimentos.size();
+    }
 };
 
 int Animal::count = 0;
@@ -115,29 +151,11 @@ int Alimento::count = 0;
 
 Window & operator<<(Window & o, const Coordenadas &coordenadas)
 {
-    o << coordenadas.x;
-    o << "|";
-    o << coordenadas.y;
-    o << "\n";
-    return o;
-}
-
-Window & operator<<(Window & o, const Animal &animais)
-{
-    o << animais.getName() << " " << animais.getX() << " " << animais.getY();
+    o << coordenadas.x << " " << coordenadas.y << "\n";
     return o;
 }
 
 Window & operator<<(Window & o, const vector<Coordenadas> n)
-{
-    for (auto& it : n)
-    {
-        o << it;
-    }
-    return o;
-}
-
-Window & operator<<(Window & o, const vector<Animal> n)
 {
     for (auto& it : n)
     {
@@ -287,14 +305,14 @@ bool isValid(const string &comando, vector<string> &listComando)
     return false;
 }
 
-void mostraReserva(Reserva &principal, Window &reserva, Window &out, string &input)
+void mostraReserva(Reserva &principal, Window &reserva, Window &out, string &input, vector<Coordenadas> &viewarea, const vector<Coordenadas> &viewablearea)
 {
-    vector<int> XCoordinates;
-    vector<int> YCoordinates;
+    vector<int> AnimalXCoordinates;
+    vector<int> AnimalYCoordinates;
+    vector<int> AlimentoXCoordinates;
+    vector<int> AlimentoYCoordinates;
     stringstream processa;
-    const vector<Coordenadas> viewablearea = principal.getCoordenadas();
-    static vector<Coordenadas> viewarea;
-    static int x = 0;
+
     if(viewarea.empty())
     {
         viewarea.emplace_back(Coordenadas(0,0)); //Superior Esquerdo
@@ -308,7 +326,7 @@ void mostraReserva(Reserva &principal, Window &reserva, Window &out, string &inp
 
     while(processa >> num)
     {
-        XCoordinates.push_back(num);
+        AnimalXCoordinates.push_back(num);
     }
 
     processa.clear();
@@ -318,7 +336,27 @@ void mostraReserva(Reserva &principal, Window &reserva, Window &out, string &inp
 
     while(processa >> num)
     {
-        YCoordinates.push_back(num);
+        AnimalYCoordinates.push_back(num);
+    }
+
+    processa.clear();
+    processa.str("");
+
+    processa << principal.getAlimentoX();
+
+    while(processa >> num)
+    {
+        AlimentoXCoordinates.push_back(num);
+    }
+
+    processa.clear();
+    processa.str("");
+
+    processa << principal.getAlimentoY();
+
+    while(processa >> num)
+    {
+        AlimentoYCoordinates.push_back(num);
     }
 
     if(input == "KEY_RIGHT" && viewarea[1].getX() < viewablearea[1].getX())
@@ -355,11 +393,19 @@ void mostraReserva(Reserva &principal, Window &reserva, Window &out, string &inp
 
     reserva.clear();
     reserva << "";
-    for(int i = 0; i < XCoordinates.size(); i++)
+    for(int i = 0; i < AnimalXCoordinates.size(); i++)
     {
-        if((XCoordinates[i] >= viewarea[0].getX() && XCoordinates[i] <= viewarea[1].getX()) && (YCoordinates[i] >= viewarea[0].getY()) && (YCoordinates[i] <= viewarea[3].getY()))
+        if((AnimalXCoordinates[i] >= viewarea[0].getX() && AnimalXCoordinates[i] <= viewarea[1].getX()) && (AnimalYCoordinates[i] >= viewarea[0].getY()) && (AnimalYCoordinates[i] <= viewarea[3].getY()))
         {
-            reserva << move_to(XCoordinates[i]-viewarea[0].getX(), YCoordinates[i]-viewarea[0].getY());
+            reserva << move_to(AnimalXCoordinates[i]-viewarea[0].getX(), AnimalYCoordinates[i]-viewarea[0].getY());
+            reserva << "C";
+        }
+    }
+    for(int i = 0; i < AlimentoXCoordinates.size(); i++)
+    {
+        if((AlimentoXCoordinates[i] >= viewarea[0].getX() && AlimentoXCoordinates[i] <= viewarea[1].getX()) && (AlimentoYCoordinates[i] >= viewarea[0].getY()) && (AlimentoYCoordinates[i] <= viewarea[3].getY()))
+        {
+            reserva << move_to(AlimentoXCoordinates[i]-viewarea[0].getX(), AlimentoYCoordinates[i]-viewarea[0].getY());
             reserva << "X";
         }
     }
@@ -371,26 +417,87 @@ void mostra(Window &comando, Window &info, Window &out, Reserva &principal)
     info.clear();
     comando << "Comando: ";
     info << "Instante: " << principal.getInstante() << "\n";
-    //info << "Animais Vivos: " << principal.CountAnimal() << "\n";
-    //info << "Comida: " << principal.CountAlimento() << "\n";
+    info << "Animais Vivos: " << principal.countAnimal() << "\n";
+    info << "Comida: " << principal.countAlimento() << "\n";
     info << "Extremos: ";
     info << principal.getCoordenadas();
 }
 
-void writeOut(Window &out)
+void leComandos(const string &name, Window &out, vector<string> &listComando)
 {
-    static int x = 0;
-    if(x < 19)
+    string line;
+    ifstream comandos(name);
+    if (comandos.is_open())
     {
-        out << "Comando invalido\n";
-        x++;
+        while (getline(comandos,line))
+        {
+            if(!isValid(line, listComando))
+            {
+                out << "Comando invalido";
+            }
+        }
+        comandos.close();
     }
     else
     {
-        x = 0;
-        out.clear();
-        out << "Comando invalido\n";
-        x++;
+        out << "Erro ao abrir ficheiro\n";
+    }
+}
+
+void leConstantes(Window &out, Reserva &principal)
+{
+    string line;
+    int x, y;
+    ifstream constantes("constantes.txt");
+    if (constantes.is_open())
+    {
+        getline(constantes,line);
+        istringstream p(line);
+        p >> x >> y;
+        principal.setLimits(x, y);
+        constantes.close();
+    }
+    else
+    {
+        out << "Erro ao abrir ficheiro\n";
+    }
+}
+
+void displayEverything(Reserva &principal, Window &out)
+{
+    out << principal.getAnimais();
+}
+
+void displayScreen(Reserva &principal, Window &out, vector<Coordenadas> &viewarea, const vector<Coordenadas> &viewablearea)
+{
+    vector<int> AnimalXCoordinates;
+    vector<int> AnimalYCoordinates;
+    stringstream processa;
+    int num;
+
+    processa << principal.getAnimalX();
+
+    while(processa >> num)
+    {
+        AnimalXCoordinates.push_back(num);
+    }
+
+    processa.clear();
+    processa.str("");
+
+    processa << principal.getAnimalY();
+
+    while(processa >> num)
+    {
+        AnimalYCoordinates.push_back(num);
+    }
+
+    for(int i = 0; i < AnimalXCoordinates.size(); i++)
+    {
+        if((AnimalXCoordinates[i] >= viewarea[0].getX() && AnimalXCoordinates[i] <= viewarea[1].getX()) && (AnimalYCoordinates[i] >= viewarea[0].getY()) && (AnimalYCoordinates[i] <= viewarea[3].getY()))
+        {
+            //FAZER ISTO
+        }
     }
 }
 
@@ -408,17 +515,38 @@ int main()
     string input;
     vector<string> listComando;
     Reserva principal;
-    principal.newAnimal(5,5,"Francisca");
-    principal.newAnimal(10,10,"Francisca");
-    principal.newAnimal(50,50,"Francisca");
+    leConstantes(out, principal);
+
+    static vector<Coordenadas> viewarea;
+    const vector<Coordenadas> viewablearea = principal.getCoordenadas();
+
+    principal.newAnimal(5,5);
+    principal.newAnimal(20, 20);
+    principal.newAlimento(10, 10);
     do
     {
+        out.clear();
         mostra(comando, info, out, principal);
-        mostraReserva(principal, reserva, out, input);
+        mostraReserva(principal, reserva, out, input, viewarea, viewablearea);
         comando >> input;
         if(!isValid(input, listComando))
         {
-            writeOut(out);
+            out << "Comando invalido";
+        }
+        else
+        {
+            if(listComando[0] == "load")
+            {
+                leComandos(listComando[1], out, listComando);
+            }
+            else if(listComando[0] == "anim")
+            {
+                displayEverything(principal, out);
+            }
+            else if(listComando[0] == "visanim")
+            {
+                displayScreen(principal, out, viewarea, viewablearea);
+            }
         }
     } while(input != "exit");
 

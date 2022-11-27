@@ -93,6 +93,7 @@ namespace term {
         Terminal& operator<<(const TerminalFormatter& tf);
         Terminal& operator<<(const std::string& str);
         Terminal& operator<<(const int& i);
+        Terminal& operator<<(const size_t& t);
         Terminal& operator<<(const double& d);
         Terminal& operator<<(const char& c);
 
