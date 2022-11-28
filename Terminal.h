@@ -64,6 +64,7 @@ namespace term {
         Window& operator<<(const TerminalFormatter& tf);
         Window& operator<<(const std::string& str);
         Window& operator<<(const int& i);
+        Window& operator<<(const size_t& str);
         Window& operator<<(const double& d);
         Window& operator<<(const char& c);
 
@@ -93,7 +94,6 @@ namespace term {
         Terminal& operator<<(const TerminalFormatter& tf);
         Terminal& operator<<(const std::string& str);
         Terminal& operator<<(const int& i);
-        Terminal& operator<<(const size_t& t);
         Terminal& operator<<(const double& d);
         Terminal& operator<<(const char& c);
 

@@ -99,6 +99,14 @@ namespace term {
         ::wrefresh(window);
         return *this;
     }
+
+    Window& Window::operator<<(const size_t& num)
+    {
+        ::wprintw(window, "%zu", num);
+        ::wrefresh(window);
+        return *this;
+    }
+
     Window& Window::operator<<(const char& c) {
         ::wprintw(window, "%c",c);
         ::wrefresh(window);
