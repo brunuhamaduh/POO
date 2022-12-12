@@ -19,18 +19,3 @@ Coordenadas::Coordenadas()
 Coordenadas::~Coordenadas() = default;
 int Coordenadas::getX() const {return x;}
 int Coordenadas::getY() const {return y;}
-
-term::Window& operator<<(term::Window &o, const Coordenadas &coordenadas)
-{
-    o << coordenadas.x << " " << coordenadas.y << "\n";
-    return o;
-}
-
-term::Window& operator<<(term::Window & o, const std::vector<Coordenadas> &n)
-{
-    for (auto& it : n)
-    {
-        o << it;
-    }
-    return o;
-}

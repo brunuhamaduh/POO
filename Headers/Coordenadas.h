@@ -12,10 +12,6 @@ public:
     ~Coordenadas();
     int getX() const;
     int getY() const;
-    friend term::Window & operator<<(term::Window & o, const Coordenadas &coordenadas);
 };
-
-term::Window & operator<<(term::Window & o, const Coordenadas &coordenadas);
-term::Window & operator<<(term::Window & o, const std::vector<Coordenadas> &n);
 
 #endif //POO_COORDENADAS_H

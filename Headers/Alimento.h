@@ -4,14 +4,13 @@
 
 class Alimento
 {
-    static int count;
     int ID;
     int ValorNutritivo, Toxicidade, TempodeVida;
     std::string Cheiro;
     Coordenadas Location;
 
 public:
-    Alimento(const int &x, const int &y);
+    Alimento(const int &id, const int &x, const int &y);
     ~Alimento();
     int getX() const;
     int getY() const;

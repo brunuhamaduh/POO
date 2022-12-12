@@ -5,15 +5,13 @@
 
 class Animal
 {
-    static int count;
     int ID;
-protected:
-    //double Peso;
+    double Peso;
     char Especie;
     int HP;
     Coordenadas Location;
 public:
-    Animal(const int &x, const int &y);
+    Animal(const int &id, const int &x, const int &y);
     ~Animal();
     int getX() const;
     int getY() const;

@@ -2,6 +2,12 @@
 #include <iomanip>
 #include <fstream>
 
+int getID()
+{
+    static int i = 0;
+    return ++i;
+}
+
 int isNumber(const std::string &listComando)
 {
     for(int i = 0; listComando[i] != '\0'; i++)
@@ -125,16 +131,48 @@ bool isValid(const std::string &comando, std::vector<std::string> &listComando)
     return false;
 }
 
-void displayEverything(Reserva &principal, term::Window &out)
+void executeInput(std::string &input, std::vector<std::string> &listComando, Reserva &principal, term::Window &out)
 {
-    out << "ANIMAIS\n";
-    out << principal.getAnimais();
-    out << "ALIMENTOS\n";
-    out << principal.getAlimentos();
+    if(!isValid(input, listComando))
+    {
+        out << "Comando invalido";
+    }
+    else if(input != "KEY_UP" && input != "KEY_DOWN" && input != "KEY_RIGHT" && input != "KEY_LEFT")
+    {
+        out << "";
+        if(listComando[0] == "load")
+        {
+            leComandos(out, listComando, principal);
+        }
+        else if(listComando[0] == "anim")
+        {
+            displayEverything(principal, out);
+        }
+        else if(listComando[0] == "visanim")
+        {
+            displayScreen(principal, out);
+        }
+    }
 }
 
-void displayScreen(Reserva &principal, term::Window &out, std::vector<int> &viewarea, const std::vector<Coordenadas> &viewablearea)
+void displayEverything(Reserva &principal, term::Window &out)
 {
+    if(principal.countAnimal() != 0)
+    {
+        out << "ANIMAIS\n";
+        out << principal.getAnimais();
+    }
+
+    if(principal.countAlimento() != 0)
+    {
+        out << "ALIMENTOS\n";
+        out << principal.getAlimentos();
+    }
+}
+
+void displayScreen(Reserva &principal, term::Window &out)
+{
+    std::vector<int> viewarea = principal.getVArea();
     std::string detalhes;
     std::stringstream processa(principal.getAnimaisPos(viewarea[0],viewarea[1],viewarea[2],viewarea[3]));
 
@@ -155,36 +193,45 @@ void displayScreen(Reserva &principal, term::Window &out, std::vector<int> &view
     }
 }
 
-void mostraReserva(Reserva &principal, term::Window &reserva, term::Window &out, std::string &input, std::vector<int> &viewarea, const std::vector<Coordenadas> &viewablearea)
+void mostra(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string &input)
 {
     int ID, HP, X, Y, VN, Toxic, TV;
     char Especie;
     std::stringstream processa;
+    std::vector<int> viewarea = principal.getVArea();
+    int limite = principal.getArea();
 
-    if(input == "KEY_RIGHT" && viewarea.at(1) < viewablearea[1].getX())
+    reserva.clear();
+    out.clear();
+    comando.clear();
+    info.clear();
+    reserva << "";
+
+    if(input == "KEY_RIGHT" && viewarea.at(1) < limite)
     {
-        viewarea.at(0)++;
-        viewarea.at(1)++;
+        principal.change_VArea(0, true);
+        principal.change_VArea(1, true);
     }
 
-    else if(input == "KEY_LEFT" && viewarea.at(0) > viewablearea[0].getX())
+    else if(input == "KEY_LEFT" && viewarea.at(0) > 0)
     {
-        viewarea.at(0)--;
-        viewarea.at(1)--;
+        principal.change_VArea(0, false);
+        principal.change_VArea(1, false);
     }
 
-    else if(input == "KEY_UP" && viewarea.at(2) > viewablearea[0].getY())
+    else if(input == "KEY_UP" && viewarea.at(2) > 0)
     {
-        viewarea.at(2)--;
-        viewarea.at(3)--;
+        principal.change_VArea(2, false);
+        principal.change_VArea(3, false);
     }
 
-    else if(input == "KEY_DOWN" && viewarea.at(3) < viewablearea[2].getY())
+    else if(input == "KEY_DOWN" && viewarea.at(3) < limite)
     {
-        viewarea.at(2)++;
-        viewarea.at(3)++;
+        principal.change_VArea(2, true);
+        principal.change_VArea(3, true);
     }
 
+    viewarea = principal.getVArea();
     processa.str(principal.getAnimaisPos(viewarea[0],viewarea[1],viewarea[2],viewarea[3]));
 
     while(processa >> ID >> Especie >> HP >> X >> Y)
@@ -202,22 +249,19 @@ void mostraReserva(Reserva &principal, term::Window &reserva, term::Window &out,
         reserva << term::move_to(X - viewarea.at(0), Y - viewarea.at(2));
         reserva << "X";
     }
-}
 
-void mostra(term::Window &comando, term::Window &info, term::Window &out, Reserva &principal)
-{
-    comando.clear();
-    info.clear();
     comando << "Comando: ";
     info << "Instante: " << principal.getInstante() << "\n";
     info << "Animais Vivos: " << principal.countAnimal() << "\n";
     info << "Comida: " << principal.countAlimento() << "\n";
-    info << "Extremos: ";
-    info << principal.getCoordenadas();
+    info << "Extremos: \n";
+    info << viewarea[0] << " " << viewarea[2] << " | " << viewarea[1] << " " << viewarea[2] << "\n";
+    info << viewarea[0] << " " << viewarea[3] << " | " << viewarea[1] << " " << viewarea[3];
 }
 
-void leComandos(term::Window &out, std::vector<std::string> &listComando, Reserva &principal, std::vector<int> &viewarea, const std::vector<Coordenadas> &viewablearea)
+void leComandos(term::Window &out, std::vector<std::string> &listComando, Reserva &principal)
 {
+    std::vector<int> viewarea = principal.getVArea();
     std::string line;
     std::ifstream comandos(listComando[1]);
     if (comandos.is_open())
@@ -236,7 +280,7 @@ void leComandos(term::Window &out, std::vector<std::string> &listComando, Reserv
                 }
                 else if(listComando[0] == "visanim")
                 {
-                    displayScreen(principal, out, viewarea, viewablearea);
+                    displayScreen(principal, out);
                 }
             }
         }
