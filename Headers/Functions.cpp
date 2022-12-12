@@ -152,6 +152,14 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
         {
             displayScreen(principal, out);
         }
+        else if(listComando[0] == "animal")
+        {
+            srand((unsigned) time(NULL));
+            if(listComando[1] == "c")
+            {
+                principal.newAnimal(getID(), 20, 20, 'C');
+            }
+        }
     }
 }
 
@@ -196,7 +204,7 @@ void displayScreen(Reserva &principal, term::Window &out)
 void mostra(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string &input)
 {
     int ID, HP, X, Y, VN, Toxic, TV;
-    char Especie;
+    char letra;
     std::stringstream processa;
     std::vector<int> viewarea = principal.getVArea();
     int limite = principal.getArea();
@@ -234,10 +242,10 @@ void mostra(Reserva &principal, term::Window &reserva, term::Window &comando, te
     viewarea = principal.getVArea();
     processa.str(principal.getAnimaisPos(viewarea[0],viewarea[1],viewarea[2],viewarea[3]));
 
-    while(processa >> ID >> Especie >> HP >> X >> Y)
+    while(processa >> ID >> letra >> HP >> X >> Y)
     {
         reserva << term::move_to(X - viewarea.at(0), Y - viewarea.at(2));
-        reserva << Especie;
+        reserva << letra;
     }
 
     processa.clear();
@@ -311,11 +319,6 @@ void leConstantes(term::Window &out, int &x, int &y)
 
 void startGame(term::Window &comando, std:: string &input, Reserva &principal)
 {
-    principal.newAnimal(getID(), 5, 5);
-    principal.newAnimal(getID(), 20, 20);
-    principal.newAnimal(getID(), 50, 50);
-    principal.newAlimento(getID(), 20, 50);
-
     do
     {
         comando << "Tamanho da reserva: ";
@@ -323,6 +326,8 @@ void startGame(term::Window &comando, std:: string &input, Reserva &principal)
         comando.clear();
         comando << "";
     } while(stoi(input) < 16 || stoi(input) > 500);
+
+    principal.setSize(stoi(input));
 }
 
 void loopGame(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string input, std::vector<std::string> &listComando)

@@ -5,19 +5,30 @@
 
 class Animal
 {
-    int ID;
+    int ID, HP, campoVisao, moveDistance, lifeTick, hunger;
     double Peso;
-    char Especie;
-    int HP;
+    char moveDirection, especie;
     Coordenadas Location;
+
+protected:
+    Animal(const int &id, const int &x, const int &y, const char &especie = 'D');
+
 public:
-    Animal(const int &id, const int &x, const int &y);
     ~Animal();
     int getX() const;
     int getY() const;
     int getID() const;
     char getEspecie() const;
+    double getPeso() const;
+    int getRange() const;
     int getHP() const;
+};
+
+class Coelho: public Animal
+{
+public:
+    Coelho(const int &id, const int &x, const int &y);
+    ~Coelho();
 };
 
 #endif //POO_ANIMAL_H

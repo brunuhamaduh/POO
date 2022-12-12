@@ -2,11 +2,22 @@
 #include <iomanip>
 
 Reserva::Reserva() : tamanho(200), instante(0){ }
-Reserva::~Reserva() = default;
+Reserva::~Reserva()
+{
+    for(auto el: Animais)
+        delete el;
+    for(auto el: Alimentos)
+        delete el;
+}
 
 int Reserva::getArea() const
 {
     return tamanho;
+}
+
+void Reserva::setSize(const int &num)
+{
+    tamanho = num;
 }
 
 std::vector<int> Reserva::getVArea() const
@@ -19,9 +30,9 @@ std::string Reserva::getAnimaisPos(const int &xinf, const int &xsup, const int &
     std::ostringstream output;
     for (auto& it : Animais)
     {
-        if(it.getX() >= xinf && it.getX() <= xsup && it.getY() >= yinf && it.getY() <= ysup)
+        if(it->getX() >= xinf && it->getX() <= xsup && it->getY() >= yinf && it->getY() <= ysup)
         {
-            output << it.getID() << " " << it.getEspecie() << " " << it.getHP() << " " << it.getX() << " " << it.getY() << "\n";
+            output << it->getID() << " " <<  it->getEspecie() << " " << it->getHP() << " " << it->getX() << " " << it->getY() << "\n";
         }
     }
     return output.str();
@@ -32,9 +43,9 @@ std::string Reserva::getAlimentosPos(const int &xinf, const int &xsup, const int
     std::ostringstream output;
     for (auto& it : Alimentos)
     {
-        if(it.getX() >= xinf && it.getX() <= xsup && it.getY() >= yinf && it.getY() <= ysup)
+        if(it->getX() >= xinf && it->getX() <= xsup && it->getY() >= yinf && it->getY() <= ysup)
         {
-            output << it.getID() << " " << it.getVN() << " " << it.getToxic() << " " << it.getTV() << " " << it.getX() << " " << it.getY() << std::endl;
+            output << it->getID() << " " << it->getVN() << " " << it->getToxic() << " " << it->getTV() << " " << it->getX() << " " << it->getY() << std::endl;
         }
     }
     return output.str();
@@ -45,7 +56,7 @@ std::string Reserva::getAnimais() const
     std::ostringstream output;
     for (auto& it : Animais)
     {
-        output << it.getID() << " " << it.getEspecie() << " " << it.getHP() << std::endl;
+        output << it->getID() << " " << it->getHP() << std::endl;
     }
     return output.str();
 }
@@ -55,7 +66,7 @@ std::string Reserva::getAlimentos() const
     std::ostringstream output;
     for (auto& it : Alimentos)
     {
-        output << it.getID() << " " << it.getVN() << " " << it.getToxic() << " " << it.getTV() << std::endl;
+        output << it->getID() << " " << it->getVN() << " " << it->getToxic() << " " << it->getTV() << std::endl;
     }
     return output.str();
 }
@@ -75,9 +86,6 @@ size_t Reserva::countAlimento() const
     return Alimentos.size();
 }
 
-void Reserva::newAnimal(const int &id, const int &x, const int &y) {Animais.emplace_back(Animal(id, x,y));}
-void Reserva::newAlimento(const int &id, const int &x, const int &y) {Alimentos.emplace_back(Alimento(id, x,y));}
-
 void Reserva::change_VArea(const int &index, bool op)
 {
     if(op)
@@ -85,3 +93,13 @@ void Reserva::change_VArea(const int &index, bool op)
     else
         viewarea[index]--;
 }
+
+void Reserva::newAnimal(const int &id, const int &x, const int &y, const char &especie)
+{
+    if(especie == 'C')
+    {
+        Animais.emplace_back(new Coelho(id, x, y));
+    }
+}
+
+void Reserva::newAlimento(const int &id, const int &x, const int &y) {}
