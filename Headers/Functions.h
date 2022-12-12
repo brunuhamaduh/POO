@@ -12,5 +12,7 @@ void displayScreen(Reserva &principal, term::Window &out);
 void mostra(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string &input);
 void leComandos(term::Window &out, std::vector<std::string> &listComando, Reserva &principal);
 void leConstantes(term::Window &out, int &x, int &y);
+void startGame(term::Window &comando, std:: string &input, Reserva &principal);
+void loopGame(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string input, std::vector<std::string> &listComando);
 
 #endif //POO_FUNCTIONS_H

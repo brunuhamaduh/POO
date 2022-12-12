@@ -308,3 +308,29 @@ void leConstantes(term::Window &out, int &x, int &y)
         out << "Erro ao abrir ficheiro\n";
     }
 }
+
+void startGame(term::Window &comando, std:: string &input, Reserva &principal)
+{
+    principal.newAnimal(getID(), 5, 5);
+    principal.newAnimal(getID(), 20, 20);
+    principal.newAnimal(getID(), 50, 50);
+    principal.newAlimento(getID(), 20, 50);
+
+    do
+    {
+        comando << "Tamanho da reserva: ";
+        comando >> input;
+        comando.clear();
+        comando << "";
+    } while(stoi(input) < 16 || stoi(input) > 500);
+}
+
+void loopGame(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string input, std::vector<std::string> &listComando)
+{
+    do
+    {
+        mostra(principal, reserva, comando, info, out, input);
+        comando >> input;
+        executeInput(input, listComando, principal, out);
+    } while(input != "exit");
+}
