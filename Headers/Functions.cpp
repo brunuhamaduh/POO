@@ -154,7 +154,6 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
         }
         else if(listComando[0] == "animal")
         {
-            srand((unsigned) time(NULL));
             if(listComando[1] == "c")
             {
                 principal.newAnimal(getID(), 20, 20, 'C');
@@ -293,23 +292,6 @@ void leComandos(term::Window &out, std::vector<std::string> &listComando, Reserv
             }
         }
         comandos.close();
-    }
-    else
-    {
-        out << "Erro ao abrir ficheiro\n";
-    }
-}
-
-void leConstantes(term::Window &out, int &x, int &y)
-{
-    std::string line;
-    std::ifstream constantes("constantes.txt");
-    if (constantes.is_open())
-    {
-        getline(constantes,line);
-        std::istringstream p(line);
-        p >> x >> y;
-        constantes.close();
     }
     else
     {

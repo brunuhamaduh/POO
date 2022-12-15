@@ -56,7 +56,7 @@ std::string Reserva::getAnimais() const
     std::ostringstream output;
     for (auto& it : Animais)
     {
-        output << it->getID() << " " << it->getHP() << std::endl;
+        output << "ID: " << it->getID() << " HP: " << it->getHP() << " Hunger: " << it->getHunger() << " X: " << it->getX() << " Y: " << it->getY() << " Especie: " << it->getEspecie() << " Range Campo Visao: " << it->getcampoVisao() << " Peso: " << it->getPeso() << std::endl;
     }
     return output.str();
 }
