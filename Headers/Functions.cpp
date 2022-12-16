@@ -178,7 +178,7 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
         }
         else if(listComando.at(0) == "n")
         {
-            principal.advanceInstant();
+            principal.advanceInstant(out);
         }
     }
 }
@@ -306,11 +306,7 @@ void leComandos(term::Window &out, std::vector<std::string> &listComando, Reserv
             else if(line != "KEY_UP" && line != "KEY_DOWN" && line != "KEY_RIGHT" && line != "KEY_LEFT")
             {
                 out << "";
-                if(listComando.at(0) == "load")
-                {
-                    leComandos(out, listComando, principal);
-                }
-                else if(listComando.at(0) == "anim")
+                 if(listComando.at(0) == "anim")
                 {
                     displayEverything(principal, out);
                 }
@@ -363,7 +359,8 @@ void startGame(term::Window &comando, std:: string &input, Reserva &principal)
     }
     */
     principal.setSize(10); //APENAS PARA TESTE
-    principal.newAnimal(5, 5, 'c'); //APENAS PARA TESTE
+    principal.newAnimal(5, 5, 'c');
+    principal.newAnimal(5, 10, 'o');
 }
 
 void loopGame(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string input, std::vector<std::string> &listComando)

@@ -9,6 +9,7 @@ BaseAnimal::~BaseAnimal() = default;
 void BaseAnimal::InitEspecie(const char &chara) {especie = chara;}
 void BaseAnimal::InitCampoVisao(const int &num) {campoVisao = num;}
 void BaseAnimal::InitPeso(const double &num) {Peso = num;}
+void BaseAnimal::InitLifeTick(const int &num) {}
 int BaseAnimal::getX() const {return Location.getX();}
 int BaseAnimal::getY() const {return Location.getY();}
 int BaseAnimal::getID() const {return ID;}
@@ -19,16 +20,31 @@ double BaseAnimal::getPeso() const {return Peso;}
 int BaseAnimal::getHP() const {return HP;}
 void BaseAnimal::setHP(const int &num) {HP = num;}
 int BaseAnimal::getHunger() const {return -1;}
-void BaseAnimal::setLifeTick(const int &num) {}
+void BaseAnimal::LifeTick() {}
 void BaseAnimal::Move(const int &tamanho) {}
+int BaseAnimal::getLifeTick() const {return -1;}
+void BaseAnimal::Hunger() {}
 
 AnimalH::AnimalH(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, hunger(0) {}
 AnimalH::~AnimalH() = default;
 int AnimalH::getHunger() const {return hunger;}
+void AnimalH::Hunger()
+{
+    if(getEspecie() == 'C' || getEspecie() == 'O')
+    {
+        hunger++;
+    }
+    else if(getEspecie() == 'O')
+    {
+        hunger = hunger + 2;
+    }
+}
 
 AnimalL::AnimalL(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, lifeTick(50) {}
 AnimalL::~AnimalL() = default;
-void AnimalL::setLifeTick(const int &num) {lifeTick = num;}
+void AnimalL::InitLifeTick(const int &num) {lifeTick = num;}
+void AnimalL::LifeTick() {lifeTick--;}
+int AnimalL::getLifeTick() const {return lifeTick;}
 
 CompleteAnimal::CompleteAnimal(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, AnimalH{id, x, y}, AnimalL{id, x, y} {}
 CompleteAnimal::~CompleteAnimal() = default;
@@ -58,13 +74,13 @@ Coelho::Coelho(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}
             }
             else if(variable == "VCoelho")
             {
-                this->setLifeTick(num);
+                this->InitLifeTick(num);
             }
         }
     }
     constantes.close();
 }
-Coelho::~Coelho() = default;
+//Coelho::~Coelho() = default;
 
 void Coelho::Move(const int &tamanho)
 {
@@ -104,13 +120,25 @@ Ovelha::Ovelha(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}
             }
             else if(variable == "VOvelha")
             {
-                this->setLifeTick(num);
+                this->InitLifeTick(num);
             }
         }
     }
     constantes.close();
 }
 Ovelha::~Ovelha() = default;
+
+void Ovelha::Move(const int &tamanho)
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_int_distribution <> random_direction(1, 8);
+
+    int direction = random_direction(generator);
+    int steps = 1;
+
+    setPos(direction, steps, tamanho);
+}
 
 Lobo::Lobo(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, AnimalH{id, x, y}
 {
@@ -137,6 +165,18 @@ Lobo::Lobo(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, An
 }
 Lobo::~Lobo() = default;
 
+void Lobo::Move(const int &tamanho)
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_int_distribution <> random_direction(1, 8);
+
+    int direction = random_direction(generator);
+    int steps = 1;
+
+    setPos(direction, steps, tamanho);
+}
+
 Canguru::Canguru(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, AnimalL{id, x, y}
 {
     this->InitEspecie('G');
@@ -158,10 +198,22 @@ Canguru::Canguru(const int &id, const int &x, const int &y) : BaseAnimal{id, x, 
             }
             else if(variable == "VCanguru")
             {
-                this->setLifeTick(num);
+                this->InitLifeTick(num);
             }
         }
     }
     constantes.close();
 }
 Canguru::~Canguru() = default;
+
+void Canguru::Move(const int &tamanho)
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_int_distribution <> random_direction(1, 8);
+
+    int direction = random_direction(generator);
+    int steps = 1;
+
+    setPos(direction, steps, tamanho);
+}

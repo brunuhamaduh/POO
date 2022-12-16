@@ -54,9 +54,10 @@ std::string Reserva::getAlimentosPos(const int &xinf, const int &xsup, const int
 std::string Reserva::getAnimais() const
 {
     std::ostringstream output;
+    output << "ID X Y LT H" << std::endl;
     for (auto& it : Animais)
     {
-        output << "ID: " << it->getID()  << " X: " << it->getX() << " Y: " << it->getY() << " Especie: " << it->getEspecie() << " Range Campo Visao: " << it->getcampoVisao() << " Peso: " << it->getPeso() << std::endl;
+        output << it->getID() << " " << it->getX() << " " << it->getY() << " " << it->getLifeTick() << " " << it->getHunger() << std::endl;
     }
     return output.str();
 }
@@ -128,12 +129,22 @@ void Reserva::newAnimal(const int &x, const int &y, const char &especie)
     }
 }
 
-void Reserva::advanceInstant()
+void Reserva::advanceInstant(term::Window &out)
 {
     instante++;
     for (auto& it : Animais)
     {
         it->Move(tamanho);
+        it->LifeTick();
+        it->Hunger();
+    }
+
+    for (auto& it : Animais)
+    {
+        if(it->getLifeTick() == 0 || it->getHP() == 0)
+        {
+           delete it;
+        }
     }
 }
 

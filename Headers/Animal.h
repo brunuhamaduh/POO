@@ -15,7 +15,7 @@ class BaseAnimal
 
 public:
     BaseAnimal(const int &id, const int &x, const int &y);
-    ~BaseAnimal();
+    virtual ~BaseAnimal();
     void InitEspecie(const char &chara);
     void InitCampoVisao(const int &num);
     void InitPeso(const double &num);
@@ -28,9 +28,13 @@ public:
     double getPeso() const;
     int getHP() const;
     void setHP(const int &num);
-    virtual int getHunger() const;
-    virtual void setLifeTick(const int &num);
+
+    virtual void InitLifeTick(const int &num);
+    virtual void LifeTick();
     virtual void Move(const int &tamanho);
+    virtual int getLifeTick() const;
+    virtual int getHunger() const;
+    virtual void Hunger();
 };
 
 class AnimalH: virtual public BaseAnimal
@@ -41,6 +45,7 @@ public:
     AnimalH(const int &id, const int &x, const int &y);
     ~AnimalH();
     int getHunger() const override;
+    void Hunger() override;
 };
 
 class AnimalL: virtual public BaseAnimal
@@ -50,7 +55,9 @@ class AnimalL: virtual public BaseAnimal
 public:
     AnimalL(const int &id, const int &x, const int &y);
     ~AnimalL();
-    void setLifeTick(const int &num) override;
+    void InitLifeTick(const int &num) override;
+    void LifeTick() override;
+    int getLifeTick() const override;
 };
 
 class CompleteAnimal: public AnimalH, public AnimalL
@@ -64,7 +71,6 @@ class Coelho: public CompleteAnimal
 {
 public:
     Coelho(const int &id, const int &x, const int &y);
-    ~Coelho();
     void Move(const int &tamanho) override;
 };
 
@@ -73,6 +79,7 @@ class Ovelha: public CompleteAnimal
 public:
     Ovelha(const int &id, const int &x, const int &y);
     ~Ovelha();
+    void Move(const int &tamanho) override;
 };
 
 class Lobo: public AnimalH
@@ -80,6 +87,7 @@ class Lobo: public AnimalH
 public:
     Lobo(const int &id, const int &x, const int &y);
     ~Lobo();
+    void Move(const int &tamanho) override;
 };
 
 class Canguru: public AnimalL
@@ -87,6 +95,7 @@ class Canguru: public AnimalL
 public:
     Canguru(const int &id, const int &x, const int &y);
     ~Canguru();
+    void Move(const int &tamanho) override;
 };
 
 #endif //POO_ANIMAL_H
