@@ -1,2 +1,4 @@
-animal c 1 2
-visanim
+animal c 5 5
+animal o 10 10
+animal l 15 15
+animal g 20 20

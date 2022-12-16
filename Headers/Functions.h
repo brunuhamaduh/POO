@@ -5,7 +5,7 @@
 
 int getID();
 int isNumber(const std::string &listComando);
-bool isValid(const std::string &comando, std::vector<std::string> &listComando);
+bool isValid(const std::string &comando, std::vector<std::string> &listComando, term::Window &out);
 void executeInput(std::string &input, std::vector<std::string> &listComando, Reserva &principal, term::Window &out);
 void displayEverything(Reserva &principal, term::Window &out);
 void displayScreen(Reserva &principal, term::Window &out);

@@ -32,7 +32,7 @@ std::string Reserva::getAnimaisPos(const int &xinf, const int &xsup, const int &
     {
         if(it->getX() >= xinf && it->getX() <= xsup && it->getY() >= yinf && it->getY() <= ysup)
         {
-            output << it->getID() << " " <<  it->getEspecie() << " " << it->getHP() << " " << it->getX() << " " << it->getY() << "\n";
+            output << it->getID() << " " <<  it->getEspecie() << " " << " " << it->getX() << " " << it->getY() << "\n";
         }
     }
     return output.str();
@@ -56,7 +56,7 @@ std::string Reserva::getAnimais() const
     std::ostringstream output;
     for (auto& it : Animais)
     {
-        output << "ID: " << it->getID() << " HP: " << it->getHP() << " Hunger: " << it->getHunger() << " X: " << it->getX() << " Y: " << it->getY() << " Especie: " << it->getEspecie() << " Range Campo Visao: " << it->getcampoVisao() << " Peso: " << it->getPeso() << std::endl;
+        output << "ID: " << it->getID()  << " X: " << it->getX() << " Y: " << it->getY() << " Especie: " << it->getEspecie() << " Range Campo Visao: " << it->getcampoVisao() << " Peso: " << it->getPeso() << std::endl;
     }
     return output.str();
 }
@@ -67,6 +67,20 @@ std::string Reserva::getAlimentos() const
     for (auto& it : Alimentos)
     {
         output << it->getID() << " " << it->getVN() << " " << it->getToxic() << " " << it->getTV() << std::endl;
+    }
+    return output.str();
+}
+
+std::string Reserva::displayAnimals() const
+{
+    std::ostringstream output;
+
+    for (auto& it : Animais)
+    {
+        if(it->getX() >= viewarea[0] && it->getX() <= viewarea[1] && it->getY() >= viewarea[2] && it->getY() <= viewarea[3])
+        {
+            output << it->getX() << " " << it->getY() << " " << it->getEspecie() << std::endl;
+        }
     }
     return output.str();
 }
@@ -94,12 +108,25 @@ void Reserva::change_VArea(const int &index, bool op)
         viewarea[index]--;
 }
 
-void Reserva::newAnimal(const int &id, const int &x, const int &y, const char &especie)
+void Reserva::newAnimal(const int &x, const int &y, const char &especie)
 {
-    if(especie == 'C')
+    if(especie == 'c')
     {
-        Animais.emplace_back(new Coelho(id, x, y));
+        Animais.emplace_back(new Coelho(++ID, x, y));
+    }
+    else if(especie == 'o')
+    {
+        Animais.emplace_back(new Ovelha(++ID, x, y));
+    }
+    else if(especie == 'l')
+    {
+        Animais.emplace_back(new Lobo(++ID, x, y));
+    }
+    else if(especie == 'g')
+    {
+        Animais.emplace_back(new Canguru(++ID, x, y));
     }
 }
 
 void Reserva::newAlimento(const int &id, const int &x, const int &y) {}
+int Reserva::ID = 0;

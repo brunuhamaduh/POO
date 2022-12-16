@@ -4,23 +4,32 @@
 #include <fstream>
 #include <sstream>
 
-Animal::Animal(const int &id, const int &x, const int &y) : Location(x,y), ID(id), campoVisao(2), HP(100), hunger(0), Peso(5), lifeTick(100), especie('X') {}
-Animal::~Animal() = default;
-char Animal::getEspecie() const {return especie;}
-int Animal::getX() const {return Location.getX();}
-int Animal::getY() const {return Location.getY();}
-int Animal::getID() const {return ID;}
-int Animal::getHP() const {return HP;}
-int Animal::getHunger() const {return hunger;}
-int Animal::getcampoVisao() const {return campoVisao;}
-double Animal::getPeso() const {return Peso;}
-void Animal::InitEspecie(const char &chara) {especie = chara;}
-void Animal::InitCampoVisao(const int &num) {campoVisao = num;}
-void Animal::InitPeso(const double &num) {Peso = num;}
-void Animal::setHP(const int &num) {HP = num;}
-void Animal::setLifeTick(const int &num) {lifeTick = num;}
+BaseAnimal::BaseAnimal(const int &id, const int &x, const int &y) : Location(x,y), ID(id), campoVisao(2), Peso(5), especie('X'), HP(100) {}
+BaseAnimal::~BaseAnimal() = default;
+void BaseAnimal::InitEspecie(const char &chara) {especie = chara;}
+void BaseAnimal::InitCampoVisao(const int &num) {campoVisao = num;}
+void BaseAnimal::InitPeso(const double &num) {Peso = num;}
+int BaseAnimal::getX() const {return Location.getX();}
+int BaseAnimal::getY() const {return Location.getY();}
+int BaseAnimal::getID() const {return ID;}
+char BaseAnimal::getEspecie() const {return especie;}
+int BaseAnimal::getcampoVisao() const {return campoVisao;}
+double BaseAnimal::getPeso() const {return Peso;}
+int BaseAnimal::getHP() const {return HP;}
+void BaseAnimal::setHP(const int &num) {HP = num;}
 
-Coelho::Coelho(const int &id, const int &x, const int &y) : Animal{id, x, y}
+AnimalH::AnimalH(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, hunger(0) {}
+AnimalH::~AnimalH() = default;
+int AnimalH::getHunger() const {return hunger;}
+
+AnimalL::AnimalL(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, lifeTick(50) {}
+AnimalL::~AnimalL() = default;
+void AnimalL::setLifeTick(const int &num) {lifeTick = num;}
+
+CompleteAnimal::CompleteAnimal(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, AnimalH{id, x, y}, AnimalL{id, x, y} {}
+CompleteAnimal::~CompleteAnimal() = default;
+
+Coelho::Coelho(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, CompleteAnimal{id, x, y}
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -53,7 +62,7 @@ Coelho::Coelho(const int &id, const int &x, const int &y) : Animal{id, x, y}
 }
 Coelho::~Coelho() = default;
 
-Ovelha::Ovelha(const int &id, const int &x, const int &y) : Animal{id, x, y}
+Ovelha::Ovelha(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, CompleteAnimal{id, x, y}
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -86,7 +95,7 @@ Ovelha::Ovelha(const int &id, const int &x, const int &y) : Animal{id, x, y}
 }
 Ovelha::~Ovelha() = default;
 
-Lobo::Lobo(const int &id, const int &x, const int &y) : Animal{id, x, y}
+Lobo::Lobo(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, AnimalH{id, x, y}
 {
     this->InitEspecie('L');
     this->InitCampoVisao(5);
@@ -110,3 +119,32 @@ Lobo::Lobo(const int &id, const int &x, const int &y) : Animal{id, x, y}
     constantes.close();
 }
 Lobo::~Lobo() = default;
+
+Canguru::Canguru(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, AnimalL{id, x, y}
+{
+    this->InitEspecie('G');
+    this->InitCampoVisao(7);
+    this->InitPeso(10);
+
+    std::string line, variable;
+    int num;
+    std::ifstream constantes("constantes.txt");
+    if (constantes.is_open())
+    {
+        while(getline(constantes,line))
+        {
+            std::istringstream p(line);
+            p >> variable >> num;
+            if(variable == "SCanguru")
+            {
+                this->setHP(num);
+            }
+            else if(variable == "VCanguru")
+            {
+                this->setLifeTick(num);
+            }
+        }
+    }
+    constantes.close();
+}
+Canguru::~Canguru() = default;
