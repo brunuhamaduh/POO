@@ -27,6 +27,9 @@ public:
     double getPeso() const;
     int getHP() const;
     void setHP(const int &num);
+    virtual int getHunger() const;
+    virtual void setLifeTick(const int &num);
+    virtual void Move();
 };
 
 class AnimalH: virtual public BaseAnimal
@@ -36,8 +39,7 @@ class AnimalH: virtual public BaseAnimal
 public:
     AnimalH(const int &id, const int &x, const int &y);
     ~AnimalH();
-
-    int getHunger() const;
+    int getHunger() const override;
 };
 
 class AnimalL: virtual public BaseAnimal
@@ -47,7 +49,7 @@ class AnimalL: virtual public BaseAnimal
 public:
     AnimalL(const int &id, const int &x, const int &y);
     ~AnimalL();
-    void setLifeTick(const int &num);
+    void setLifeTick(const int &num) override;
 };
 
 class CompleteAnimal: public AnimalH, public AnimalL
@@ -62,6 +64,7 @@ class Coelho: public CompleteAnimal
 public:
     Coelho(const int &id, const int &x, const int &y);
     ~Coelho();
+    void Move() override;
 };
 
 class Ovelha: public CompleteAnimal

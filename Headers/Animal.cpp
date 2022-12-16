@@ -17,6 +17,9 @@ int BaseAnimal::getcampoVisao() const {return campoVisao;}
 double BaseAnimal::getPeso() const {return Peso;}
 int BaseAnimal::getHP() const {return HP;}
 void BaseAnimal::setHP(const int &num) {HP = num;}
+int BaseAnimal::getHunger() const {return -1;}
+void BaseAnimal::setLifeTick(const int &num) {}
+void BaseAnimal::Move() {}
 
 AnimalH::AnimalH(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, hunger(0) {}
 AnimalH::~AnimalH() = default;
@@ -61,6 +64,11 @@ Coelho::Coelho(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}
     constantes.close();
 }
 Coelho::~Coelho() = default;
+
+void Coelho::Move()
+{
+
+}
 
 Ovelha::Ovelha(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, CompleteAnimal{id, x, y}
 {
