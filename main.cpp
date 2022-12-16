@@ -14,8 +14,6 @@ int main()
     std::vector<std::string> listComando;
     Reserva principal;
 
-    //leConstantes(out,  x, y);
-
     startGame(comando, input, principal);
     loopGame(principal, reserva, comando, info, out, input, listComando);
     return 0;

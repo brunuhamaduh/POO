@@ -128,5 +128,14 @@ void Reserva::newAnimal(const int &x, const int &y, const char &especie)
     }
 }
 
+void Reserva::advanceInstant()
+{
+    instante++;
+    for (auto& it : Animais)
+    {
+        it->Move(tamanho);
+    }
+}
+
 void Reserva::newAlimento(const int &id, const int &x, const int &y) {}
 int Reserva::ID = 0;

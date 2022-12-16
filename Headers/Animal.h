@@ -22,6 +22,7 @@ public:
     int getX() const;
     int getY() const;
     int getID() const;
+    void setPos(int &direction, int &num, const int &tamanho);
     char getEspecie() const;
     int getcampoVisao() const;
     double getPeso() const;
@@ -29,7 +30,7 @@ public:
     void setHP(const int &num);
     virtual int getHunger() const;
     virtual void setLifeTick(const int &num);
-    virtual void Move();
+    virtual void Move(const int &tamanho);
 };
 
 class AnimalH: virtual public BaseAnimal
@@ -64,7 +65,7 @@ class Coelho: public CompleteAnimal
 public:
     Coelho(const int &id, const int &x, const int &y);
     ~Coelho();
-    void Move() override;
+    void Move(const int &tamanho) override;
 };
 
 class Ovelha: public CompleteAnimal

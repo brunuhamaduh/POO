@@ -176,6 +176,10 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
                 principal.newAnimal(distr(generator), distr(generator), listComando.at(1)[0]);
             }
         }
+        else if(listComando.at(0) == "n")
+        {
+            principal.advanceInstant();
+        }
     }
 }
 
@@ -340,6 +344,7 @@ void leComandos(term::Window &out, std::vector<std::string> &listComando, Reserv
 
 void startGame(term::Window &comando, std:: string &input, Reserva &principal)
 {
+    /*
     try
     {
         do
@@ -356,6 +361,9 @@ void startGame(term::Window &comando, std:: string &input, Reserva &principal)
     {
         principal.setSize(200);
     }
+    */
+    principal.setSize(10); //APENAS PARA TESTE
+    principal.newAnimal(5, 5, 'c'); //APENAS PARA TESTE
 }
 
 void loopGame(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string input, std::vector<std::string> &listComando)

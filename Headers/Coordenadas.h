@@ -8,10 +8,10 @@ class Coordenadas
     int x, y;
 public:
     Coordenadas(const int &x, const int &y);
-    Coordenadas();
     ~Coordenadas();
     int getX() const;
     int getY() const;
+    void setPos(int &direction, int &num, const int &tamanho);
 };
 
 #endif //POO_COORDENADAS_H

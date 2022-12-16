@@ -12,6 +12,7 @@ void BaseAnimal::InitPeso(const double &num) {Peso = num;}
 int BaseAnimal::getX() const {return Location.getX();}
 int BaseAnimal::getY() const {return Location.getY();}
 int BaseAnimal::getID() const {return ID;}
+void BaseAnimal::setPos(int &direction, int &num, const int &tamanho) {Location.setPos(direction, num, tamanho);}
 char BaseAnimal::getEspecie() const {return especie;}
 int BaseAnimal::getcampoVisao() const {return campoVisao;}
 double BaseAnimal::getPeso() const {return Peso;}
@@ -19,7 +20,7 @@ int BaseAnimal::getHP() const {return HP;}
 void BaseAnimal::setHP(const int &num) {HP = num;}
 int BaseAnimal::getHunger() const {return -1;}
 void BaseAnimal::setLifeTick(const int &num) {}
-void BaseAnimal::Move() {}
+void BaseAnimal::Move(const int &tamanho) {}
 
 AnimalH::AnimalH(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, hunger(0) {}
 AnimalH::~AnimalH() = default;
@@ -65,9 +66,17 @@ Coelho::Coelho(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}
 }
 Coelho::~Coelho() = default;
 
-void Coelho::Move()
+void Coelho::Move(const int &tamanho)
 {
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_int_distribution <> random_steps(1, 2);
+    std::uniform_int_distribution <> random_direction(1, 8);
 
+    int direction = random_direction(generator);
+    int steps = random_steps(generator);
+
+    setPos(direction, steps, tamanho);
 }
 
 Ovelha::Ovelha(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, CompleteAnimal{id, x, y}
