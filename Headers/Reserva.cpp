@@ -57,7 +57,23 @@ std::string Reserva::getAnimais() const
     output << "ID X Y LT H" << std::endl;
     for (auto& it : Animais)
     {
-        output << it->getID() << " " << it->getX() << " " << it->getY() << " " << it->getLifeTick() << " " << it->getHunger() << std::endl;
+        output << it->getID() << " " << it->getX() << " " << it->getY() << " ";
+        if(it->getLifeTick() == -1)
+        {
+            output << "- ";
+        }
+        else
+        {
+            output << it->getLifeTick();
+        }
+        if(it->getHunger() == -1)
+        {
+            output << " -" << std::endl;
+        }
+        else
+        {
+            output << it->getHunger() << std::endl;
+        }
     }
     return output.str();
 }

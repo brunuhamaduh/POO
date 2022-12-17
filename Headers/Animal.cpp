@@ -30,14 +30,42 @@ AnimalH::~AnimalH() = default;
 int AnimalH::getHunger() const {return hunger;}
 void AnimalH::Hunger()
 {
-    if(getEspecie() == 'C' || getEspecie() == 'O')
+    int num = 1;
+    if(getEspecie() == 'C')
     {
-        hunger++;
+        if(hunger >= 10)
+        {
+            setHP(getHP() - 1);
+        }
+        else if(hunger >= 20)
+        {
+            setHP(getHP() - 2);
+        }
+    }
+    else if(getEspecie() == 'O')
+    {
+        if(hunger >= 15)
+        {
+            setHP(getHP() - 1);
+        }
+        else if(hunger >= 20)
+        {
+            setHP(getHP() - 2);
+        }
     }
     else if(getEspecie() == 'L')
     {
-        hunger = hunger + 2;
+        if(hunger >= 15)
+        {
+            setHP(getHP() - 1);
+        }
+        else if(hunger >= 25)
+        {
+            setHP(getHP() - 2);
+        }
+        num = 2;
     }
+    hunger = hunger + num;
 }
 
 AnimalL::AnimalL(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, lifeTick(50) {}
@@ -86,11 +114,25 @@ void Coelho::Move(const int &tamanho)
 {
     std::random_device random;
     std::mt19937 generator(random());
-    std::uniform_int_distribution <> random_steps(1, 2);
     std::uniform_int_distribution <> random_direction(1, 8);
-
     int direction = random_direction(generator);
-    int steps = random_steps(generator);
+    int steps;
+
+    if(getHunger() >= 10)
+    {
+        std::uniform_int_distribution <> random_steps(1, 3);
+        steps = random_steps(generator);
+    }
+    else if(getHunger() >= 20)
+    {
+        std::uniform_int_distribution <> random_steps(1, 4);
+        steps = random_steps(generator);
+    }
+    else
+    {
+        std::uniform_int_distribution <> random_steps(1, 2);
+        steps = random_steps(generator);
+    }
 
     setPos(direction, steps, tamanho);
 }
@@ -137,6 +179,12 @@ void Ovelha::Move(const int &tamanho)
     int direction = random_direction(generator);
     int steps = 1;
 
+    if(getHunger() >= 15)
+    {
+        std::uniform_int_distribution <> random_steps(1, 2);
+        steps = random_steps(generator);
+    }
+
     setPos(direction, steps, tamanho);
 }
 
@@ -173,6 +221,11 @@ void Lobo::Move(const int &tamanho)
 
     int direction = random_direction(generator);
     int steps = 1;
+
+    if(getHunger() >= 15)
+    {
+        steps = 2;
+    }
 
     setPos(direction, steps, tamanho);
 }
