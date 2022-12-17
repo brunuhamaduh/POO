@@ -7,6 +7,7 @@
 #include "Reserva.h"
 
 BaseAnimal::BaseAnimal(const int &id, const int &x, const int &y) : Location(x,y), ID(id), campoVisao(2), Peso(5), especie('X'), HP(100), instante(0){}
+BaseAnimal::BaseAnimal(const int &id, const int &x, const int &y, const int &hp) : Location(x,y), ID(id), campoVisao(2), Peso(5), especie('X'), HP(hp), instante(0){}
 BaseAnimal::~BaseAnimal() = default;
 void BaseAnimal::InitEspecie(const char &chara) {especie = chara;}
 void BaseAnimal::InitCampoVisao(const int &num) {campoVisao = num;}
@@ -46,6 +47,7 @@ void AnimalL::LifeTick() {lifeTick--;}
 int AnimalL::getLifeTick() const {return lifeTick;}
 
 CompleteAnimal::CompleteAnimal(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, AnimalH{id, x, y}, AnimalL{id, x, y} {}
+CompleteAnimal::CompleteAnimal(const int &id, const int &x, const int &y, const int &hp) : BaseAnimal{id, x, y, hp}, AnimalH{id, x, y}, AnimalL{id, x, y} {}
 CompleteAnimal::~CompleteAnimal() = default;
 
 Coelho::Coelho(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, CompleteAnimal{id, x, y}
@@ -175,6 +177,39 @@ Ovelha::Ovelha(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}
     }
     constantes.close();
 }
+
+Ovelha::Ovelha(const int &id, const int &x, const int &y, const int &hp) : BaseAnimal{id, x, y, hp}, CompleteAnimal{id, x, y, hp}
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_real_distribution <> distr(4, 8);
+
+    this->InitEspecie('O');
+    this->InitCampoVisao(3);
+    this->InitPeso(distr(generator));
+
+    std::string line, variable;
+    int num;
+    std::ifstream constantes("constantes.txt");
+    if (constantes.is_open())
+    {
+        while(getline(constantes,line))
+        {
+            std::istringstream p(line);
+            p >> variable >> num;
+            if(variable == "SOvelha")
+            {
+                setHP(num);
+            }
+            else if(variable == "VOvelha")
+            {
+                InitLifeTick(num);
+            }
+        }
+    }
+    constantes.close();
+}
+
 Ovelha::~Ovelha() = default;
 
 void Ovelha::Move(const int &tamanho)
@@ -206,6 +241,29 @@ void Ovelha::Hunger()
         setHP(getHP() - 2);
     }
     setHunger(1);
+}
+
+bool Ovelha::checkChild()
+{
+    if(getInstante() % 15 == 0)
+    {
+        std::random_device random;
+        std::mt19937 generator(random());
+        std::uniform_int_distribution <> distr(1, 2); // 50%/50%
+        if(distr(generator) == 2) //new coelho
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+Ovelha* Ovelha::Child()
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_int_distribution <> distr1(1, 12);
+    return new Ovelha(Reserva::getID(), distr1(generator), distr1(generator), getHP());
 }
 
 Lobo::Lobo(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, AnimalH{id, x, y}

@@ -54,10 +54,10 @@ std::string Reserva::getAlimentosPos(const int &xinf, const int &xsup, const int
 std::string Reserva::getAnimais() const
 {
     std::ostringstream output;
-    output << "ID X Y P LT H" << std::endl;
+    output << "ID X Y P HP LT H" << std::endl;
     for (auto& it : Animais)
     {
-        output << it->getID() << " " << it->getX() << " " << it->getY() << " " << std::setprecision(2) << it->getPeso() << " ";
+        output << it->getID() << " " << it->getX() << " " << it->getY() << " " << std::setprecision(2) << it->getPeso() << " " << it->getHP() << " ";
         if(it->getLifeTick() == -1)
         {
             output << "-";

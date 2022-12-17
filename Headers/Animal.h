@@ -16,6 +16,7 @@ class BaseAnimal
 
 public:
     BaseAnimal(const int &id, const int &x, const int &y);
+    BaseAnimal(const int &id, const int &x, const int &y, const int &hp);
     ~BaseAnimal();
     void InitEspecie(const char &chara);
     void InitCampoVisao(const int &num);
@@ -72,6 +73,7 @@ class CompleteAnimal: public AnimalH, public AnimalL
 {
 public:
     CompleteAnimal(const int &id, const int &x, const int &y);
+    CompleteAnimal(const int &id, const int &x, const int &y, const int &hp);
     ~CompleteAnimal();
 };
 
@@ -90,10 +92,12 @@ class Ovelha: public CompleteAnimal
 {
 public:
     Ovelha(const int &id, const int &x, const int &y);
+    Ovelha(const int &id, const int &x, const int &y, const int &hp);
     ~Ovelha();
     void Move(const int &tamanho) override;
     void Hunger() override;
-    //void Child() override;
+    Ovelha* Child() override;
+    bool checkChild() override;
 };
 
 class Lobo: public AnimalH
@@ -103,7 +107,8 @@ public:
     ~Lobo();
     void Move(const int &tamanho) override;
     void Hunger() override;
-    //void Child() override;
+    //Lobo* Child() override;
+    //bool checkChild() override;
 };
 
 class Canguru: public AnimalL
@@ -112,7 +117,8 @@ public:
     Canguru(const int &id, const int &x, const int &y);
     ~Canguru();
     void Move(const int &tamanho) override;
-    //void Child() override;
+    //Canguru* Child() override;
+    //bool checkChild() override;
 };
 
 #endif //POO_ANIMAL_H
