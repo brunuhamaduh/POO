@@ -34,7 +34,7 @@ void AnimalH::Hunger()
     {
         hunger++;
     }
-    else if(getEspecie() == 'O')
+    else if(getEspecie() == 'L')
     {
         hunger = hunger + 2;
     }

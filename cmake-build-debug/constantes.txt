@@ -1,2 +1,2 @@
-SCoelho 20
 VCoelho 5
+VOvelha 5

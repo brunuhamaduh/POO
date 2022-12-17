@@ -139,11 +139,16 @@ void Reserva::advanceInstant(term::Window &out)
         it->Hunger();
     }
 
-    for (auto& it : Animais)
+    auto ptr = Animais.begin();
+    while(ptr != Animais.end())
     {
-        if(it->getLifeTick() == 0 || it->getHP() == 0)
+        if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0)
         {
-           delete it;
+            ptr = Animais.erase(ptr);
+        }
+        else
+        {
+            ptr++;
         }
     }
 }
