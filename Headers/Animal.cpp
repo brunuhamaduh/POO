@@ -6,8 +6,17 @@
 
 #include "Reserva.h"
 
-BaseAnimal::BaseAnimal(const int &id, const int &x, const int &y) : Location(x,y), ID(id), campoVisao(2), Peso(5), especie('X'), HP(100), instante(0){}
-BaseAnimal::BaseAnimal(const int &id, const int &x, const int &y, const int &hp) : Location(x,y), ID(id), campoVisao(2), Peso(5), especie('X'), HP(hp), instante(0){}
+BaseAnimal::BaseAnimal() : Location(0, 0), ID(Reserva::getID()), campoVisao(2), Peso(5), especie('X'), HP(100), instante(0)
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_int_distribution <> distr(0, Reserva::getArea());
+    Location.setX(distr(generator));
+    Location.setY(distr(generator));
+}
+BaseAnimal::BaseAnimal(const int &x, const int &y, const int &hp) : Location(x,y), ID(Reserva::getID()), campoVisao(2), Peso(5), especie('X'), HP(hp), instante(0) {}
+BaseAnimal::BaseAnimal(const int &x, const int &y) : Location(x,y), ID(Reserva::getID()), campoVisao(2), Peso(5), especie('X'), HP(100), instante(0) {}
+
 BaseAnimal::~BaseAnimal() = default;
 void BaseAnimal::InitEspecie(const char &chara) {especie = chara;}
 void BaseAnimal::InitCampoVisao(const int &num) {campoVisao = num;}
@@ -34,23 +43,22 @@ void BaseAnimal::incInstante() {instante++;}
 BaseAnimal* BaseAnimal::Child() {return new BaseAnimal(*this);}
 bool BaseAnimal::checkChild() {return false;}
 
-AnimalH::AnimalH(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, hunger(0) {}
+AnimalH::AnimalH() : hunger(0) {}
 AnimalH::~AnimalH() = default;
 int AnimalH::getHunger() const {return hunger;}
 void AnimalH::Hunger() {}
 void AnimalH::setHunger(const int &num) {hunger = hunger + num;}
 
-AnimalL::AnimalL(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, lifeTick(50) {}
+AnimalL::AnimalL() : lifeTick(50) {}
 AnimalL::~AnimalL() = default;
 void AnimalL::InitLifeTick(const int &num) {lifeTick = num;}
 void AnimalL::LifeTick() {lifeTick--;}
 int AnimalL::getLifeTick() const {return lifeTick;}
 
-CompleteAnimal::CompleteAnimal(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, AnimalH{id, x, y}, AnimalL{id, x, y} {}
-CompleteAnimal::CompleteAnimal(const int &id, const int &x, const int &y, const int &hp) : BaseAnimal{id, x, y, hp}, AnimalH{id, x, y}, AnimalL{id, x, y} {}
+CompleteAnimal::CompleteAnimal() {}
 CompleteAnimal::~CompleteAnimal() = default;
 
-Coelho::Coelho(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, CompleteAnimal{id, x, y}
+Coelho::Coelho()
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -81,6 +89,39 @@ Coelho::Coelho(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}
     }
     constantes.close();
 }
+
+Coelho::Coelho(const int &x, const int &y) : BaseAnimal(x, y)
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_real_distribution <> distr(1, 4);
+
+    this->InitEspecie('C');
+    this->InitCampoVisao(4);
+    this->InitPeso(distr(generator));
+
+    std::string line, variable;
+    int num;
+    std::ifstream constantes("constantes.txt");
+    if (constantes.is_open())
+    {
+        while(getline(constantes,line))
+        {
+            std::istringstream p(line);
+            p >> variable >> num;
+            if(variable == "SCoelho")
+            {
+                setHP(num);
+            }
+            else if(variable == "VCoelho")
+            {
+                InitLifeTick(num);
+            }
+        }
+    }
+    constantes.close();
+}
+
 Coelho::~Coelho() = default;
 
 void Coelho::Move(const int &tamanho)
@@ -142,11 +183,41 @@ Coelho* Coelho::Child()
 {
     std::random_device random;
     std::mt19937 generator(random());
-    std::uniform_int_distribution <> distr1(1, 10);
-    return new Coelho(Reserva::getID(), distr1(generator), distr1(generator));
+    std::uniform_int_distribution <> distr(1, 10);
+    std::uniform_int_distribution <> sinal(1, 4);
+    int xRandom, yRandom, area = Reserva::getArea();
+    while(true) //making sure the child doesn't spawn outside area if parent is on the edges
+    {
+        if(sinal(generator) == 1)
+        {
+            xRandom = distr(generator) + getX();
+            yRandom = distr(generator) + getY();
+        }
+        else if(sinal(generator) == 2)
+        {
+            xRandom = distr(generator) - getX();
+            yRandom = distr(generator) + getY();
+        }
+        else if(sinal(generator) == 3)
+        {
+            xRandom = distr(generator) + getX();
+            yRandom = distr(generator) - getY();
+        }
+        else if(sinal(generator) == 4)
+        {
+            xRandom = distr(generator) - getX();
+            yRandom = distr(generator) - getY();
+        }
+
+        if(xRandom > 0 && xRandom < area && yRandom > 0 && yRandom < area)
+        {
+            break;
+        }
+    }
+    return new Coelho(xRandom, yRandom);
 }
 
-Ovelha::Ovelha(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, CompleteAnimal{id, x, y}
+Ovelha::Ovelha()
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -178,7 +249,39 @@ Ovelha::Ovelha(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}
     constantes.close();
 }
 
-Ovelha::Ovelha(const int &id, const int &x, const int &y, const int &hp) : BaseAnimal{id, x, y, hp}, CompleteAnimal{id, x, y, hp}
+Ovelha::Ovelha(const int &x, const int &y) : BaseAnimal{x, y}
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_real_distribution <> distr(4, 8);
+
+    this->InitEspecie('O');
+    this->InitCampoVisao(3);
+    this->InitPeso(distr(generator));
+
+    std::string line, variable;
+    int num;
+    std::ifstream constantes("constantes.txt");
+    if (constantes.is_open())
+    {
+        while(getline(constantes,line))
+        {
+            std::istringstream p(line);
+            p >> variable >> num;
+            if(variable == "SOvelha")
+            {
+                setHP(num);
+            }
+            else if(variable == "VOvelha")
+            {
+                InitLifeTick(num);
+            }
+        }
+    }
+    constantes.close();
+}
+
+Ovelha::Ovelha(const int &x, const int &y, const int &hp) : BaseAnimal{x, y, hp}
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -247,13 +350,7 @@ bool Ovelha::checkChild()
 {
     if(getInstante() % 15 == 0)
     {
-        std::random_device random;
-        std::mt19937 generator(random());
-        std::uniform_int_distribution <> distr(1, 2); // 50%/50%
-        if(distr(generator) == 2) //new coelho
-        {
-            return true;
-        }
+        return true;
     }
     return false;
 }
@@ -262,11 +359,41 @@ Ovelha* Ovelha::Child()
 {
     std::random_device random;
     std::mt19937 generator(random());
-    std::uniform_int_distribution <> distr1(1, 12);
-    return new Ovelha(Reserva::getID(), distr1(generator), distr1(generator), getHP());
+    std::uniform_int_distribution <> distr(1, 12);
+    std::uniform_int_distribution <> sinal(1, 4);
+    int xRandom, yRandom, area = Reserva::getArea();
+    while(true) //making sure the child doesn't spawn outside area if parent is on the edges
+    {
+        if(sinal(generator) == 1)
+        {
+            xRandom = distr(generator) + getX();
+            yRandom = distr(generator) + getY();
+        }
+        else if(sinal(generator) == 2)
+        {
+            xRandom = distr(generator) - getX();
+            yRandom = distr(generator) + getY();
+        }
+        else if(sinal(generator) == 3)
+        {
+            xRandom = distr(generator) + getX();
+            yRandom = distr(generator) - getY();
+        }
+        else if(sinal(generator) == 4)
+        {
+            xRandom = distr(generator) - getX();
+            yRandom = distr(generator) - getY();
+        }
+
+        if(xRandom > 0 && xRandom < area && yRandom > 0 && yRandom < area)
+        {
+            break;
+        }
+    }
+    return new Ovelha(xRandom, yRandom, getHP());
 }
 
-Lobo::Lobo(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, AnimalH{id, x, y}
+Lobo::Lobo()
 {
     this->InitEspecie('L');
     this->InitCampoVisao(5);
@@ -289,6 +416,31 @@ Lobo::Lobo(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, An
     }
     constantes.close();
 }
+
+Lobo::Lobo(const int &x, const int &y) : BaseAnimal(x,y)
+{
+    this->InitEspecie('L');
+    this->InitCampoVisao(5);
+    this->InitPeso(15);
+
+    std::string line, variable;
+    int num;
+    std::ifstream constantes("constantes.txt");
+    if (constantes.is_open())
+    {
+        while(getline(constantes,line))
+        {
+            std::istringstream p(line);
+            p >> variable >> num;
+            if(variable == "SLobo")
+            {
+                setHP(num);
+            }
+        }
+    }
+    constantes.close();
+}
+
 Lobo::~Lobo() = default;
 
 void Lobo::Move(const int &tamanho)
@@ -321,7 +473,35 @@ void Lobo::Hunger()
     setHunger(2);
 }
 
-Canguru::Canguru(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, AnimalL{id, x, y}
+Canguru::Canguru()
+{
+    this->InitEspecie('G');
+    this->InitCampoVisao(7);
+    this->InitPeso(10);
+
+    std::string line, variable;
+    int num;
+    std::ifstream constantes("constantes.txt");
+    if (constantes.is_open())
+    {
+        while(getline(constantes,line))
+        {
+            std::istringstream p(line);
+            p >> variable >> num;
+            if(variable == "SCanguru")
+            {
+                setHP(num);
+            }
+            else if(variable == "VCanguru")
+            {
+                InitLifeTick(num);
+            }
+        }
+    }
+    constantes.close();
+}
+
+Canguru::Canguru(const int &x, const int &y) : BaseAnimal(x,y)
 {
     this->InitEspecie('G');
     this->InitCampoVisao(7);

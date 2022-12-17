@@ -6,7 +6,7 @@
 class Reserva
 {
     static int ID;
-    int tamanho;
+    static int tamanho;
     int instante;
     std::vector<BaseAnimal*> Animais;
     std::vector<Alimento*> Alimentos;
@@ -15,7 +15,7 @@ class Reserva
 public:
     Reserva();
     ~Reserva();
-    int getArea() const;
+    static int getArea();
     std::vector<int> getVArea() const;
     std::string getAnimaisPos(const int &xinf, const int &xsup, const int &yinf, const int &ysup) const;
     std::string getAlimentosPos(const int &xinf, const int &xsup, const int &yinf, const int &ysup) const;

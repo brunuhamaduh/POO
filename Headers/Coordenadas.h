@@ -11,6 +11,8 @@ public:
     ~Coordenadas();
     int getX() const;
     int getY() const;
+    void setX(const int &num);
+    void setY(const int &num);
     void setPos(int &direction, int &num, const int &tamanho);
 };
 

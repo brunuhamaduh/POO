@@ -1,7 +1,7 @@
 #include "Reserva.h"
 #include <iomanip>
 
-Reserva::Reserva() : tamanho(200), instante(0){ }
+Reserva::Reserva() : instante(0){ }
 Reserva::~Reserva()
 {
     for(auto el: Animais)
@@ -10,7 +10,7 @@ Reserva::~Reserva()
         delete el;
 }
 
-int Reserva::getArea() const
+int Reserva::getArea()
 {
     return tamanho;
 }
@@ -129,19 +129,19 @@ void Reserva::newAnimal(const int &x, const int &y, const char &especie)
 {
     if(especie == 'c')
     {
-        Animais.emplace_back(new Coelho(++ID, x, y));
+        Animais.emplace_back(new Coelho(x, y));
     }
     else if(especie == 'o')
     {
-        Animais.emplace_back(new Ovelha(++ID, x, y));
+        Animais.emplace_back(new Ovelha(x, y));
     }
     else if(especie == 'l')
     {
-        Animais.emplace_back(new Lobo(++ID, x, y));
+        Animais.emplace_back(new Lobo(x, y));
     }
     else if(especie == 'g')
     {
-        Animais.emplace_back(new Canguru(++ID, x, y));
+        Animais.emplace_back(new Canguru(x, y));
     }
 }
 
@@ -177,3 +177,4 @@ void Reserva::advanceInstant(const int &num)
 void Reserva::newAlimento(const int &id, const int &x, const int &y) {}
 int Reserva::getID() {return ++ID;}
 int Reserva::ID = 0;
+int Reserva::tamanho = 200;

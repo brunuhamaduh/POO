@@ -11,6 +11,8 @@ Coordenadas::Coordenadas(const int &x, const int &y)
 Coordenadas::~Coordenadas() = default;
 int Coordenadas::getX() const {return x;}
 int Coordenadas::getY() const {return y;}
+void Coordenadas::setX(const int &num){x = num;}
+void Coordenadas::setY(const int &num){y = num;}
 void Coordenadas::setPos(int &direction, int &num, const int &tamanho)
 {
     while(true)
