@@ -29,7 +29,8 @@ public:
     void newAnimal(const int &x, const int &y, const char &especie);
     void newAlimento(const int &id, const int &x, const int &y);
     void change_VArea(const int &index, bool op);
-    void advanceInstant(term::Window &out);
+    void advanceInstant(const int &num = 1);
+    static int getID();
 };
 
 #endif //POO_RESERVA_H

@@ -20,18 +20,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8002510f-ec06-4c29-a2a8-fd6e4825d3a6" name="Changes" comment="dying animals done">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Headers/Animal.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Animal.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Headers/Reserva.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Reserva.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/POO - 2223 - Enunciado Trabalho Pratico v.1.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/POO - 2223 - Enunciado Trabalho Pratico v.1.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Animal.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Animal.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Reserva.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Reserva.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/POO.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/POO.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-    </list>
+    <list default="true" id="8002510f-ec06-4c29-a2a8-fd6e4825d3a6" name="Changes" comment="Coelho child" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -83,12 +72,12 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="POO" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="/c start cmd /c &quot;POO.exe &amp; pause&quot;" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/cmake-build-debug" PASS_PARENT_ENVS_2="true" PROJECT_NAME="POO" TARGET_NAME="POO" CONFIG_NAME="Debug" RUN_PATH="$PROJECT_DIR$/../../../../Windows/System32/cmd.exe">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="POO" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="/c start cmd /c &quot;POO.exe &amp; pause&quot;" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$/cmake-build-debug" PASS_PARENT_ENVS_2="true" PROJECT_NAME="POO" TARGET_NAME="POO" CONFIG_NAME="Debug" RUN_PATH="$PROJECT_DIR$/../../../../Windows/System32/cmd.exe">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -123,6 +112,7 @@
       <workItem from="1671095960372" duration="9284000" />
       <workItem from="1671112591327" duration="10977000" />
       <workItem from="1671208239492" duration="3175000" />
+      <workItem from="1671290047679" duration="8398000" />
     </task>
     <task id="LOCAL-00001" summary="changed file location">
       <created>1670689369970</created>
@@ -159,7 +149,21 @@
       <option name="project" value="LOCAL" />
       <updated>1671276239806</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="each instant animals gain hunger (lose hp)">
+      <created>1671278293494</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1671278293494</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Coelho child">
+      <created>1671298917361</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1671298917361</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -185,7 +189,9 @@
     <MESSAGE value="derived class &quot;Coelho&quot;" />
     <MESSAGE value="Coelho Move done" />
     <MESSAGE value="dying animals done" />
-    <option name="LAST_COMMIT_MESSAGE" value="dying animals done" />
+    <MESSAGE value="each instant animals gain hunger (lose hp)" />
+    <MESSAGE value="Coelho child" />
+    <option name="LAST_COMMIT_MESSAGE" value="Coelho child" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

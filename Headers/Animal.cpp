@@ -4,7 +4,9 @@
 #include <fstream>
 #include <sstream>
 
-BaseAnimal::BaseAnimal(const int &id, const int &x, const int &y) : Location(x,y), ID(id), campoVisao(2), Peso(5), especie('X'), HP(100) {}
+#include "Reserva.h"
+
+BaseAnimal::BaseAnimal(const int &id, const int &x, const int &y) : Location(x,y), ID(id), campoVisao(2), Peso(5), especie('X'), HP(100), instante(0){}
 BaseAnimal::~BaseAnimal() = default;
 void BaseAnimal::InitEspecie(const char &chara) {especie = chara;}
 void BaseAnimal::InitCampoVisao(const int &num) {campoVisao = num;}
@@ -24,49 +26,18 @@ void BaseAnimal::LifeTick() {}
 void BaseAnimal::Move(const int &tamanho) {}
 int BaseAnimal::getLifeTick() const {return -1;}
 void BaseAnimal::Hunger() {}
+void BaseAnimal::setHunger(const int &num) {}
+void BaseAnimal::setPeso(const int &num) {Peso = num;}
+int BaseAnimal::getInstante() const {return instante;}
+void BaseAnimal::incInstante() {instante++;}
+BaseAnimal* BaseAnimal::Child() {return new BaseAnimal(*this);}
+bool BaseAnimal::checkChild() {return false;}
 
 AnimalH::AnimalH(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, hunger(0) {}
 AnimalH::~AnimalH() = default;
 int AnimalH::getHunger() const {return hunger;}
-void AnimalH::Hunger()
-{
-    int num = 1;
-    if(getEspecie() == 'C')
-    {
-        if(hunger >= 10)
-        {
-            setHP(getHP() - 1);
-        }
-        else if(hunger >= 20)
-        {
-            setHP(getHP() - 2);
-        }
-    }
-    else if(getEspecie() == 'O')
-    {
-        if(hunger >= 15)
-        {
-            setHP(getHP() - 1);
-        }
-        else if(hunger >= 20)
-        {
-            setHP(getHP() - 2);
-        }
-    }
-    else if(getEspecie() == 'L')
-    {
-        if(hunger >= 15)
-        {
-            setHP(getHP() - 1);
-        }
-        else if(hunger >= 25)
-        {
-            setHP(getHP() - 2);
-        }
-        num = 2;
-    }
-    hunger = hunger + num;
-}
+void AnimalH::Hunger() {}
+void AnimalH::setHunger(const int &num) {hunger = hunger + num;}
 
 AnimalL::AnimalL(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, lifeTick(50) {}
 AnimalL::~AnimalL() = default;
@@ -98,17 +69,17 @@ Coelho::Coelho(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}
             p >> variable >> num;
             if(variable == "SCoelho")
             {
-                this->setHP(num);
+                setHP(num);
             }
             else if(variable == "VCoelho")
             {
-                this->InitLifeTick(num);
+                InitLifeTick(num);
             }
         }
     }
     constantes.close();
 }
-//Coelho::~Coelho() = default;
+Coelho::~Coelho() = default;
 
 void Coelho::Move(const int &tamanho)
 {
@@ -137,6 +108,42 @@ void Coelho::Move(const int &tamanho)
     setPos(direction, steps, tamanho);
 }
 
+void Coelho::Hunger()
+{
+    if(getHunger() >= 10 && getHunger() < 20)
+    {
+        setHP(getHP() - 1);
+    }
+    else if(getHunger() >= 20)
+    {
+        setHP(getHP() - 2);
+    }
+    setHunger(1);
+}
+
+bool Coelho::checkChild()
+{
+    if(getInstante() % 8 == 0)
+    {
+        std::random_device random;
+        std::mt19937 generator(random());
+        std::uniform_int_distribution <> distr(1, 2); // 50%/50%
+        if(distr(generator) == 2) //new coelho
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+Coelho* Coelho::Child()
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_int_distribution <> distr1(1, 10);
+    return new Coelho(Reserva::getID(), distr1(generator), distr1(generator));
+}
+
 Ovelha::Ovelha(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, CompleteAnimal{id, x, y}
 {
     std::random_device random;
@@ -158,11 +165,11 @@ Ovelha::Ovelha(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}
             p >> variable >> num;
             if(variable == "SOvelha")
             {
-                this->setHP(num);
+                setHP(num);
             }
             else if(variable == "VOvelha")
             {
-                this->InitLifeTick(num);
+                InitLifeTick(num);
             }
         }
     }
@@ -188,6 +195,19 @@ void Ovelha::Move(const int &tamanho)
     setPos(direction, steps, tamanho);
 }
 
+void Ovelha::Hunger()
+{
+    if(getHunger() >= 15 && getHunger() < 20)
+    {
+        setHP(getHP() - 1);
+    }
+    else if(getHunger() >= 20)
+    {
+        setHP(getHP() - 2);
+    }
+    setHunger(1);
+}
+
 Lobo::Lobo(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, AnimalH{id, x, y}
 {
     this->InitEspecie('L');
@@ -205,7 +225,7 @@ Lobo::Lobo(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, An
             p >> variable >> num;
             if(variable == "SLobo")
             {
-                this->setHP(num);
+                setHP(num);
             }
         }
     }
@@ -230,6 +250,19 @@ void Lobo::Move(const int &tamanho)
     setPos(direction, steps, tamanho);
 }
 
+void Lobo::Hunger()
+{
+    if(getHunger() >= 15 && getHunger() < 25)
+    {
+        setHP(getHP() - 1);
+    }
+    else if(getHunger() >= 25)
+    {
+        setHP(getHP() - 2);
+    }
+    setHunger(2);
+}
+
 Canguru::Canguru(const int &id, const int &x, const int &y) : BaseAnimal{id, x, y}, AnimalL{id, x, y}
 {
     this->InitEspecie('G');
@@ -247,11 +280,11 @@ Canguru::Canguru(const int &id, const int &x, const int &y) : BaseAnimal{id, x, 
             p >> variable >> num;
             if(variable == "SCanguru")
             {
-                this->setHP(num);
+                setHP(num);
             }
             else if(variable == "VCanguru")
             {
-                this->InitLifeTick(num);
+                InitLifeTick(num);
             }
         }
     }
@@ -269,4 +302,8 @@ void Canguru::Move(const int &tamanho)
     int steps = 1;
 
     setPos(direction, steps, tamanho);
+    if(getInstante() == 20)
+    {
+        setPeso(20);
+    }
 }

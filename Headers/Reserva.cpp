@@ -54,13 +54,13 @@ std::string Reserva::getAlimentosPos(const int &xinf, const int &xsup, const int
 std::string Reserva::getAnimais() const
 {
     std::ostringstream output;
-    output << "ID X Y LT H" << std::endl;
+    output << "ID X Y P LT H" << std::endl;
     for (auto& it : Animais)
     {
-        output << it->getID() << " " << it->getX() << " " << it->getY() << " ";
+        output << it->getID() << " " << it->getX() << " " << it->getY() << " " << std::setprecision(2) << it->getPeso() << " ";
         if(it->getLifeTick() == -1)
         {
-            output << "- ";
+            output << "-";
         }
         else
         {
@@ -72,7 +72,7 @@ std::string Reserva::getAnimais() const
         }
         else
         {
-            output << it->getHunger() << std::endl;
+            output << " " << it->getHunger() << std::endl;
         }
     }
     return output.str();
@@ -145,29 +145,35 @@ void Reserva::newAnimal(const int &x, const int &y, const char &especie)
     }
 }
 
-void Reserva::advanceInstant(term::Window &out)
+void Reserva::advanceInstant(const int &num)
 {
-    instante++;
-    for (auto& it : Animais)
+    for(int i = 0; i < num; i++)
     {
-        it->Move(tamanho);
-        it->LifeTick();
-        it->Hunger();
-    }
-
-    auto ptr = Animais.begin();
-    while(ptr != Animais.end())
-    {
-        if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0)
+        instante++;
+        for (auto& it : Animais)
         {
-            ptr = Animais.erase(ptr);
+            it->incInstante();
+            it->Move(tamanho);
+            it->LifeTick();
+            it->Hunger();
+            if(it->checkChild()) {Animais.emplace_back(it->Child());}
         }
-        else
+
+        auto ptr = Animais.begin();
+        while(ptr != Animais.end())
         {
-            ptr++;
+            if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0)
+            {
+                ptr = Animais.erase(ptr);
+            }
+            else
+            {
+                ptr++;
+            }
         }
     }
 }
 
 void Reserva::newAlimento(const int &id, const int &x, const int &y) {}
+int Reserva::getID() {return ++ID;}
 int Reserva::ID = 0;

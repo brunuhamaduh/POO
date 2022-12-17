@@ -178,7 +178,7 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
         }
         else if(listComando.at(0) == "n")
         {
-            principal.advanceInstant(out);
+            principal.advanceInstant();
         }
     }
 }
@@ -358,9 +358,9 @@ void startGame(term::Window &comando, std:: string &input, Reserva &principal)
         principal.setSize(200);
     }
     */
-    principal.setSize(10); //APENAS PARA TESTE
+    principal.setSize(50); //APENAS PARA TESTE
     principal.newAnimal(5, 5, 'c');
-    principal.newAnimal(5, 10, 'o');
+    principal.newAnimal(25, 20, 'o');
 }
 
 void loopGame(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string input, std::vector<std::string> &listComando)

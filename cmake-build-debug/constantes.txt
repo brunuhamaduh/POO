@@ -1,2 +1,2 @@
-VCoelho 5
-VOvelha 5
+VCoelho 20
+VOvelha 20
