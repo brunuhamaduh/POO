@@ -14,33 +14,35 @@ class BaseAnimal
     Coordenadas Location;
     char especie;
 
-public:
-    BaseAnimal();
-    BaseAnimal(const int &x, const int &y, const int &hp);
-    BaseAnimal(const int &x, const int &y);
-    ~BaseAnimal();
+protected:
+    int getInstante() const;
+    void setPeso(const int &num);
+    int getcampoVisao() const;
     void InitEspecie(const char &chara);
     void InitCampoVisao(const int &num);
     void InitPeso(const double &num);
+    virtual void InitLifeTick(const int &num);
+    BaseAnimal();
+    BaseAnimal(const int &x, const int &y, const int &hp);
+    BaseAnimal(const int &x, const int &y);
+    virtual void setHunger(const int &num);
+
+public:
+    ~BaseAnimal();
     int getX() const;
     int getY() const;
     int getID() const;
     void setPos(int &direction, int &num, const int &tamanho);
     char getEspecie() const;
-    int getcampoVisao() const;
     double getPeso() const;
-    void setPeso(const int &num);
     int getHP() const;
     void setHP(const int &num);
-    int getInstante() const;
     void incInstante();
 
-    virtual void InitLifeTick(const int &num);
     virtual void LifeTick();
     virtual void Move(const int &tamanho);
     virtual int getLifeTick() const;
     virtual int getHunger() const;
-    virtual void setHunger(const int &num);
     virtual void Hunger();
     virtual BaseAnimal* Child();
     virtual bool checkChild();
@@ -50,7 +52,7 @@ class AnimalH: virtual public BaseAnimal
 {
     int hunger;
 
-public:
+protected:
     AnimalH();
     ~AnimalH();
     int getHunger() const override;
@@ -62,7 +64,7 @@ class AnimalL: virtual public BaseAnimal
 {
     int lifeTick;
 
-public:
+protected:
     AnimalL();
     ~AnimalL();
     void InitLifeTick(const int &num) override;
@@ -72,7 +74,7 @@ public:
 
 class CompleteAnimal: public AnimalH, public AnimalL
 {
-public:
+protected:
     CompleteAnimal();
     ~CompleteAnimal();
 };
