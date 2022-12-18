@@ -3,6 +3,8 @@
 
 #include "Coordenadas.h"
 
+class Alimento;
+
 class BaseAnimal
 {
     int ID;
@@ -48,6 +50,7 @@ public:
     virtual void Move(const int &tamanho) = 0;
     virtual BaseAnimal* Child() = 0;
     virtual bool checkChild() = 0;
+    virtual Alimento* Die() = 0;
 };
 
 class AnimalH: virtual public BaseAnimal
@@ -97,6 +100,7 @@ public:
     void Hunger() override;
     Coelho* Child() override;
     bool checkChild() override;
+    Alimento* Die() override;
 };
 
 class Ovelha: public CompleteAnimal
@@ -110,6 +114,7 @@ public:
     void Hunger() override;
     Ovelha* Child() override;
     bool checkChild() override;
+    Alimento* Die() override;
 };
 
 class Lobo: public AnimalH
@@ -124,6 +129,7 @@ public:
     void Hunger() override;
     Lobo* Child() override;
     bool checkChild() override;
+    Alimento* Die() override;
 };
 
 class Canguru: public AnimalL
@@ -135,6 +141,7 @@ public:
     void Move(const int &tamanho) override;
     Canguru* Child() override;
     bool checkChild() override;
+    Alimento* Die() override;
 };
 
 #endif //POO_ANIMAL_H

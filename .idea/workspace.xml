@@ -20,17 +20,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8002510f-ec06-4c29-a2a8-fd6e4825d3a6" name="Changes" comment="wolf and canguru children, pure virtual functions">
+    <list default="true" id="8002510f-ec06-4c29-a2a8-fd6e4825d3a6" name="Changes" comment="incomplete &quot;Die&quot; creation due to lack of alimentos">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Headers/Animal.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Animal.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Headers/Animal.h" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Animal.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Headers/Functions.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Functions.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Headers/Reserva.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Reserva.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Animal.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Animal.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Functions.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Functions.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Reserva.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Reserva.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/POO.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/POO.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
     </list>

@@ -164,6 +164,7 @@ void Reserva::advanceInstant(const int &num)
         {
             if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0)
             {
+                (*ptr)->Die();
                 ptr = Animais.erase(ptr);
             }
             else

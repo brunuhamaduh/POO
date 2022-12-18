@@ -189,25 +189,28 @@ Coelho* Coelho::Child()
     std::mt19937 generator(random());
     std::uniform_int_distribution <> distr(1, 10);
     std::uniform_int_distribution <> sinal(1, 4);
-    int xRandom, yRandom, area = Reserva::getArea(), tentativa;
+    int xRandom, yRandom, area = Reserva::getArea(), tentativa = 0, sinalconta;
     while(true) //making sure the child doesn't spawn outside area if parent is on the edges
     {
-        if(sinal(generator) == 1)
+        tentativa++;
+        sinalconta = sinal(generator);
+
+        if(sinalconta == 1)
         {
             xRandom = distr(generator) + getX();
             yRandom = distr(generator) + getY();
         }
-        else if(sinal(generator) == 2)
+        else if(sinalconta == 2)
         {
             xRandom = distr(generator) - getX();
             yRandom = distr(generator) + getY();
         }
-        else if(sinal(generator) == 3)
+        else if(sinalconta == 3)
         {
             xRandom = distr(generator) + getX();
             yRandom = distr(generator) - getY();
         }
-        else if(sinal(generator) == 4)
+        else if(sinalconta == 4)
         {
             xRandom = distr(generator) - getX();
             yRandom = distr(generator) - getY();
@@ -226,6 +229,8 @@ Coelho* Coelho::Child()
     }
     return new Coelho(xRandom, yRandom);
 }
+
+Alimento* Coelho::Die() {return nullptr;} //rabbit doesn't spawn anything when it dies
 
 Ovelha::Ovelha()
 {
@@ -371,25 +376,28 @@ Ovelha* Ovelha::Child()
     std::mt19937 generator(random());
     std::uniform_int_distribution <> distr(1, 12);
     std::uniform_int_distribution <> sinal(1, 4);
-    int xRandom, yRandom, area = Reserva::getArea(), tentativa = 0;
+    int xRandom, yRandom, area = Reserva::getArea(), tentativa = 0, sinalconta;
     while(true) //making sure the child doesn't spawn outside area if parent is on the edges
     {
-        if(sinal(generator) == 1)
+        tentativa++;
+        sinalconta = sinal(generator);
+
+        if(sinalconta == 1)
         {
             xRandom = distr(generator) + getX();
             yRandom = distr(generator) + getY();
         }
-        else if(sinal(generator) == 2)
+        else if(sinalconta == 2)
         {
             xRandom = distr(generator) - getX();
             yRandom = distr(generator) + getY();
         }
-        else if(sinal(generator) == 3)
+        else if(sinalconta == 3)
         {
             xRandom = distr(generator) + getX();
             yRandom = distr(generator) - getY();
         }
-        else if(sinal(generator) == 4)
+        else if(sinalconta == 4)
         {
             xRandom = distr(generator) - getX();
             yRandom = distr(generator) - getY();
@@ -407,6 +415,13 @@ Ovelha* Ovelha::Child()
         }
     }
     return new Ovelha(xRandom, yRandom, getHP());
+}
+
+Alimento* Ovelha::Die()
+{
+    int x = getX();
+    int y = getY();
+    return new Alimento(50, x, y);
 }
 
 Lobo::Lobo()
@@ -561,6 +576,11 @@ Lobo* Lobo::Child()
     return new Lobo(xRandom, yRandom);
 }
 
+void Lobo::Die()
+{
+
+}
+
 Canguru::Canguru()
 {
     this->InitEspecie('G');
@@ -688,4 +708,9 @@ Canguru* Canguru::Child()
         }
     }
     return new Canguru(xRandom, yRandom);
+}
+
+void Canguru::Die()
+{
+
 }
