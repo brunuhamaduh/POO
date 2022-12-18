@@ -5,7 +5,9 @@
 class BaseAlimento
 {
     int ID;
-    int ValorNutritivo, Toxicidade;
+    int ValorNutritivo;
+    int Toxicidade;
+    int Instante;
     char letra;
     std::vector<std::string> Cheiro;
     Coordenadas Location;
@@ -27,6 +29,9 @@ public:
     void InitToxic(const int &num);
     void InitLetra(const char &letr);
     void InitCheiro(const std::vector<std::string> &cheiros);
+    virtual void Action() = 0;
+    int getInstante() const;
+    void incInstante();
 };
 
 class AlimentoTV: virtual public BaseAlimento
@@ -42,11 +47,13 @@ protected:
 
 class Relva: public AlimentoTV
 {
+    int instanteSpawn;
 public:
     Relva();
     Relva(const int &x, const int &y);
     ~Relva();
-    //Spawna outra relva aos 75% de TempodeVida (posicao aleatoria entre 4 e 8 de distancia. se a posicao ja tiver um alimento, nao acontece nada e tenta novamente no instante seguinte
+    void Action() override;
+    //Se a posicao ja tiver um alimento, nao acontece nada e tenta novamente no instante seguinte
 };
 
 class Cenoura: public BaseAlimento
@@ -55,22 +62,25 @@ public:
     Cenoura();
     Cenoura(const int &x, const int &y);
     ~Cenoura();
-    //A toxicidade aumenta 1 ponto a cada 10 instantes até ao maximo de 3
+    void Action() override;
 };
 
 class Corpo: public BaseAlimento
 {
+    int ogVN;
+public:
     Corpo(const int &x, const int &y, const int &oldcorpse);
     ~Corpo();
-    //A cada instante --valornutritivo e ++toxicidade. (Toxicidade pára de aumentar quando instantes = 2x valornutritivo inicial
+    void Action() override;
 };
 
 class Bife: public AlimentoTV
 {
+public:
     Bife();
     Bife(const int &x, const int &y);
     ~Bife();
-    //A cada instante --valornutritivo ate chegar a 0
+    void Action() override;
 };
 
 #endif //POO_ALIMENTO_H
