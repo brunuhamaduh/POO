@@ -6,16 +6,9 @@
 
 #include "Reserva.h"
 
-BaseAnimal::BaseAnimal() : Location(0, 0), ID(Reserva::getID()), campoVisao(2), Peso(5), especie('X'), HP(100), instante(0)
-{
-    std::random_device random;
-    std::mt19937 generator(random());
-    std::uniform_int_distribution <> distr(0, Reserva::getArea());
-    Location.setX(distr(generator));
-    Location.setY(distr(generator));
-}
-BaseAnimal::BaseAnimal(const int &x, const int &y, const int &hp) : Location(x,y), ID(Reserva::getID()), campoVisao(2), Peso(5), especie('X'), HP(hp), instante(0) {}
-BaseAnimal::BaseAnimal(const int &x, const int &y) : Location(x,y), ID(Reserva::getID()), campoVisao(2), Peso(5), especie('X'), HP(100), instante(0) {}
+BaseAnimal::BaseAnimal() : ID(Reserva::getID()), HP(100), instante(0), campoVisao(0), Peso(0.0), especie('X') {}
+BaseAnimal::BaseAnimal(const int &x, const int &y, const int &hp) : Location(x,y), ID(Reserva::getID()), HP(hp), instante(0), campoVisao(0), Peso(0.0), especie('X') {}
+BaseAnimal::BaseAnimal(const int &x, const int &y) : Location(x,y), ID(Reserva::getID()), HP(100), instante(0), campoVisao(0), Peso(0.0), especie('X') {}
 
 BaseAnimal::~BaseAnimal() = default;
 void BaseAnimal::InitEspecie(const char &chara) {especie = chara;}
@@ -419,9 +412,7 @@ Ovelha* Ovelha::Child()
 
 Alimento* Ovelha::Die()
 {
-    int x = getX();
-    int y = getY();
-    return new Alimento(50, x, y);
+    return nullptr;
 }
 
 Lobo::Lobo()

@@ -9,7 +9,7 @@ class Reserva
     static int tamanho;
     int instante;
     std::vector<BaseAnimal*> Animais;
-    std::vector<Alimento*> Alimentos;
+    std::vector<BaseAlimento*> Alimentos;
     std::vector<int> viewarea = {0, 87, 0, 24};
 
 public:

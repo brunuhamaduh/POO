@@ -7,6 +7,7 @@ class Coordenadas
 {
     int x, y;
 public:
+    Coordenadas();
     Coordenadas(const int &x, const int &y);
     ~Coordenadas();
     int getX() const;
