@@ -176,7 +176,7 @@ bool Coelho::checkChild()
     return false;
 }
 
-BaseAnimal* Coelho::Child() const
+Coelho* Coelho::Child() const
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -363,7 +363,7 @@ bool Ovelha::checkChild()
     return false;
 }
 
-BaseAnimal* Ovelha::Child() const
+Ovelha* Ovelha::Child() const
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -523,7 +523,7 @@ bool Lobo::checkChild()
     return false;
 }
 
-BaseAnimal* Lobo::Child() const
+Lobo* Lobo::Child() const
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -654,7 +654,7 @@ bool Canguru::checkChild()
     return false;
 }
 
-BaseAnimal* Canguru::Child() const
+Canguru* Canguru::Child() const
 {
     std::random_device random;
     std::mt19937 generator(random());

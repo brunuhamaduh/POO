@@ -147,17 +147,20 @@ void Reserva::newAnimal(const int &x, const int &y, const char &especie)
 
 void Reserva::advanceInstant(const int &num)
 {
+    std::vector<BaseAnimal*> Copy;
     for(int i = 0; i < num; i++)
     {
         instante++;
+        Copy = Animais;
         for (auto& it : Animais)
         {
             it->incInstante();
             it->Move(tamanho);
             it->LifeTick();
             it->Hunger();
-            if(it->checkChild()) {Animais.emplace_back(it->Child());}
+            if(it->checkChild()) {Copy.emplace_back(it->Child());}
         }
+        Animais = Copy;
 
         /*
         for (auto& it : Alimentos)
@@ -181,6 +184,7 @@ void Reserva::advanceInstant(const int &num)
             }
         }
 
+        /*
         auto ptr1 = Alimentos.begin();
         while(ptr1 != Alimentos.end())
         {
@@ -193,6 +197,7 @@ void Reserva::advanceInstant(const int &num)
                 ptr1++;
             }
         }
+         */
     }
 }
 

@@ -98,7 +98,7 @@ public:
     ~Coelho();
     void Move(const int &tamanho) override;
     void Hunger() override;
-    BaseAnimal* Child() const override;
+    Coelho* Child() const override;
     bool checkChild() override;
     //Alimento* Die() override;
 };
@@ -112,7 +112,7 @@ public:
     ~Ovelha();
     void Move(const int &tamanho) override;
     void Hunger() override;
-    BaseAnimal* Child() const override;
+    Ovelha* Child() const override;
     bool checkChild() override;
     //Alimento* Die() override;
 };
@@ -127,7 +127,7 @@ public:
     ~Lobo();
     void Move(const int &tamanho) override;
     void Hunger() override;
-    BaseAnimal* Child() const override;
+    Lobo* Child() const override;
     bool checkChild() override;
     //Alimento* Die() override;
 };
@@ -139,7 +139,7 @@ public:
     Canguru(const int &x, const int &y);
     ~Canguru();
     void Move(const int &tamanho) override;
-    BaseAnimal* Child() const override;
+    Canguru* Child() const override;
     bool checkChild() override;
     //Alimento* Die() override;
 };
