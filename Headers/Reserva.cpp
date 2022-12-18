@@ -178,6 +178,19 @@ void Reserva::advanceInstant(const int &num)
                 ptr++;
             }
         }
+
+        auto ptr1 = Alimentos.begin();
+        while(ptr1 != Alimentos.end())
+        {
+            if ((*ptr1)->getTV() == 0)
+            {
+                ptr1 = Alimentos.erase(ptr1);
+            }
+            else
+            {
+                ptr1++;
+            }
+        }
     }
 }
 
