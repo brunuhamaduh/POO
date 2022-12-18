@@ -20,6 +20,7 @@ void BaseAlimento::InitLetra(const char &letr) {letra = letr;}
 void BaseAlimento::InitCheiro(const std::vector<std::string> &cheiros) {Cheiro = cheiros;}
 int BaseAlimento::getInstante() const {return Instante;}
 void BaseAlimento::incInstante() {Instante++;}
+BaseAlimento* BaseAlimento::Child() {return nullptr;}
 
 AlimentoTV::AlimentoTV() : TempodeVida(30) {}
 AlimentoTV::AlimentoTV(const int &x, const int &y) : BaseAlimento{x, y}, TempodeVida(30) {}
@@ -80,54 +81,62 @@ Relva::Relva(const int &x, const int &y) : BaseAlimento{x,y}, AlimentoTV{x, y}
 }
 Relva::~Relva() = default;
 
-void Relva::Action()
+bool Relva::Action()
 {
     if(instanteSpawn == getInstante())
     {
-        std::random_device random;
-        std::mt19937 generator(random());
-        std::uniform_int_distribution <> distr(4, 8);
-        std::uniform_int_distribution <> sinal(1, 4);
-        int xRandom, yRandom, area = Reserva::getArea(), tentativa = 0, sinalconta;
+        return true;
+    }
+    return false;
+}
 
-        while(true) //making sure the child doesn't spawn outside area if parent is on the edges
+Relva* Relva::Child()
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_int_distribution <> distr(4, 8);
+    std::uniform_int_distribution <> sinal(1, 4);
+    int xRandom, yRandom, area = Reserva::getArea(), tentativa = 0, sinalconta;
+
+    while(true) //making sure the child doesn't spawn outside area if parent is on the edges
+    {
+        tentativa++;
+        sinalconta = sinal(generator);
+
+        if (sinalconta == 1)
         {
-            tentativa++;
-            sinalconta = sinal(generator);
+            xRandom = distr(generator) + getX();
+            yRandom = distr(generator) + getY();
+        }
+        else if (sinalconta == 2)
+        {
+            xRandom = distr(generator) - getX();
+            yRandom = distr(generator) + getY();
+        }
+        else if (sinalconta == 3)
+        {
+            xRandom = distr(generator) + getX();
+            yRandom = distr(generator) - getY();
+        }
+        else if (sinalconta == 4)
+        {
+            xRandom = distr(generator) - getX();
+            yRandom = distr(generator) - getY();
+        }
 
-            if(sinalconta == 1)
-            {
-                xRandom = distr(generator) + getX();
-                yRandom = distr(generator) + getY();
-            }
-            else if(sinalconta == 2)
-            {
-                xRandom = distr(generator) - getX();
-                yRandom = distr(generator) + getY();
-            }
-            else if(sinalconta == 3)
-            {
-                xRandom = distr(generator) + getX();
-                yRandom = distr(generator) - getY();
-            }
-            else if(sinalconta == 4)
-            {
-                xRandom = distr(generator) - getX();
-                yRandom = distr(generator) - getY();
-            }
-
-            if(xRandom > 0 && xRandom < area && yRandom > 0 && yRandom < area)
-            {
-                break;
-            }
-            else if(tentativa == 10) //in case it gets stuck in an infinite loop
-            {
-                xRandom = 0;
-                yRandom = 0;
-                break;
-            }
+        if (xRandom > 0 && xRandom < area && yRandom > 0 && yRandom < area)
+        {
+            break;
+        }
+        else if (tentativa == 10) //in case it gets stuck in an infinite loop
+        {
+            xRandom = 0;
+            yRandom = 0;
+            break;
         }
     }
+
+    return new Relva(xRandom, yRandom);
 }
 
 Cenoura::Cenoura()
@@ -147,7 +156,7 @@ Cenoura::Cenoura(const int &x, const int &y) : BaseAlimento{x,y}
 }
 Cenoura::~Cenoura() = default;
 
-void Cenoura::Action()
+bool Cenoura::Action()
 {
     if(getInstante() % 10 == 0)
     {
@@ -156,6 +165,7 @@ void Cenoura::Action()
             InitToxic(getToxic()+1);
         }
     }
+    return false;
 }
 
 Corpo::Corpo(const int &x, const int &y, const int &oldcorpse) : BaseAlimento{x,y}
@@ -168,13 +178,14 @@ Corpo::Corpo(const int &x, const int &y, const int &oldcorpse) : BaseAlimento{x,
 }
 Corpo::~Corpo() = default;
 
-void Corpo::Action()
+bool Corpo::Action()
 {
     InitVN(getVN() - 1);
     if(getInstante() < (2 * ogVN))
     {
         InitToxic(getToxic() + 1);
     }
+    return false;
 }
 
 Bife::Bife()
@@ -198,10 +209,11 @@ Bife::Bife(const int &x, const int &y) : BaseAlimento{x,y}, AlimentoTV{x, y}
 }
 Bife::~Bife() = default;
 
-void Bife::Action()
+bool Bife::Action()
 {
     if(getVN() > 0)
     {
         InitVN(getVN() - 1);
     }
+    return false;
 }

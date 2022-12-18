@@ -29,7 +29,8 @@ public:
     void InitToxic(const int &num);
     void InitLetra(const char &letr);
     void InitCheiro(const std::vector<std::string> &cheiros);
-    virtual void Action() = 0;
+    virtual bool Action() = 0;
+    virtual BaseAlimento* Child();
     int getInstante() const;
     void incInstante();
 };
@@ -52,7 +53,8 @@ public:
     Relva();
     Relva(const int &x, const int &y);
     ~Relva();
-    void Action() override;
+    bool Action() override;
+    Relva* Child() override;
     //Se a posicao ja tiver um alimento, nao acontece nada e tenta novamente no instante seguinte
 };
 
@@ -62,7 +64,7 @@ public:
     Cenoura();
     Cenoura(const int &x, const int &y);
     ~Cenoura();
-    void Action() override;
+    bool Action() override;
 };
 
 class Corpo: public BaseAlimento
@@ -71,7 +73,7 @@ class Corpo: public BaseAlimento
 public:
     Corpo(const int &x, const int &y, const int &oldcorpse);
     ~Corpo();
-    void Action() override;
+    bool Action() override;
 };
 
 class Bife: public AlimentoTV
@@ -80,7 +82,7 @@ public:
     Bife();
     Bife(const int &x, const int &y);
     ~Bife();
-    void Action() override;
+    bool Action() override;
 };
 
 #endif //POO_ALIMENTO_H
