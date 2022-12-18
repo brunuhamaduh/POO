@@ -57,6 +57,7 @@ class AnimalH: virtual public BaseAnimal
 protected:
     AnimalH();
     AnimalH(const int &x, const int &y);
+    AnimalH(const int &x, const int &y, const int &hp);
     ~AnimalH();
     int getHunger() const override;
     void setHunger(const int &num) override;
@@ -70,6 +71,7 @@ class AnimalL: virtual public BaseAnimal
 protected:
     AnimalL();
     AnimalL(const int &x, const int &y);
+    AnimalL(const int &x, const int &y, const int &hp);
     ~AnimalL();
     void InitLifeTick(const int &num) override;
     void LifeTick() override;

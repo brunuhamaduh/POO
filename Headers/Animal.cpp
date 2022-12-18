@@ -42,23 +42,25 @@ void BaseAnimal::setHunger(const int &num) {}
 void BaseAnimal::Hunger() {}
 
 AnimalH::AnimalH() : hunger(0) {}
-AnimalH::AnimalH(const int &x, const int &y) : hunger(0) {}
+AnimalH::AnimalH(const int &x, const int &y) : hunger(0), BaseAnimal{x,y} {}
+AnimalH::AnimalH(const int &x, const int &y, const int &hp) : hunger(0), BaseAnimal{x,y, hp} {}
 AnimalH::~AnimalH() = default;
 int AnimalH::getHunger() const {return hunger;}
 void AnimalH::Hunger() {}
 void AnimalH::setHunger(const int &num) {hunger = hunger + num;}
 
 AnimalL::AnimalL() : lifeTick(50) {}
-AnimalL::AnimalL(const int &x, const int &y) : lifeTick(50) {}
+AnimalL::AnimalL(const int &x, const int &y) : lifeTick(50), BaseAnimal{x,y} {}
+AnimalL::AnimalL(const int &x, const int &y, const int &hp) : lifeTick(50), BaseAnimal{x,y,hp} {}
 AnimalL::~AnimalL() = default;
 void AnimalL::InitLifeTick(const int &num) {lifeTick = num;}
 void AnimalL::LifeTick() {lifeTick--;}
 int AnimalL::getLifeTick() const {return lifeTick;}
 
 CompleteAnimal::CompleteAnimal() {}
+CompleteAnimal::CompleteAnimal(const int &x, const int &y) : BaseAnimal{x, y}, AnimalH{x, y}, AnimalL{x, y} {}
+CompleteAnimal::CompleteAnimal(const int &x, const int &y, const int &hp) : BaseAnimal{x, y, hp}, AnimalH{x, y, hp}, AnimalL{x, y, hp} {}
 CompleteAnimal::~CompleteAnimal() = default;
-CompleteAnimal::CompleteAnimal(const int &x, const int &y) : BaseAnimal(x, y) {}
-CompleteAnimal::CompleteAnimal(const int &x, const int &y, const int &hp) : BaseAnimal(x, y, hp) {}
 
 Coelho::Coelho()
 {
@@ -92,7 +94,7 @@ Coelho::Coelho()
     constantes.close();
 }
 
-Coelho::Coelho(const int &x, const int &y) : CompleteAnimal(x, y)
+Coelho::Coelho(const int &x, const int &y) : BaseAnimal{x,y}, CompleteAnimal{x, y}
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -257,7 +259,7 @@ Ovelha::Ovelha()
     constantes.close();
 }
 
-Ovelha::Ovelha(const int &x, const int &y) : CompleteAnimal{x, y}
+Ovelha::Ovelha(const int &x, const int &y) : BaseAnimal{x,y}, CompleteAnimal{x, y}
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -289,7 +291,7 @@ Ovelha::Ovelha(const int &x, const int &y) : CompleteAnimal{x, y}
     constantes.close();
 }
 
-Ovelha::Ovelha(const int &x, const int &y, const int &hp) : CompleteAnimal{x, y, hp}
+Ovelha::Ovelha(const int &x, const int &y, const int &hp) : BaseAnimal{x, y, hp}, CompleteAnimal{x, y, hp}
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -439,7 +441,7 @@ Lobo::Lobo()
     constantes.close();
 }
 
-Lobo::Lobo(const int &x, const int &y) : AnimalH(x,y)
+Lobo::Lobo(const int &x, const int &y) : BaseAnimal{x,y}, AnimalH{x, y}
 {
     this->InitEspecie('L');
     this->InitCampoVisao(5);
@@ -587,7 +589,7 @@ Canguru::Canguru()
     constantes.close();
 }
 
-Canguru::Canguru(const int &x, const int &y) : AnimalL(x,y)
+Canguru::Canguru(const int &x, const int &y) : BaseAnimal{x,y}, AnimalL{x, y}
 {
     this->InitEspecie('G');
     this->InitCampoVisao(7);

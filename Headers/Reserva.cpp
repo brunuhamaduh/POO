@@ -129,7 +129,7 @@ void Reserva::newAnimal(const int &x, const int &y, const char &especie)
 {
     if(especie == 'c')
     {
-        Animais.emplace_back(new Coelho(x, y));
+        Animais.emplace_back(new Coelho(x,y));
     }
     else if(especie == 'o')
     {
