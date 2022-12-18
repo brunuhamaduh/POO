@@ -21,7 +21,6 @@ BaseAnimal::~BaseAnimal() = default;
 void BaseAnimal::InitEspecie(const char &chara) {especie = chara;}
 void BaseAnimal::InitCampoVisao(const int &num) {campoVisao = num;}
 void BaseAnimal::InitPeso(const double &num) {Peso = num;}
-void BaseAnimal::InitLifeTick(const int &num) {}
 int BaseAnimal::getX() const {return Location.getX();}
 int BaseAnimal::getY() const {return Location.getY();}
 int BaseAnimal::getID() const {return ID;}
@@ -31,25 +30,26 @@ int BaseAnimal::getcampoVisao() const {return campoVisao;}
 double BaseAnimal::getPeso() const {return Peso;}
 int BaseAnimal::getHP() const {return HP;}
 void BaseAnimal::setHP(const int &num) {HP = num;}
-int BaseAnimal::getHunger() const {return -1;}
-void BaseAnimal::LifeTick() {}
-void BaseAnimal::Move(const int &tamanho) {}
-int BaseAnimal::getLifeTick() const {return -1;}
-void BaseAnimal::Hunger() {}
-void BaseAnimal::setHunger(const int &num) {}
 void BaseAnimal::setPeso(const int &num) {Peso = num;}
 int BaseAnimal::getInstante() const {return instante;}
 void BaseAnimal::incInstante() {instante++;}
-BaseAnimal* BaseAnimal::Child() {return new BaseAnimal(*this);}
-bool BaseAnimal::checkChild() {return false;}
+//virtual functions
+void BaseAnimal::InitLifeTick(const int &num) {}
+int BaseAnimal::getLifeTick() const {return -1;}
+void BaseAnimal::LifeTick() {}
+int BaseAnimal::getHunger() const {return -1;}
+void BaseAnimal::setHunger(const int &num) {}
+void BaseAnimal::Hunger() {}
 
 AnimalH::AnimalH() : hunger(0) {}
+AnimalH::AnimalH(const int &x, const int &y) : hunger(0) {}
 AnimalH::~AnimalH() = default;
 int AnimalH::getHunger() const {return hunger;}
 void AnimalH::Hunger() {}
 void AnimalH::setHunger(const int &num) {hunger = hunger + num;}
 
 AnimalL::AnimalL() : lifeTick(50) {}
+AnimalL::AnimalL(const int &x, const int &y) : lifeTick(50) {}
 AnimalL::~AnimalL() = default;
 void AnimalL::InitLifeTick(const int &num) {lifeTick = num;}
 void AnimalL::LifeTick() {lifeTick--;}
@@ -57,6 +57,8 @@ int AnimalL::getLifeTick() const {return lifeTick;}
 
 CompleteAnimal::CompleteAnimal() {}
 CompleteAnimal::~CompleteAnimal() = default;
+CompleteAnimal::CompleteAnimal(const int &x, const int &y) : BaseAnimal(x, y) {}
+CompleteAnimal::CompleteAnimal(const int &x, const int &y, const int &hp) : BaseAnimal(x, y, hp) {}
 
 Coelho::Coelho()
 {
@@ -90,7 +92,7 @@ Coelho::Coelho()
     constantes.close();
 }
 
-Coelho::Coelho(const int &x, const int &y) : BaseAnimal(x, y)
+Coelho::Coelho(const int &x, const int &y) : CompleteAnimal(x, y)
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -185,7 +187,7 @@ Coelho* Coelho::Child()
     std::mt19937 generator(random());
     std::uniform_int_distribution <> distr(1, 10);
     std::uniform_int_distribution <> sinal(1, 4);
-    int xRandom, yRandom, area = Reserva::getArea();
+    int xRandom, yRandom, area = Reserva::getArea(), tentativa;
     while(true) //making sure the child doesn't spawn outside area if parent is on the edges
     {
         if(sinal(generator) == 1)
@@ -211,6 +213,12 @@ Coelho* Coelho::Child()
 
         if(xRandom > 0 && xRandom < area && yRandom > 0 && yRandom < area)
         {
+            break;
+        }
+        else if(tentativa == 10) //in case it gets stuck in an infinite loop
+        {
+            xRandom = 0;
+            yRandom = 0;
             break;
         }
     }
@@ -249,7 +257,7 @@ Ovelha::Ovelha()
     constantes.close();
 }
 
-Ovelha::Ovelha(const int &x, const int &y) : BaseAnimal{x, y}
+Ovelha::Ovelha(const int &x, const int &y) : CompleteAnimal{x, y}
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -281,7 +289,7 @@ Ovelha::Ovelha(const int &x, const int &y) : BaseAnimal{x, y}
     constantes.close();
 }
 
-Ovelha::Ovelha(const int &x, const int &y, const int &hp) : BaseAnimal{x, y, hp}
+Ovelha::Ovelha(const int &x, const int &y, const int &hp) : CompleteAnimal{x, y, hp}
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -361,7 +369,7 @@ Ovelha* Ovelha::Child()
     std::mt19937 generator(random());
     std::uniform_int_distribution <> distr(1, 12);
     std::uniform_int_distribution <> sinal(1, 4);
-    int xRandom, yRandom, area = Reserva::getArea();
+    int xRandom, yRandom, area = Reserva::getArea(), tentativa = 0;
     while(true) //making sure the child doesn't spawn outside area if parent is on the edges
     {
         if(sinal(generator) == 1)
@@ -389,6 +397,12 @@ Ovelha* Ovelha::Child()
         {
             break;
         }
+        else if(tentativa == 10) //in case it gets stuck in an infinite loop
+        {
+            xRandom = 0;
+            yRandom = 0;
+            break;
+        }
     }
     return new Ovelha(xRandom, yRandom, getHP());
 }
@@ -412,12 +426,20 @@ Lobo::Lobo()
             {
                 setHP(num);
             }
+            else if(variable == "VLobo")
+            {
+                std::random_device random;
+                std::mt19937 generator(random());
+                VLobo = num;
+                std::uniform_int_distribution <> spawnChild(5, VLobo);
+                spawn = spawnChild(generator);
+            }
         }
     }
     constantes.close();
 }
 
-Lobo::Lobo(const int &x, const int &y) : BaseAnimal(x,y)
+Lobo::Lobo(const int &x, const int &y) : AnimalH(x,y)
 {
     this->InitEspecie('L');
     this->InitCampoVisao(5);
@@ -435,6 +457,14 @@ Lobo::Lobo(const int &x, const int &y) : BaseAnimal(x,y)
             if(variable == "SLobo")
             {
                 setHP(num);
+            }
+            else if(variable == "VLobo")
+            {
+                std::random_device random;
+                std::mt19937 generator(random());
+                VLobo = num;
+                std::uniform_int_distribution <> spawnChild(5, VLobo);
+                spawn = spawnChild(generator);
             }
         }
     }
@@ -473,6 +503,62 @@ void Lobo::Hunger()
     setHunger(2);
 }
 
+bool Lobo::checkChild()
+{
+    if(getInstante() == spawn)
+    {
+        return true;
+    }
+    return false;
+}
+
+Lobo* Lobo::Child()
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_int_distribution <> distr(1, 15);
+    std::uniform_int_distribution <> sinal(1, 4);
+    int xRandom, yRandom, area = Reserva::getArea(), sinalconta, tentativa = 0;
+    while(true) //making sure the child doesn't spawn outside area if parent is on the edges
+    {
+        tentativa++;
+        sinalconta = sinal(generator);
+
+        if(sinalconta == 1)
+        {
+            xRandom = distr(generator) + getX();
+            yRandom = distr(generator) + getY();
+        }
+        else if(sinalconta == 2)
+        {
+            xRandom = distr(generator) - getX();
+            yRandom = distr(generator) + getY();
+        }
+        else if(sinalconta == 3)
+        {
+            xRandom = distr(generator) + getX();
+            yRandom = distr(generator) - getY();
+        }
+        else if(sinalconta == 4)
+        {
+            xRandom = distr(generator) - getX();
+            yRandom = distr(generator) - getY();
+        }
+
+        if(xRandom > 0 && xRandom < area && yRandom > 0 && yRandom < area)
+        {
+            break;
+        }
+        else if(tentativa == 10) //in case it gets stuck in an infinite loop
+        {
+            xRandom = 0;
+            yRandom = 0;
+            break;
+        }
+    }
+    return new Lobo(xRandom, yRandom);
+}
+
 Canguru::Canguru()
 {
     this->InitEspecie('G');
@@ -501,7 +587,7 @@ Canguru::Canguru()
     constantes.close();
 }
 
-Canguru::Canguru(const int &x, const int &y) : BaseAnimal(x,y)
+Canguru::Canguru(const int &x, const int &y) : AnimalL(x,y)
 {
     this->InitEspecie('G');
     this->InitCampoVisao(7);
@@ -544,4 +630,60 @@ void Canguru::Move(const int &tamanho)
     {
         setPeso(20);
     }
+}
+
+bool Canguru::checkChild()
+{
+    if(getInstante() % 30 == 0)
+    {
+        return true;
+    }
+    return false;
+}
+
+Canguru* Canguru::Child()
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_int_distribution <> distr(1, 3);
+    std::uniform_int_distribution <> sinal(1, 4);
+    int xRandom, yRandom, area = Reserva::getArea(), sinalconta, tentativa = 0;
+    while(true) //making sure the child doesn't spawn outside area if parent is on the edges
+    {
+        tentativa++;
+        sinalconta = sinal(generator);
+
+        if(sinalconta == 1)
+        {
+            xRandom = distr(generator) + getX();
+            yRandom = distr(generator) + getY();
+        }
+        else if(sinalconta == 2)
+        {
+            xRandom = distr(generator) - getX();
+            yRandom = distr(generator) + getY();
+        }
+        else if(sinalconta == 3)
+        {
+            xRandom = distr(generator) + getX();
+            yRandom = distr(generator) - getY();
+        }
+        else if(sinalconta == 4)
+        {
+            xRandom = distr(generator) - getX();
+            yRandom = distr(generator) - getY();
+        }
+
+        if(xRandom > 0 && xRandom < area && yRandom > 0 && yRandom < area)
+        {
+            break;
+        }
+        else if(tentativa == 10) //in case it gets stuck in an infinite loop
+        {
+            xRandom = 0;
+            yRandom = 0;
+            break;
+        }
+    }
+    return new Canguru(xRandom, yRandom);
 }

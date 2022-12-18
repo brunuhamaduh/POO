@@ -20,9 +20,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8002510f-ec06-4c29-a2a8-fd6e4825d3a6" name="Changes" comment="way better constructors">
+    <list default="true" id="8002510f-ec06-4c29-a2a8-fd6e4825d3a6" name="Changes" comment="some functions went from public to protected">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Headers/Animal.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Animal.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Headers/Animal.h" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Animal.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/POO - 2223 - Enunciado Trabalho Pratico v.1.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/POO - 2223 - Enunciado Trabalho Pratico v.1.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Animal.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Animal.cpp.obj" afterDir="false" />
@@ -118,7 +120,8 @@
       <workItem from="1671208239492" duration="3175000" />
       <workItem from="1671290047679" duration="12795000" />
       <workItem from="1671306513945" duration="2000" />
-      <workItem from="1671317583481" duration="647000" />
+      <workItem from="1671317583481" duration="2131000" />
+      <workItem from="1671356152906" duration="3838000" />
     </task>
     <task id="LOCAL-00001" summary="changed file location">
       <created>1670689369970</created>
@@ -190,7 +193,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671303421125</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="some functions went from public to protected">
+      <created>1671318370174</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1671318370174</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -221,7 +231,8 @@
     <MESSAGE value="Coelho children" />
     <MESSAGE value="Ovelha children" />
     <MESSAGE value="way better constructors" />
-    <option name="LAST_COMMIT_MESSAGE" value="way better constructors" />
+    <MESSAGE value="some functions went from public to protected" />
+    <option name="LAST_COMMIT_MESSAGE" value="some functions went from public to protected" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

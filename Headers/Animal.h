@@ -21,11 +21,9 @@ protected:
     void InitEspecie(const char &chara);
     void InitCampoVisao(const int &num);
     void InitPeso(const double &num);
-    virtual void InitLifeTick(const int &num);
     BaseAnimal();
     BaseAnimal(const int &x, const int &y, const int &hp);
     BaseAnimal(const int &x, const int &y);
-    virtual void setHunger(const int &num);
 
 public:
     ~BaseAnimal();
@@ -38,14 +36,18 @@ public:
     int getHP() const;
     void setHP(const int &num);
     void incInstante();
-
-    virtual void LifeTick();
-    virtual void Move(const int &tamanho);
+    //wolf doesn't have this
+    virtual void InitLifeTick(const int &num);
     virtual int getLifeTick() const;
+    virtual void LifeTick();
+    //canguru doesn't have this
     virtual int getHunger() const;
+    virtual void setHunger(const int &num);
     virtual void Hunger();
-    virtual BaseAnimal* Child();
-    virtual bool checkChild();
+    //all classes have it
+    virtual void Move(const int &tamanho) = 0;
+    virtual BaseAnimal* Child() = 0;
+    virtual bool checkChild() = 0;
 };
 
 class AnimalH: virtual public BaseAnimal
@@ -54,6 +56,7 @@ class AnimalH: virtual public BaseAnimal
 
 protected:
     AnimalH();
+    AnimalH(const int &x, const int &y);
     ~AnimalH();
     int getHunger() const override;
     void setHunger(const int &num) override;
@@ -66,6 +69,7 @@ class AnimalL: virtual public BaseAnimal
 
 protected:
     AnimalL();
+    AnimalL(const int &x, const int &y);
     ~AnimalL();
     void InitLifeTick(const int &num) override;
     void LifeTick() override;
@@ -76,6 +80,8 @@ class CompleteAnimal: public AnimalH, public AnimalL
 {
 protected:
     CompleteAnimal();
+    CompleteAnimal(const int &x, const int &y);
+    CompleteAnimal(const int &x, const int &y, const int &hp);
     ~CompleteAnimal();
 };
 
@@ -106,14 +112,16 @@ public:
 
 class Lobo: public AnimalH
 {
+    int VLobo;
+    int spawn;
 public:
     Lobo();
     Lobo(const int &x, const int &y);
     ~Lobo();
     void Move(const int &tamanho) override;
     void Hunger() override;
-    //Lobo* Child() override;
-    //bool checkChild() override;
+    Lobo* Child() override;
+    bool checkChild() override;
 };
 
 class Canguru: public AnimalL
@@ -123,8 +131,8 @@ public:
     Canguru(const int &x, const int &y);
     ~Canguru();
     void Move(const int &tamanho) override;
-    //Canguru* Child() override;
-    //bool checkChild() override;
+    Canguru* Child() override;
+    bool checkChild() override;
 };
 
 #endif //POO_ANIMAL_H
