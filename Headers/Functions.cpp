@@ -178,7 +178,14 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
         }
         else if(listComando.at(0) == "n")
         {
-            principal.advanceInstant();
+            try
+            {
+                principal.advanceInstant(stoi(listComando.at(1)));
+            }
+            catch(...)
+            {
+                principal.advanceInstant();
+            }
         }
     }
 }

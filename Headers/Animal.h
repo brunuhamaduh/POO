@@ -48,9 +48,9 @@ public:
     virtual void Hunger();
     //all classes have it
     virtual void Move(const int &tamanho) = 0;
-    virtual BaseAnimal* Child() = 0;
+    virtual BaseAnimal* Child() const = 0;
     virtual bool checkChild() = 0;
-    virtual Alimento* Die() = 0;
+    //virtual Alimento* Die() = 0;
 };
 
 class AnimalH: virtual public BaseAnimal
@@ -98,9 +98,9 @@ public:
     ~Coelho();
     void Move(const int &tamanho) override;
     void Hunger() override;
-    Coelho* Child() override;
+    BaseAnimal* Child() const override;
     bool checkChild() override;
-    Alimento* Die() override;
+    //Alimento* Die() override;
 };
 
 class Ovelha: public CompleteAnimal
@@ -112,9 +112,9 @@ public:
     ~Ovelha();
     void Move(const int &tamanho) override;
     void Hunger() override;
-    Ovelha* Child() override;
+    BaseAnimal* Child() const override;
     bool checkChild() override;
-    Alimento* Die() override;
+    //Alimento* Die() override;
 };
 
 class Lobo: public AnimalH
@@ -127,9 +127,9 @@ public:
     ~Lobo();
     void Move(const int &tamanho) override;
     void Hunger() override;
-    Lobo* Child() override;
+    BaseAnimal* Child() const override;
     bool checkChild() override;
-    Alimento* Die() override;
+    //Alimento* Die() override;
 };
 
 class Canguru: public AnimalL
@@ -139,9 +139,9 @@ public:
     Canguru(const int &x, const int &y);
     ~Canguru();
     void Move(const int &tamanho) override;
-    Canguru* Child() override;
+    BaseAnimal* Child() const override;
     bool checkChild() override;
-    Alimento* Die() override;
+    //Alimento* Die() override;
 };
 
 #endif //POO_ANIMAL_H

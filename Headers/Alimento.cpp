@@ -51,7 +51,7 @@ Relva::Relva()
         }
     }
     constantes.close();
-    instanteSpawn = round(getTV() * 0.75);
+    instanteSpawn = 4;
 }
 
 Relva::Relva(const int &x, const int &y) : BaseAlimento{x,y}, AlimentoTV{x, y}

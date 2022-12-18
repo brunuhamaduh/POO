@@ -159,18 +159,20 @@ void Reserva::advanceInstant(const int &num)
             if(it->checkChild()) {Animais.emplace_back(it->Child());}
         }
 
+        /*
         for (auto& it : Alimentos)
         {
             it->incInstante();
             if(it->Action()) {Alimentos.emplace_back(it->Child());}
         }
+        */
 
         auto ptr = Animais.begin();
         while(ptr != Animais.end())
         {
             if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0)
             {
-                (*ptr)->Die();
+                //(*ptr)->Die();
                 ptr = Animais.erase(ptr);
             }
             else

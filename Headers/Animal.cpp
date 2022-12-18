@@ -176,7 +176,7 @@ bool Coelho::checkChild()
     return false;
 }
 
-Coelho* Coelho::Child()
+BaseAnimal* Coelho::Child() const
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -223,7 +223,7 @@ Coelho* Coelho::Child()
     return new Coelho(xRandom, yRandom);
 }
 
-Alimento* Coelho::Die() {return nullptr;} //rabbit doesn't spawn anything when it dies
+//Alimento* Coelho::Die() {return nullptr;} //rabbit doesn't spawn anything when it dies
 
 Ovelha::Ovelha()
 {
@@ -363,7 +363,7 @@ bool Ovelha::checkChild()
     return false;
 }
 
-Ovelha* Ovelha::Child()
+BaseAnimal* Ovelha::Child() const
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -410,10 +410,7 @@ Ovelha* Ovelha::Child()
     return new Ovelha(xRandom, yRandom, getHP());
 }
 
-Alimento* Ovelha::Die()
-{
-    return nullptr;
-}
+//Alimento* Ovelha::Die(){return nullptr;}
 
 Lobo::Lobo()
 {
@@ -508,6 +505,12 @@ void Lobo::Hunger()
     {
         setHP(getHP() - 2);
     }
+
+    if(getHP() == -1)
+    {
+        setHP(0);
+    }
+
     setHunger(2);
 }
 
@@ -520,7 +523,7 @@ bool Lobo::checkChild()
     return false;
 }
 
-Lobo* Lobo::Child()
+BaseAnimal* Lobo::Child() const
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -567,10 +570,7 @@ Lobo* Lobo::Child()
     return new Lobo(xRandom, yRandom);
 }
 
-Alimento* Lobo::Die()
-{
-    return nullptr;
-}
+//Alimento* Lobo::Die(){return nullptr;}
 
 Canguru::Canguru()
 {
@@ -654,7 +654,7 @@ bool Canguru::checkChild()
     return false;
 }
 
-Canguru* Canguru::Child()
+BaseAnimal* Canguru::Child() const
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -701,7 +701,5 @@ Canguru* Canguru::Child()
     return new Canguru(xRandom, yRandom);
 }
 
-Alimento* Canguru::Die()
-{
-    return nullptr;
-}
+
+//Alimento* Canguru::Die(){return nullptr;}
