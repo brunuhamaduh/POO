@@ -576,9 +576,9 @@ Lobo* Lobo::Child()
     return new Lobo(xRandom, yRandom);
 }
 
-void Lobo::Die()
+Alimento* Lobo::Die()
 {
-
+    return nullptr;
 }
 
 Canguru::Canguru()
@@ -710,7 +710,7 @@ Canguru* Canguru::Child()
     return new Canguru(xRandom, yRandom);
 }
 
-void Canguru::Die()
+Alimento* Canguru::Die()
 {
-
+    return nullptr;
 }
