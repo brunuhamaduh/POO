@@ -444,7 +444,7 @@ Lobo::Lobo()
     constantes.close();
 }
 
-Lobo::Lobo(const int &x, const int &y) : BaseAnimal{x,y}, AnimalH{x, y}
+Lobo::Lobo(const int &x, const int &y) : BaseAnimal{x,y}, AnimalH{x, y}, VLobo(50)
 {
     this->InitEspecie('L');
     this->InitCampoVisao(5);
@@ -465,15 +465,15 @@ Lobo::Lobo(const int &x, const int &y) : BaseAnimal{x,y}, AnimalH{x, y}
             }
             else if(variable == "VLobo")
             {
-                std::random_device random;
-                std::mt19937 generator(random());
                 VLobo = num;
-                std::uniform_int_distribution <> spawnChild(5, VLobo);
-                spawn = spawnChild(generator);
             }
         }
     }
     constantes.close();
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_int_distribution <> spawnChild(5, VLobo);
+    spawn = spawnChild(generator);
 }
 
 Lobo::~Lobo() = default;

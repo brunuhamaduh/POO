@@ -278,15 +278,14 @@ void mostra(Reserva &principal, term::Window &reserva, term::Window &comando, te
     processa.clear();
     processa.str("");
 
-    /*
-    processa.str(principal.getAlimentosPos(viewarea[0],viewarea[1],viewarea[2],viewarea[3]));
 
-    while(processa >> ID >> VN >> Toxic >> TV >> X >> Y)
+    processa.str(principal.displayAlimentos());
+
+    while(processa >> X >> Y >> especie)
     {
         reserva << term::move_to(X - viewarea.at(0), Y - viewarea.at(2));
-        reserva << "X";
+        reserva << especie;
     }
-    */
 
     comando << "Comando: ";
     info << "Instante: " << principal.getInstante() << "\n";
@@ -365,11 +364,15 @@ void startGame(term::Window &comando, std:: string &input, Reserva &principal)
         principal.setSize(200);
     }
     */
-    principal.setSize(50); //APENAS PARA TESTE
-    principal.newAnimal(5, 5, 'c');
-    principal.newAnimal(10, 10, 'o');
-    principal.newAnimal(15, 15, 'l');
-    principal.newAnimal(20, 20, 'g');
+    //principal.setSize(50); //APENAS PARA TESTE
+    //principal.newAnimal(5, 5, 'c');
+    //principal.newAnimal(10, 10, 'o');
+    //principal.newAnimal(15, 15, 'l');
+    //principal.newAnimal(20, 20, 'g');
+    principal.newAlimento(5, 5, 'r');
+    principal.newAlimento(10, 10, 't');
+    principal.newAlimento(15, 15, 'p');
+    principal.newAlimento(20, 20, 'b');
 }
 
 void loopGame(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string input, std::vector<std::string> &listComando)

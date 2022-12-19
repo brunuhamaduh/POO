@@ -81,9 +81,18 @@ std::string Reserva::getAnimais() const
 std::string Reserva::getAlimentos() const
 {
     std::ostringstream output;
+    output << "ID X Y VN TX TV" << std::endl;
     for (auto& it : Alimentos)
     {
-        output << it->getID() << " " << it->getVN() << " " << it->getToxic() << " " << it->getTV() << std::endl;
+        output << it->getID() << " " << it->getX() << " " << it->getY() << " " << it->getVN() << " " << it->getToxic() << " ";
+        if(it->getTV() == -1)
+        {
+            output << "-" << std::endl;
+        }
+        else
+        {
+            output << it->getTV() << std::endl;
+        }
     }
     return output.str();
 }
@@ -97,6 +106,20 @@ std::string Reserva::displayAnimals() const
         if(it->getX() >= viewarea[0] && it->getX() <= viewarea[1] && it->getY() >= viewarea[2] && it->getY() <= viewarea[3])
         {
             output << it->getX() << " " << it->getY() << " " << it->getEspecie() << std::endl;
+        }
+    }
+    return output.str();
+}
+
+std::string Reserva::displayAlimentos() const
+{
+    std::ostringstream output;
+
+    for (auto& it : Alimentos)
+    {
+        if(it->getX() >= viewarea[0] && it->getX() <= viewarea[1] && it->getY() >= viewarea[2] && it->getY() <= viewarea[3])
+        {
+            output << it->getX() << " " << it->getY() << " " << it->getLetra() << std::endl;
         }
     }
     return output.str();
@@ -145,13 +168,36 @@ void Reserva::newAnimal(const int &x, const int &y, const char &especie)
     }
 }
 
+void Reserva::newAlimento(const int &x, const int &y, const char &tipo)
+{
+    if(tipo == 'r')
+    {
+        Alimentos.emplace_back(new Relva(x,y));
+    }
+    else if(tipo == 't')
+    {
+        Alimentos.emplace_back(new Cenoura(x, y));
+    }
+    else if(tipo == 'p')
+    {
+        Alimentos.emplace_back(new Corpo(x, y, 5));
+    }
+    else if(tipo == 'b')
+    {
+        Alimentos.emplace_back(new Bife(x, y));
+    }
+}
+
 void Reserva::advanceInstant(const int &num)
 {
     std::vector<BaseAnimal*> Copy;
+    std::vector<BaseAlimento*> Copy2;
     for(int i = 0; i < num; i++)
     {
         instante++;
         Copy = Animais;
+        Copy2 = Alimentos;
+
         for (auto& it : Animais)
         {
             it->incInstante();
@@ -160,15 +206,16 @@ void Reserva::advanceInstant(const int &num)
             it->Hunger();
             if(it->checkChild()) {Copy.emplace_back(it->Child());}
         }
+
         Animais = Copy;
 
-        /*
         for (auto& it : Alimentos)
         {
             it->incInstante();
-            if(it->Action()) {Alimentos.emplace_back(it->Child());}
+            if(it->Action()) {Copy2.emplace_back(it->Child());}
         }
-        */
+
+        Alimentos = Copy2;
 
         auto ptr = Animais.begin();
         while(ptr != Animais.end())
@@ -184,7 +231,6 @@ void Reserva::advanceInstant(const int &num)
             }
         }
 
-        /*
         auto ptr1 = Alimentos.begin();
         while(ptr1 != Alimentos.end())
         {
@@ -197,11 +243,9 @@ void Reserva::advanceInstant(const int &num)
                 ptr1++;
             }
         }
-         */
     }
 }
 
-void Reserva::newAlimento(const int &id, const int &x, const int &y) {}
 int Reserva::getID() {return ++ID;}
 int Reserva::ID = 0;
 int Reserva::tamanho = 200;

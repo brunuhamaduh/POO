@@ -22,12 +22,13 @@ public:
     std::string getAnimais() const;
     std::string getAlimentos() const;
     std::string displayAnimals() const;
+    std::string displayAlimentos() const;
     void setSize(const int &num);
     int getInstante() const;
     size_t countAnimal() const;
     size_t countAlimento() const;
     void newAnimal(const int &x, const int &y, const char &especie);
-    void newAlimento(const int &id, const int &x, const int &y);
+    void newAlimento(const int &x, const int &y, const char &tipo);
     void change_VArea(const int &index, bool op);
     void advanceInstant(const int &num = 1);
     static int getID();

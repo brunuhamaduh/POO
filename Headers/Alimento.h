@@ -23,7 +23,8 @@ public:
     int getID() const;
     int getVN() const;
     int getToxic() const;
-    virtual int getTV() const = 0;
+    char getLetra() const;
+    virtual int getTV() const;
 
     void InitVN(const int &num);
     void InitToxic(const int &num);

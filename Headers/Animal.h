@@ -12,7 +12,6 @@ class BaseAnimal
     int campoVisao;
     int instante;
     double Peso;
-    std::string Nome;
     Coordenadas Location;
     char especie;
 

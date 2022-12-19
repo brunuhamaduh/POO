@@ -20,6 +20,8 @@ void BaseAlimento::InitLetra(const char &letr) {letra = letr;}
 void BaseAlimento::InitCheiro(const std::vector<std::string> &cheiros) {Cheiro = cheiros;}
 int BaseAlimento::getInstante() const {return Instante;}
 void BaseAlimento::incInstante() {Instante++;}
+int BaseAlimento::getTV() const {return -1;}
+char BaseAlimento::getLetra() const {return letra;}
 BaseAlimento* BaseAlimento::Child() {return nullptr;}
 
 AlimentoTV::AlimentoTV() : TempodeVida(30) {}
@@ -83,6 +85,7 @@ Relva::~Relva() = default;
 
 bool Relva::Action()
 {
+    InitTV(getTV() - 1);
     if(instanteSpawn == getInstante())
     {
         return true;
@@ -180,8 +183,11 @@ Corpo::~Corpo() = default;
 
 bool Corpo::Action()
 {
-    InitVN(getVN() - 1);
-    if(getInstante() < (2 * ogVN))
+    if(getVN() > 0)
+    {
+        InitVN(getVN() - 1);
+    }
+    if(getInstante() <= (2 * ogVN))
     {
         InitToxic(getToxic() + 1);
     }
@@ -211,6 +217,7 @@ Bife::~Bife() = default;
 
 bool Bife::Action()
 {
+    InitTV(getTV() - 1);
     if(getVN() > 0)
     {
         InitVN(getVN() - 1);
