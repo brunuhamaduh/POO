@@ -213,7 +213,7 @@ Coelho* Coelho::Child() const
         {
             break;
         }
-        else if(tentativa == 10) //in case it gets stuck in an infinite loop
+        else if(tentativa == 50) //in case it gets stuck in an infinite loop
         {
             xRandom = 0;
             yRandom = 0;
@@ -400,7 +400,7 @@ Ovelha* Ovelha::Child() const
         {
             break;
         }
-        else if(tentativa == 10) //in case it gets stuck in an infinite loop
+        else if(tentativa == 50) //in case it gets stuck in an infinite loop
         {
             xRandom = 0;
             yRandom = 0;
@@ -560,7 +560,7 @@ Lobo* Lobo::Child() const
         {
             break;
         }
-        else if(tentativa == 10) //in case it gets stuck in an infinite loop
+        else if(tentativa == 50) //in case it gets stuck in an infinite loop
         {
             xRandom = 0;
             yRandom = 0;
@@ -691,7 +691,7 @@ Canguru* Canguru::Child() const
         {
             break;
         }
-        else if(tentativa == 10) //in case it gets stuck in an infinite loop
+        else if(tentativa == 50) //in case it gets stuck in an infinite loop
         {
             xRandom = 0;
             yRandom = 0;

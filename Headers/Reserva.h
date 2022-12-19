@@ -31,6 +31,7 @@ public:
     void newAlimento(const int &x, const int &y, const char &tipo);
     void change_VArea(const int &index, bool op);
     void advanceInstant(const int &num = 1);
+    bool checkAlimento(const int &x, const int &y) const;
     static int getID();
 };
 

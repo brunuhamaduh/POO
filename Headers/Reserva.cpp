@@ -25,6 +25,7 @@ std::vector<int> Reserva::getVArea() const
     return viewarea;
 }
 
+//rework this
 std::string Reserva::getAnimaisPos(const int &xinf, const int &xsup, const int &yinf, const int &ysup) const
 {
     std::ostringstream output;
@@ -38,6 +39,7 @@ std::string Reserva::getAnimaisPos(const int &xinf, const int &xsup, const int &
     return output.str();
 }
 
+//rework this
 std::string Reserva::getAlimentosPos(const int &xinf, const int &xsup, const int &yinf, const int &ysup) const
 {
     std::ostringstream output;
@@ -49,6 +51,19 @@ std::string Reserva::getAlimentosPos(const int &xinf, const int &xsup, const int
         }
     }
     return output.str();
+}
+
+bool Reserva::checkAlimento(const int &x, const int &y) const
+{
+    std::ostringstream output;
+    for (auto& it : Alimentos)
+    {
+        if(it->getX() == x && it->getY() <= y)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 std::string Reserva::getAnimais() const

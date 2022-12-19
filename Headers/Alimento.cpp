@@ -86,7 +86,7 @@ Relva::~Relva() = default;
 bool Relva::Action()
 {
     InitTV(getTV() - 1);
-    if(instanteSpawn == getInstante())
+    if(instanteSpawn >= getInstante())
     {
         return true;
     }
@@ -127,11 +127,11 @@ Relva* Relva::Child()
             yRandom = distr(generator) - getY();
         }
 
-        if (xRandom > 0 && xRandom < area && yRandom > 0 && yRandom < area)
+        if (xRandom > 0 && xRandom < area && yRandom > 0 && yRandom < area && !Reserva::checkAlimento(xRandom, yRandom))
         {
             break;
         }
-        else if (tentativa == 10) //in case it gets stuck in an infinite loop
+        else if (tentativa == 50) //in case it gets stuck in an infinite loop
         {
             xRandom = 0;
             yRandom = 0;
