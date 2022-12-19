@@ -44,7 +44,7 @@ public:
     virtual void setHunger(const int &num);
     virtual void Hunger();
     //all classes have it
-    virtual void Move(const int &tamanho) = 0;
+    virtual void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out) = 0;
     virtual BaseAnimal* Child() const = 0;
     virtual bool checkChild() = 0;
     virtual BaseAlimento* Die() = 0;
@@ -93,7 +93,7 @@ public:
     Coelho();
     Coelho(const int &x, const int &y);
     ~Coelho();
-    void Move(const int &tamanho) override;
+    void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out) override;
     void Hunger() override;
     Coelho* Child() const override;
     bool checkChild() override;
@@ -107,7 +107,7 @@ public:
     Ovelha(const int &x, const int &y);
     Ovelha(const int &x, const int &y, const int &hp);
     ~Ovelha();
-    void Move(const int &tamanho) override;
+    void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out) override;
     void Hunger() override;
     Ovelha* Child() const override;
     bool checkChild() override;
@@ -122,7 +122,7 @@ public:
     Lobo();
     Lobo(const int &x, const int &y);
     ~Lobo();
-    void Move(const int &tamanho) override;
+    void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out) override;
     void Hunger() override;
     Lobo* Child() const override;
     bool checkChild() override;
@@ -135,7 +135,7 @@ public:
     Canguru();
     Canguru(const int &x, const int &y);
     ~Canguru();
-    void Move(const int &tamanho) override;
+    void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out) override;
     Canguru* Child() const override;
     bool checkChild() override;
     Corpo* Die() override;

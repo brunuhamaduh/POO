@@ -31,6 +31,7 @@ public:
     void InitToxic(const int &num);
     void InitLetra(const char &letr);
     void InitCheiro(const std::vector<std::string> &cheiros);
+    std::vector<std::string> getCheiro() const;
     virtual bool Action() = 0;
     virtual BaseAlimento* Child();
     int getInstante() const;

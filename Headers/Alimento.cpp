@@ -18,6 +18,7 @@ void BaseAlimento::InitVN(const int &num) {ValorNutritivo = num;}
 void BaseAlimento::InitToxic(const int &num) {Toxicidade = num;}
 void BaseAlimento::InitLetra(const char &letr) {letra = letr;}
 void BaseAlimento::InitCheiro(const std::vector<std::string> &cheiros) {Cheiro = cheiros;}
+std::vector<std::string> BaseAlimento::getCheiro() const {return Cheiro;}
 int BaseAlimento::getInstante() const {return Instante;}
 void BaseAlimento::incInstante() {Instante++;}
 int BaseAlimento::getTV() const {return -1;}

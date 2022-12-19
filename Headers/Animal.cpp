@@ -120,13 +120,116 @@ Coelho::Coelho(const int &x, const int &y) : BaseAnimal{x,y}, CompleteAnimal{x, 
 
 Coelho::~Coelho() = default;
 
-void Coelho::Move(const int &tamanho)
+void Coelho::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out)
 {
+    int direction;
+    int steps;
+    int choice = 0;
+    int x_target;
+    int y_target;
+    std::vector<std::string> cheiros;
     std::random_device random;
     std::mt19937 generator(random());
-    std::uniform_int_distribution <> random_direction(1, 8);
-    int direction = random_direction(generator);
-    int steps;
+
+    for(auto &it: alimentos)
+    {
+        cheiros = it->getCheiro();
+        if(abs(it->getX() - getX()) <= getcampoVisao() && it->getX() == getX())
+        {
+            for(auto const &it1: cheiros)
+            {
+                if(it1 == "verdura")
+                {
+                    x_target = it->getX();
+                    choice = 1;
+                    goto End;
+                }
+            }
+        }
+        else if(abs(it->getY() - getY()) <= getcampoVisao() && it->getY() == getY())
+        {
+            for(auto const &it1: cheiros)
+            {
+                if(it1 == "verdura")
+                {
+                    y_target = it->getY();
+                    choice = 2;
+                    goto End;
+                }
+            }
+        }
+    }
+
+    for(auto &it: animais)
+    {
+        if(abs(it->getX() - getX()) <= getcampoVisao() && it->getID() != getID() && it->getY() == getY())
+        {
+            if(it->getPeso() >= 10)
+            {
+                choice = 3;
+                break;
+            }
+        }
+        else if(abs(it->getY() - getY()) <= getcampoVisao() && it->getID() != getID() && it->getX() == getX())
+        {
+            if(it->getPeso() >= 10)
+            {
+                choice = 4;
+                break;
+            }
+        }
+    }
+
+    End:
+    if(choice == 0)
+    {
+        std::uniform_int_distribution <> random_direction(1, 4);
+        direction = random_direction(generator);
+    }
+    else if(choice == 1)
+    {
+        if(x_target - getX() < 0)
+        {
+            direction = 4; //left
+        }
+        else if(x_target - getX() > 0)
+        {
+            direction = 2; //right
+        }
+    }
+    else if(choice == 2)
+    {
+        if(y_target - getY() < 0)
+        {
+            direction = 1; //up
+        }
+        else if(y_target - getY() > 0)
+        {
+            direction = 3; //down
+        }
+    }
+    else if(choice == 3)
+    {
+        if(x_target - getX() < 0)
+        {
+            direction = 2; //right
+        }
+        else if(x_target - getX() > 0)
+        {
+            direction = 4; //left
+        }
+    }
+    else if(choice == 4)
+    {
+        if(y_target - getY() < 0)
+        {
+            direction = 3; //down
+        }
+        else if(y_target - getY() > 0)
+        {
+            direction = 1; //up
+        }
+    }
 
     if(getHunger() >= 10)
     {
@@ -142,6 +245,11 @@ void Coelho::Move(const int &tamanho)
     {
         std::uniform_int_distribution <> random_steps(1, 2);
         steps = random_steps(generator);
+    }
+
+    if((choice == 1 || choice == 2) && (abs(y_target - getY()) == 1 || abs(x_target - getX()) == 1))
+    {
+        steps = 1;
     }
 
     setPos(direction, steps, tamanho);
@@ -322,19 +430,130 @@ Ovelha::Ovelha(const int &x, const int &y, const int &hp) : BaseAnimal{x, y, hp}
 
 Ovelha::~Ovelha() = default;
 
-void Ovelha::Move(const int &tamanho)
+void Ovelha::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out)
 {
+    int direction;
+    int steps;
+    int choice = 0;
+    int x_target;
+    int y_target;
+    std::vector<std::string> cheiros;
     std::random_device random;
     std::mt19937 generator(random());
-    std::uniform_int_distribution <> random_direction(1, 8);
 
-    int direction = random_direction(generator);
-    int steps = 1;
+    for(auto &it: alimentos)
+    {
+        cheiros = it->getCheiro();
+        if(abs(it->getX() - getX()) <= getcampoVisao() && it->getX() == getX())
+        {
+            for(auto const &it1: cheiros)
+            {
+                if(it1 == "erva")
+                {
+                    x_target = it->getX();
+                    choice = 1;
+                    goto End;
+                }
+            }
+        }
+        else if(abs(it->getY() - getY()) <= getcampoVisao() && it->getY() == getY())
+        {
+            for(auto const &it1: cheiros)
+            {
+                if(it1 == "erva")
+                {
+                    y_target = it->getY();
+                    choice = 2;
+                    goto End;
+                }
+            }
+        }
+    }
+
+    for(auto &it: animais)
+    {
+        if(abs(it->getX() - getX()) <= getcampoVisao() && it->getID() != getID() && it->getY() == getY())
+        {
+            if(it->getPeso() >= 15)
+            {
+                choice = 3;
+                break;
+            }
+        }
+        else if(abs(it->getY() - getY()) <= getcampoVisao() && it->getID() != getID() && it->getX() == getX())
+        {
+            if(it->getPeso() >= 15)
+            {
+                choice = 4;
+                break;
+            }
+        }
+    }
+
+    End:
+    if(choice == 0)
+    {
+        std::uniform_int_distribution <> random_direction(1, 4);
+        direction = random_direction(generator);
+    }
+    else if(choice == 1)
+    {
+        if(x_target - getX() < 0)
+        {
+            direction = 4; //left
+        }
+        else if(x_target - getX() > 0)
+        {
+            direction = 2; //right
+        }
+    }
+    else if(choice == 2)
+    {
+        if(y_target - getY() < 0)
+        {
+            direction = 1; //up
+        }
+        else if(y_target - getY() > 0)
+        {
+            direction = 3; //down
+        }
+    }
+    else if(choice == 3)
+    {
+        if(x_target - getX() < 0)
+        {
+            direction = 2; //right
+        }
+        else if(x_target - getX() > 0)
+        {
+            direction = 4; //left
+        }
+    }
+    else if(choice == 4)
+    {
+        if(y_target - getY() < 0)
+        {
+            direction = 3; //down
+        }
+        else if(y_target - getY() > 0)
+        {
+            direction = 1; //up
+        }
+    }
 
     if(getHunger() >= 15)
     {
         std::uniform_int_distribution <> random_steps(1, 2);
         steps = random_steps(generator);
+    }
+    else
+    {
+        steps = 1;
+    }
+
+    if((choice == 1 || choice == 2) && (abs(y_target - getY()) == 1 || abs(x_target - getX()) == 1))
+    {
+        steps = 1;
     }
 
     setPos(direction, steps, tamanho);
@@ -480,18 +699,112 @@ Lobo::Lobo(const int &x, const int &y) : BaseAnimal{x,y}, AnimalH{x, y}, VLobo(5
 
 Lobo::~Lobo() = default;
 
-void Lobo::Move(const int &tamanho)
+void Lobo::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out)
 {
-    std::random_device random;
-    std::mt19937 generator(random());
-    std::uniform_int_distribution <> random_direction(1, 8);
+    std::vector<std::string> cheiros;
+    int x_target, y_target, steps = 1, direction, choice = 0;
+    double biggestAnimal = 0.0;
 
-    int direction = random_direction(generator);
-    int steps = 1;
+    for(auto &it: alimentos)
+    {
+        cheiros = it->getCheiro();
+        if(abs(it->getX() - getX()) <= getcampoVisao() && it->getX() == getX())
+        {
+            for(auto const &it1: cheiros)
+            {
+                if(it1 == "carne")
+                {
+                    x_target = it->getX();
+                    choice = 1;
+                    goto End;
+                }
+            }
+        }
 
-    if(getHunger() >= 15)
+        if(abs(it->getY() - getY()) <= getcampoVisao() && it->getY() == getY())
+        {
+            for(auto const &it1: cheiros)
+            {
+                if(it1 == "carne")
+                {
+                    y_target = it->getY();
+                    choice = 2;
+                    goto End;
+                }
+            }
+        }
+    }
+
+    End:
+    for(auto &it: animais)
+    {
+        if(abs(it->getX() - getX()) <= getcampoVisao() && it->getID() != getID() && it->getY() == getY())
+        {
+            if(it->getPeso() > biggestAnimal)
+            {
+                biggestAnimal = it->getPeso();
+                x_target = it->getX();
+                choice = 3;
+            }
+        }
+
+        if(abs(it->getY() - getY()) <= getcampoVisao() && it->getID() != getID() && it->getX() == getX())
+        {
+            if(it->getPeso() > biggestAnimal)
+            {
+                biggestAnimal = it->getPeso();
+                y_target = it->getY();
+                choice = 4;
+            }
+        }
+    }
+
+    if(choice == 0)
+    {
+        std::random_device random;
+        std::mt19937 generator(random());
+        std::uniform_int_distribution <> random_direction(1, 4);
+        direction = random_direction(generator);
+    }
+
+    else if(choice == 1 || choice == 3)
+    {
+        if(x_target - getX() < 0)
+        {
+            direction = 4; //left
+        }
+        else if(x_target - getX() > 0)
+        {
+            direction = 2; //right
+        }
+    }
+    else if(choice == 2 || choice == 4)
+    {
+        if(y_target - getY() < 0)
+        {
+            direction = 1; //up
+        }
+        else if(y_target - getY() > 0)
+        {
+            direction = 3; //down
+        }
+    }
+
+    if(choice == 3 || choice == 4)
     {
         steps = 2;
+        if(getHunger() >= 15)
+        {
+            steps = 3;
+        }
+    }
+    else
+    {
+        steps = 1;
+        if(getHunger() >= 15)
+        {
+            steps = 2;
+        }
     }
 
     setPos(direction, steps, tamanho);
@@ -634,16 +947,17 @@ Canguru::Canguru(const int &x, const int &y) : BaseAnimal{x,y}, AnimalL{x, y}
 }
 Canguru::~Canguru() = default;
 
-void Canguru::Move(const int &tamanho)
+void Canguru::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out)
 {
     std::random_device random;
     std::mt19937 generator(random());
-    std::uniform_int_distribution <> random_direction(1, 8);
+    std::uniform_int_distribution <> random_direction(1,  4);
 
     int direction = random_direction(generator);
     int steps = 1;
 
     setPos(direction, steps, tamanho);
+
     if(getInstante() == 20)
     {
         setPeso(20);

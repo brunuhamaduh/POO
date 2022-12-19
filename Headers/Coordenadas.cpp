@@ -37,17 +37,7 @@ void Coordenadas::setPos(int &direction, int &num, const int &tamanho)
             }
         }
 
-        else if(direction == 2) //UPRIGHT
-        {
-            if(y - num >= 0 && x + num <= tamanho)
-            {
-                x = x + num;
-                y = y - num;
-                break;
-            }
-        }
-
-        else if(direction == 3) //RIGHT
+        else if(direction == 2) //RIGHT
         {
             if(x + num <= tamanho)
             {
@@ -56,17 +46,7 @@ void Coordenadas::setPos(int &direction, int &num, const int &tamanho)
             }
         }
 
-        else if(direction == 4) //DOWNRIGHT
-        {
-            if(y + num <= tamanho && x + num <= tamanho)
-            {
-                x = x + num;
-                y = y + num;
-                break;
-            }
-        }
-
-        else if(direction == 5) //DOWN
+        else if(direction == 3) //DOWN
         {
             if(y + num <= tamanho)
             {
@@ -75,31 +55,12 @@ void Coordenadas::setPos(int &direction, int &num, const int &tamanho)
             }
         }
 
-        else if(direction == 6) //DOWNLEFT
-        {
-            if(y + num <= tamanho && x - num >= 0)
-            {
-                x = x - num;
-                y = y + num;
-                break;
-            }
-        }
 
-        else if(direction == 7) //LEFT
+        else if(direction == 4) //LEFT
         {
             if(x - num >= 0)
             {
                 x = x - num;
-                break;
-            }
-        }
-
-        else if(direction == 8) //UPLEFT
-        {
-            if(x - num >= 0 && y - num >= 0)
-            {
-                x = x - num;
-                y = y - num;
                 break;
             }
         }
