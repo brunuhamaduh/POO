@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
-
 #include "Reserva.h"
 
 BaseAnimal::BaseAnimal() : ID(Reserva::getID()), HP(100), instante(0), campoVisao(0), Peso(0.0), especie('X') {}
@@ -223,7 +222,7 @@ Coelho* Coelho::Child() const
     return new Coelho(xRandom, yRandom);
 }
 
-//Alimento* Coelho::Die() {return nullptr;} //rabbit doesn't spawn anything when it dies
+BaseAlimento* Coelho::Die() {return nullptr;} //rabbit doesn't spawn anything when it dies
 
 Ovelha::Ovelha()
 {
@@ -410,7 +409,10 @@ Ovelha* Ovelha::Child() const
     return new Ovelha(xRandom, yRandom, getHP());
 }
 
-//Alimento* Ovelha::Die(){return nullptr;}
+Corpo* Ovelha::Die()
+{
+    return new Corpo(getX(), getY(), int(getPeso()));
+}
 
 Lobo::Lobo()
 {
@@ -570,7 +572,10 @@ Lobo* Lobo::Child() const
     return new Lobo(xRandom, yRandom);
 }
 
-//Alimento* Lobo::Die(){return nullptr;}
+Corpo* Lobo::Die()
+{
+    return new Corpo(getX(), getY(), 10);
+}
 
 Canguru::Canguru()
 {
@@ -701,5 +706,7 @@ Canguru* Canguru::Child() const
     return new Canguru(xRandom, yRandom);
 }
 
-
-//Alimento* Canguru::Die(){return nullptr;}
+Corpo* Canguru::Die()
+{
+    return new Corpo(getX(), getY(), 15, 5);
+}

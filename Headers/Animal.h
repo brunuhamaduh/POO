@@ -1,9 +1,7 @@
 #ifndef POO_ANIMAL_H
 #define POO_ANIMAL_H
 
-#include "Coordenadas.h"
-
-class Alimento;
+#include "Alimento.h"
 
 class BaseAnimal
 {
@@ -49,7 +47,7 @@ public:
     virtual void Move(const int &tamanho) = 0;
     virtual BaseAnimal* Child() const = 0;
     virtual bool checkChild() = 0;
-    //virtual Alimento* Die() = 0;
+    virtual BaseAlimento* Die() = 0;
 };
 
 class AnimalH: virtual public BaseAnimal
@@ -99,7 +97,7 @@ public:
     void Hunger() override;
     Coelho* Child() const override;
     bool checkChild() override;
-    //Alimento* Die() override;
+    BaseAlimento* Die() override;
 };
 
 class Ovelha: public CompleteAnimal
@@ -113,7 +111,7 @@ public:
     void Hunger() override;
     Ovelha* Child() const override;
     bool checkChild() override;
-    //Alimento* Die() override;
+    Corpo* Die() override;
 };
 
 class Lobo: public AnimalH
@@ -128,7 +126,7 @@ public:
     void Hunger() override;
     Lobo* Child() const override;
     bool checkChild() override;
-    //Alimento* Die() override;
+    Corpo* Die() override;
 };
 
 class Canguru: public AnimalL
@@ -140,7 +138,7 @@ public:
     void Move(const int &tamanho) override;
     Canguru* Child() const override;
     bool checkChild() override;
-    //Alimento* Die() override;
+    Corpo* Die() override;
 };
 
 #endif //POO_ANIMAL_H

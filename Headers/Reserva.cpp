@@ -53,19 +53,6 @@ std::string Reserva::getAlimentosPos(const int &xinf, const int &xsup, const int
     return output.str();
 }
 
-bool Reserva::checkAlimento(const int &x, const int &y) const
-{
-    std::ostringstream output;
-    for (auto& it : Alimentos)
-    {
-        if(it->getX() == x && it->getY() <= y)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
 std::string Reserva::getAnimais() const
 {
     std::ostringstream output;
@@ -230,14 +217,12 @@ void Reserva::advanceInstant(const int &num)
             if(it->Action()) {Copy2.emplace_back(it->Child());}
         }
 
-        Alimentos = Copy2;
-
         auto ptr = Animais.begin();
         while(ptr != Animais.end())
         {
             if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0)
             {
-                //(*ptr)->Die();
+                if((*ptr)->Die() != nullptr) {Copy2.emplace_back((*ptr)->Die());}
                 ptr = Animais.erase(ptr);
             }
             else
@@ -245,6 +230,8 @@ void Reserva::advanceInstant(const int &num)
                 ptr++;
             }
         }
+
+        Alimentos = Copy2;
 
         auto ptr1 = Alimentos.begin();
         while(ptr1 != Alimentos.end())

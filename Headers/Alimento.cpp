@@ -86,7 +86,7 @@ Relva::~Relva() = default;
 bool Relva::Action()
 {
     InitTV(getTV() - 1);
-    if(instanteSpawn >= getInstante())
+    if(instanteSpawn == getInstante())
     {
         return true;
     }
@@ -127,7 +127,7 @@ Relva* Relva::Child()
             yRandom = distr(generator) - getY();
         }
 
-        if (xRandom > 0 && xRandom < area && yRandom > 0 && yRandom < area && !Reserva::checkAlimento(xRandom, yRandom))
+        if (xRandom > 0 && xRandom < area && yRandom > 0 && yRandom < area)
         {
             break;
         }
@@ -179,6 +179,17 @@ Corpo::Corpo(const int &x, const int &y, const int &oldcorpse) : BaseAlimento{x,
     InitCheiro(cheiros);
     ogVN = oldcorpse;
 }
+
+Corpo::Corpo(const int &x, const int &y, const int &oldcorpse, const int &Toxic) : BaseAlimento{x, y}
+{
+    std::vector<std::string> cheiros = {"carne"};
+    InitVN(oldcorpse);
+    InitLetra('p');
+    InitCheiro(cheiros);
+    InitToxic(Toxic);
+    ogVN = oldcorpse;
+}
+
 Corpo::~Corpo() = default;
 
 bool Corpo::Action()

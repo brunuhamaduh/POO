@@ -3,7 +3,6 @@
 #include <fstream>
 #include <random>
 #include <algorithm>
-#include <unistd.h>
 
 int getID()
 {
@@ -364,15 +363,10 @@ void startGame(term::Window &comando, std:: string &input, Reserva &principal)
         principal.setSize(200);
     }
     */
-    //principal.setSize(50); //APENAS PARA TESTE
-    //principal.newAnimal(5, 5, 'c');
-    //principal.newAnimal(10, 10, 'o');
-    //principal.newAnimal(15, 15, 'l');
-    //principal.newAnimal(20, 20, 'g');
-    principal.newAlimento(5, 5, 'r');
-    principal.newAlimento(10, 10, 't');
-    principal.newAlimento(15, 15, 'p');
-    principal.newAlimento(20, 20, 'b');
+    principal.newAnimal(5, 5, 'c');
+    principal.newAnimal(10, 10, 'o');
+    principal.newAnimal(15, 15, 'l');
+    principal.newAnimal(20, 20, 'g');
 }
 
 void loopGame(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string input, std::vector<std::string> &listComando)

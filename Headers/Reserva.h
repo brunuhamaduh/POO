@@ -1,7 +1,7 @@
 #ifndef POO_RESERVA_H
 #define POO_RESERVA_H
 
-#include "Alimento.h"
+#include "Animal.h"
 
 class Reserva
 {
@@ -31,7 +31,6 @@ public:
     void newAlimento(const int &x, const int &y, const char &tipo);
     void change_VArea(const int &index, bool op);
     void advanceInstant(const int &num = 1);
-    bool checkAlimento(const int &x, const int &y) const;
     static int getID();
 };
 

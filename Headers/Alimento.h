@@ -1,6 +1,7 @@
 #ifndef POO_ALIMENTO_H
 #define POO_ALIMENTO_H
-#include "Animal.h"
+
+#include "Coordenadas.h"
 
 class BaseAlimento
 {
@@ -73,6 +74,7 @@ class Corpo: public BaseAlimento
     int ogVN;
 public:
     Corpo(const int &x, const int &y, const int &oldcorpse);
+    Corpo(const int &x, const int &y, const int &oldcorpse, const int &Toxic);
     ~Corpo();
     bool Action() override;
 };
