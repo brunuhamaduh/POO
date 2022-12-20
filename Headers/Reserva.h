@@ -30,7 +30,7 @@ public:
     void newAnimal(const int &x, const int &y, const char &especie);
     void newAlimento(const int &x, const int &y, const char &tipo);
     void change_VArea(const int &index, bool op);
-    void advanceInstant(term::Window &out, const int &num = 1);
+    void advanceInstant(const int &num = 1);
     static int getID();
 };
 

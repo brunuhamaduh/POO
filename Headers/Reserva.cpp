@@ -190,7 +190,7 @@ void Reserva::newAlimento(const int &x, const int &y, const char &tipo)
     }
 }
 
-void Reserva::advanceInstant(term::Window &out, const int &num)
+void Reserva::advanceInstant(const int &num)
 {
     std::vector<BaseAnimal*> Copy;
     std::vector<BaseAlimento*> Copy2;
@@ -203,10 +203,14 @@ void Reserva::advanceInstant(term::Window &out, const int &num)
         for (auto& it : Animais)
         {
             it->incInstante();
-            it->Move(tamanho, Animais, Alimentos, out);
+            it->Move(tamanho, Animais, Alimentos);
             it->LifeTick();
             it->Hunger();
             if(it->checkChild()) {Copy.emplace_back(it->Child());}
+        }
+
+        for(auto& it : Animais)
+        {
             it->Eat(Animais, Alimentos);
         }
 
@@ -221,7 +225,7 @@ void Reserva::advanceInstant(term::Window &out, const int &num)
         auto ptr = Animais.begin();
         while(ptr != Animais.end())
         {
-            if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0)
+            if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0 || (*ptr)->getKill())
             {
                 if((*ptr)->Die() != nullptr) {Copy2.emplace_back((*ptr)->Die());}
                 ptr = Animais.erase(ptr);

@@ -179,11 +179,11 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
         {
             try
             {
-                principal.advanceInstant(out, stoi(listComando.at(1)));
+                principal.advanceInstant(stoi(listComando.at(1)));
             }
             catch(...)
             {
-                principal.advanceInstant(out);
+                principal.advanceInstant();
             }
         }
     }
@@ -363,8 +363,8 @@ void startGame(term::Window &comando, std:: string &input, Reserva &principal)
         principal.setSize(200);
     }
     */
-    principal.newAnimal(5, 5, 'c');
-    principal.newAlimento(9,9,'r');
+    principal.newAnimal(5, 5, 'l');
+    principal.newAnimal(10,10,'g');
 }
 
 void loopGame(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string input, std::vector<std::string> &listComando)

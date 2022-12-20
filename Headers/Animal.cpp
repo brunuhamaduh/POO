@@ -65,7 +65,7 @@ AnimalH::AnimalH(const int &x, const int &y, const int &hp) : hunger(0), BaseAni
 AnimalH::~AnimalH() = default;
 int AnimalH::getHunger() const {return hunger;}
 void AnimalH::Hunger() {}
-void AnimalH::setHunger(const int &num) {hunger = hunger + num;}
+void AnimalH::setHunger(const int &num) {hunger = num;}
 
 AnimalL::AnimalL() : lifeTick(50) {}
 AnimalL::AnimalL(const int &x, const int &y) : lifeTick(50), BaseAnimal{x,y} {}
@@ -146,8 +146,13 @@ Coelho::Coelho(const int &x, const int &y) : BaseAnimal{x,y}, CompleteAnimal{x, 
 
 Coelho::~Coelho() = default;
 
-void Coelho::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out)
+void Coelho::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos)
 {
+    if(getKill())
+    {
+        return;
+    }
+
     std::random_device random;
     std::mt19937 generator(random());
     std::vector<BaseAnimal*> AroundAnimais = checkAroundAnimais(animais, getcampoVisao(), getX(), getY(), getID());
@@ -294,7 +299,7 @@ void Coelho::Hunger()
     {
         setHP(getHP() - 2);
     }
-    setHunger(1);
+    setHunger(getHunger()+1);
 }
 
 bool Coelho::checkChild()
@@ -375,10 +380,11 @@ void Coelho::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &
             }
             else if(getHP() + it->getVN() - it->getToxic() <= 0)
             {
-                setHP(0);
+                Kill();
             }
 
             it->Kill();
+            setHunger(0);
             break;
         }
     }
@@ -482,7 +488,7 @@ Ovelha::Ovelha(const int &x, const int &y, const int &hp) : BaseAnimal{x, y, hp}
 
 Ovelha::~Ovelha() = default;
 
-void Ovelha::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out)
+void Ovelha::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos)
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -624,7 +630,7 @@ void Ovelha::Hunger()
     {
         setHP(getHP() - 2);
     }
-    setHunger(1);
+    setHunger(getHunger()+1);
 }
 
 bool Ovelha::checkChild()
@@ -703,10 +709,11 @@ void Ovelha::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &
             }
             else if(getHP() + it->getVN() - it->getToxic() <= 0)
             {
-                setHP(0);
+                Kill();
             }
 
             it->Kill();
+            setHunger(0);
             break;
         }
     }
@@ -778,7 +785,7 @@ Lobo::Lobo(const int &x, const int &y) : BaseAnimal{x,y}, AnimalH{x, y}, VLobo(5
 
 Lobo::~Lobo() = default;
 
-void Lobo::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out)
+void Lobo::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos)
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -905,7 +912,7 @@ void Lobo::Hunger()
         setHP(0);
     }
 
-    setHunger(2);
+    setHunger(getHunger()+2);
 }
 
 bool Lobo::checkChild()
@@ -969,6 +976,62 @@ Corpo* Lobo::Die()
     return new Corpo(getX(), getY(), 10);
 }
 
+void Lobo::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &alimentos)
+{
+    std::vector<std::string> Cheiros;
+    std::vector<BaseAnimal*> Copy = animais;
+
+    for(auto &it : Copy)
+    {
+        if((it->getX() == getX() && it->getY() == getY() || abs(getX()-it->getX()) == 1 || abs(getY()-it->getY()) == 1) && getID() != it->getID())
+        {
+            if(getPeso() > it->getPeso())
+            {
+                it->Kill();
+            }
+            else
+            {
+                std::random_device random;
+                std::mt19937 generator(random());
+                std::uniform_int_distribution <> random_death(1,  2);
+
+                if(random_death(generator) == 1)
+                {
+                    it->Kill();
+                }
+                else
+                {
+                    Kill();
+                }
+            }
+            break;
+        }
+    }
+
+    for(auto &it : alimentos)
+    {
+        Cheiros = it->getCheiro();
+        if(it->getX() == getX() && it->getY() == getY() && std::count(Cheiros.begin(), Cheiros.end(), "carne"))
+        {
+            if(getHP() + it->getVN() - it->getToxic() >= 0)
+            {
+                setHP(getHP() + it->getVN() - it->getToxic());
+
+            }
+            else if(getHP() + it->getVN() - it->getToxic() <= 0)
+            {
+                Kill();
+            }
+
+            setHunger(0);
+            it->Kill();
+            break;
+        }
+    }
+
+    animais = Copy;
+}
+
 Canguru::Canguru()
 {
     this->InitEspecie('G');
@@ -1026,7 +1089,7 @@ Canguru::Canguru(const int &x, const int &y) : BaseAnimal{x,y}, AnimalL{x, y}
 }
 Canguru::~Canguru() = default;
 
-void Canguru::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out)
+void Canguru::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos)
 {
     std::random_device random;
     std::mt19937 generator(random());
