@@ -28,6 +28,11 @@ void Coordenadas::setPos(int &direction, int &num, const int &tamanho)
 {
     while(true)
     {
+        if(direction == 0)
+        {
+            break;
+        }
+
         if(direction == 1) //UP
         {
             if(y - num >= 0)

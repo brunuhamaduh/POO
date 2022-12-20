@@ -141,9 +141,13 @@ public:
 
 class Canguru: public AnimalL
 {
+    int idparent;
+    bool child, run, hide;
+    int hidetick;
 public:
     Canguru();
     Canguru(const int &x, const int &y);
+    Canguru(const int &x, const int &y, const int &idparent);
     ~Canguru();
     void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos) override;
     Canguru* Child() const override;
