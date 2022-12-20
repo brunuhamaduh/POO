@@ -148,11 +148,6 @@ Coelho::~Coelho() = default;
 
 void Coelho::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos)
 {
-    if(getKill())
-    {
-        return;
-    }
-
     std::random_device random;
     std::mt19937 generator(random());
     std::vector<BaseAnimal*> AroundAnimais = checkAroundAnimais(animais, getcampoVisao(), getX(), getY(), getID());
