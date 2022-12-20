@@ -12,6 +12,7 @@ class BaseAlimento
     char letra;
     std::vector<std::string> Cheiro;
     Coordenadas Location;
+    bool kill;
 
 protected:
     BaseAlimento();
@@ -26,7 +27,8 @@ public:
     int getToxic() const;
     char getLetra() const;
     virtual int getTV() const;
-
+    void Kill();
+    bool getKill() const;
     void InitVN(const int &num);
     void InitToxic(const int &num);
     void InitLetra(const char &letr);

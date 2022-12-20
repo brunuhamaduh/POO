@@ -24,6 +24,8 @@ void BaseAnimal::setHP(const int &num) {HP = num;}
 void BaseAnimal::setPeso(const int &num) {Peso = num;}
 int BaseAnimal::getInstante() const {return instante;}
 void BaseAnimal::incInstante() {instante++;}
+void BaseAnimal::Kill() {kill = true;}
+bool BaseAnimal::getKill() const {return kill;}
 std::vector<BaseAnimal*> BaseAnimal::checkAroundAnimais(const std::vector<BaseAnimal*> &animais,  const int &visionRange, const int &x, const int &y, const int &id) const
 {
     std::vector<BaseAnimal*> temp;
@@ -55,6 +57,7 @@ void BaseAnimal::LifeTick() {}
 int BaseAnimal::getHunger() const {return -1;}
 void BaseAnimal::setHunger(const int &num) {}
 void BaseAnimal::Hunger() {}
+void BaseAnimal::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &alimentos) {}
 
 AnimalH::AnimalH() : hunger(0) {}
 AnimalH::AnimalH(const int &x, const int &y) : hunger(0), BaseAnimal{x,y} {}
@@ -273,6 +276,11 @@ void Coelho::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, c
         steps = random_steps(generator);
     }
 
+    if(abs(getX()-xTarget) == 1 || abs(getY()-yTarget) == 1 && Chase) //making sure the animal doesn't overshoot the target
+    {
+        steps = 1;
+    }
+
     setPos(direction, steps, tamanho);
 }
 
@@ -352,6 +360,29 @@ Coelho* Coelho::Child() const
 }
 
 BaseAlimento* Coelho::Die() {return nullptr;} //rabbit doesn't spawn anything when it dies
+void Coelho::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &alimentos)
+{
+    std::vector<std::string> Cheiros;
+    for(auto &it : alimentos)
+    {
+        Cheiros = it->getCheiro();
+        if(it->getX() == getX() && it->getY() == getY() && std::count(Cheiros.begin(), Cheiros.end(), "verdura"))
+        {
+            if(getHP() + it->getVN() - it->getToxic() >= 0)
+            {
+                setHP(getHP() + it->getVN() - it->getToxic());
+
+            }
+            else if(getHP() + it->getVN() - it->getToxic() <= 0)
+            {
+                setHP(0);
+            }
+
+            it->Kill();
+            break;
+        }
+    }
+}
 
 Ovelha::Ovelha()
 {
@@ -575,6 +606,11 @@ void Ovelha::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, c
         steps = 1;
     }
 
+    if(abs(getX()-xTarget) == 1 || abs(getY()-yTarget) == 1 && Chase) //making sure the animal doesn't overshoot the target
+    {
+        steps = 1;
+    }
+
     setPos(direction, steps, tamanho);
 }
 
@@ -650,6 +686,30 @@ Ovelha* Ovelha::Child() const
 Corpo* Ovelha::Die()
 {
     return new Corpo(getX(), getY(), int(getPeso()));
+}
+
+void Ovelha::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &alimentos)
+{
+    std::vector<std::string> Cheiros;
+    for(auto &it : alimentos)
+    {
+        Cheiros = it->getCheiro();
+        if(it->getX() == getX() && it->getY() == getY() && std::count(Cheiros.begin(), Cheiros.end(), "erva"))
+        {
+            if(getHP() + it->getVN() - it->getToxic() >= 0)
+            {
+                setHP(getHP() + it->getVN() - it->getToxic());
+
+            }
+            else if(getHP() + it->getVN() - it->getToxic() <= 0)
+            {
+                setHP(0);
+            }
+
+            it->Kill();
+            break;
+        }
+    }
 }
 
 Lobo::Lobo()
@@ -819,6 +879,11 @@ void Lobo::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, con
         {
             steps = 1;
         }
+    }
+
+    if(abs(getX()-xTarget) == 1 || abs(getY()-yTarget) == 1 && (ChaseAnimal || ChaseFood)) //making sure the animal doesn't overshoot the target
+    {
+        steps = 1;
     }
 
     setPos(direction, steps, tamanho);

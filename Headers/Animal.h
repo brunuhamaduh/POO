@@ -12,6 +12,7 @@ class BaseAnimal
     double Peso;
     Coordenadas Location;
     char especie;
+    bool kill;
 
 protected:
     int getInstante() const;
@@ -20,6 +21,8 @@ protected:
     void InitEspecie(const char &chara);
     void InitCampoVisao(const int &num);
     void InitPeso(const double &num);
+    void Kill();
+    bool getKill() const;
     BaseAnimal();
     BaseAnimal(const int &x, const int &y, const int &hp);
     BaseAnimal(const int &x, const int &y);
@@ -45,6 +48,7 @@ public:
     virtual int getHunger() const;
     virtual void setHunger(const int &num);
     virtual void Hunger();
+    virtual void Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &alimentos);
     //all classes have it
     virtual void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out) = 0;
     virtual BaseAnimal* Child() const = 0;
@@ -100,6 +104,7 @@ public:
     Coelho* Child() const override;
     bool checkChild() override;
     BaseAlimento* Die() override;
+    void Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &alimentos) override;
 };
 
 class Ovelha: public CompleteAnimal
@@ -114,6 +119,7 @@ public:
     Ovelha* Child() const override;
     bool checkChild() override;
     Corpo* Die() override;
+    void Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &alimentos) override;
 };
 
 class Lobo: public AnimalH
@@ -129,6 +135,7 @@ public:
     Lobo* Child() const override;
     bool checkChild() override;
     Corpo* Die() override;
+    //void Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &alimentos) override;
 };
 
 class Canguru: public AnimalL

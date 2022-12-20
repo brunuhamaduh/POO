@@ -6,8 +6,8 @@
 #include <sstream>
 #include <cmath>
 
-BaseAlimento::BaseAlimento() : ID(Reserva::getID()), ValorNutritivo(0), letra('x'), Toxicidade(0), Instante(0) {}
-BaseAlimento::BaseAlimento(const int &x, const int &y) : Location(x, y), ID(Reserva::getID()), ValorNutritivo(0), letra('x'), Toxicidade(0), Instante(0) {}
+BaseAlimento::BaseAlimento() : ID(Reserva::getID()), ValorNutritivo(0), letra('x'), Toxicidade(0), Instante(0), kill(false) {}
+BaseAlimento::BaseAlimento(const int &x, const int &y) : Location(x, y), ID(Reserva::getID()), ValorNutritivo(0), letra('x'), Toxicidade(0), Instante(0), kill(false) {}
 BaseAlimento::~BaseAlimento() = default;
 int BaseAlimento::getX() const {return Location.getX();}
 int BaseAlimento::getY() const {return Location.getY();}
@@ -24,6 +24,8 @@ void BaseAlimento::incInstante() {Instante++;}
 int BaseAlimento::getTV() const {return -1;}
 char BaseAlimento::getLetra() const {return letra;}
 BaseAlimento* BaseAlimento::Child() {return nullptr;}
+void BaseAlimento::Kill() {kill = true;}
+bool BaseAlimento::getKill() const {return kill;}
 
 AlimentoTV::AlimentoTV() : TempodeVida(30) {}
 AlimentoTV::AlimentoTV(const int &x, const int &y) : BaseAlimento{x, y}, TempodeVida(30) {}

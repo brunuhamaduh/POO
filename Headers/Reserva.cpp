@@ -207,6 +207,7 @@ void Reserva::advanceInstant(term::Window &out, const int &num)
             it->LifeTick();
             it->Hunger();
             if(it->checkChild()) {Copy.emplace_back(it->Child());}
+            it->Eat(Animais, Alimentos);
         }
 
         Animais = Copy;
@@ -236,7 +237,7 @@ void Reserva::advanceInstant(term::Window &out, const int &num)
         auto ptr1 = Alimentos.begin();
         while(ptr1 != Alimentos.end())
         {
-            if ((*ptr1)->getTV() == 0)
+            if ((*ptr1)->getTV() == 0 || (*ptr1)->getKill())
             {
                 ptr1 = Alimentos.erase(ptr1);
             }
