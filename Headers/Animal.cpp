@@ -162,7 +162,7 @@ void Coelho::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, c
         {
             Run = false;
             Chase = true;
-            if(it->getX() < xTarget && it->getY() < yTarget || (xTarget != -1 && yTarget != -1)) //if it's closer
+            if(it->getX() < xTarget && it->getY() < yTarget || (xTarget == -1 && yTarget == -1)) //if it's closer
             {
                 xTarget = it->getX();
                 yTarget = it->getY();
@@ -170,7 +170,7 @@ void Coelho::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, c
         }
     }
 
-    for(auto &it: AroundAnimais) //Running from animals have priority
+    for(auto &it: AroundAnimais) //Running from animals has priority
     {
         if(it->getPeso() >= 10)
         {
@@ -220,35 +220,35 @@ void Coelho::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, c
     {
         if(getX() - xTarget > 0 && getY() == yTarget) //Food on the left then run left
         {
-            direction = 3;
+            direction = 7;
         }
         else if(getX() - xTarget < 0 && getY() == yTarget) //Food on the right then run right
         {
-            direction = 7;
+            direction = 3;
         }
         else if(getX() == xTarget && getY() - yTarget > 0) //Food is up then run up
         {
-            direction = 5;
+            direction = 1;
         }
         else if(getX() == xTarget && getY() - yTarget < 0) //Food is down then run down
         {
-            direction = 1;
+            direction = 5;
         }
         else if(getX() - xTarget > 0 && getY() - yTarget > 0) //Food is on the diagonal (upper left) then run upper left
         {
-            direction = 4;
+            direction = 8;
         }
         else if(getX() - xTarget > 0 && getY() - yTarget < 0) //Food is on the diagonal (lower left) then run lower left
         {
-            direction = 2;
+            direction = 6;
         }
         else if(getX() - xTarget < 0 && getY() - yTarget > 0) //Food is on the diagonal (upper right) then run upper right
         {
-            direction = 6;
+            direction = 2;
         }
         else if(getX() - xTarget < 0 && getY() - yTarget < 0) //Food is on the diagonal (lower right) then run lower right
         {
-            direction = 8;
+            direction = 4;
         }
     }
     else
@@ -453,113 +453,116 @@ Ovelha::~Ovelha() = default;
 
 void Ovelha::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out)
 {
-    int direction;
-    int steps;
-    int choice = 0;
-    int x_target;
-    int y_target;
-    std::vector<std::string> cheiros;
     std::random_device random;
     std::mt19937 generator(random());
+    std::vector<BaseAnimal*> AroundAnimais = checkAroundAnimais(animais, getcampoVisao(), getX(), getY(), getID());
+    std::vector<BaseAlimento*> AroundAlimentos = checkAroundAlimentos(alimentos, getcampoVisao(), getX(), getY(), getID());
+    std::vector<std::string> Cheiros;
 
-    for(auto &it: alimentos)
+    bool Run = false;
+    bool Chase = false;
+    int xTarget = -1, yTarget = -1, direction, steps;
+
+    for(auto &it: AroundAlimentos)
     {
-        cheiros = it->getCheiro();
-        if(abs(it->getX() - getX()) <= getcampoVisao() && it->getX() == getX())
+        Cheiros = it->getCheiro();
+        if(std::count(Cheiros.begin(), Cheiros.end(), "erva"))
         {
-            for(auto const &it1: cheiros)
+            Run = false;
+            Chase = true;
+            if(it->getX() < xTarget && it->getY() < yTarget || (xTarget == -1 && yTarget == -1)) //if it's closer
             {
-                if(it1 == "erva")
-                {
-                    x_target = it->getX();
-                    choice = 1;
-                    goto End;
-                }
-            }
-        }
-        else if(abs(it->getY() - getY()) <= getcampoVisao() && it->getY() == getY())
-        {
-            for(auto const &it1: cheiros)
-            {
-                if(it1 == "erva")
-                {
-                    y_target = it->getY();
-                    choice = 2;
-                    goto End;
-                }
+                xTarget = it->getX();
+                yTarget = it->getY();
             }
         }
     }
 
-    for(auto &it: animais)
+    for(auto &it: AroundAnimais) //Running from animals has priority
     {
-        if(abs(it->getX() - getX()) <= getcampoVisao() && it->getID() != getID() && it->getY() == getY())
+        if(it->getPeso() >= 15)
         {
-            if(it->getPeso() >= 15)
-            {
-                choice = 3;
-                break;
-            }
-        }
-        else if(abs(it->getY() - getY()) <= getcampoVisao() && it->getID() != getID() && it->getX() == getX())
-        {
-            if(it->getPeso() >= 15)
-            {
-                choice = 4;
-                break;
-            }
+            Run = true;
+            Chase = false;
+            xTarget = it->getX();
+            yTarget = it->getY();
         }
     }
 
-    End:
-    if(choice == 0)
+    if(Run)
     {
-        std::uniform_int_distribution <> random_direction(1, 4);
+        if(getX() - xTarget > 0 && getY() == yTarget) //Animal on the left then run right
+        {
+            direction = 3;
+        }
+        else if(getX() - xTarget < 0 && getY() == yTarget) //Animal on the right then run left
+        {
+            direction = 7;
+        }
+        else if(getX() == xTarget && getY() - yTarget > 0) //Animal is up then run down
+        {
+            direction = 5;
+        }
+        else if(getX() == xTarget && getY() - yTarget < 0) //Animal is down then run up
+        {
+            direction = 1;
+        }
+        else if(getX() - xTarget > 0 && getY() - yTarget > 0) //Animal is on the diagonal (upper left) then run lower right
+        {
+            direction = 4;
+        }
+        else if(getX() - xTarget > 0 && getY() - yTarget < 0) //Animal is on the diagonal (lower left) then run upper right
+        {
+            direction = 2;
+        }
+        else if(getX() - xTarget < 0 && getY() - yTarget > 0) //Animal is on the diagonal (upper right) then run lower left
+        {
+            direction = 6;
+        }
+        else if(getX() - xTarget < 0 && getY() - yTarget < 0) //Animal is on the diagonal (lower right) then run upper left
+        {
+            direction = 8;
+        }
+    }
+    else if(Chase)
+    {
+        if(getX() - xTarget > 0 && getY() == yTarget) //Food on the left then run left
+        {
+            direction = 7;
+        }
+        else if(getX() - xTarget < 0 && getY() == yTarget) //Food on the right then run right
+        {
+            direction = 3;
+        }
+        else if(getX() == xTarget && getY() - yTarget > 0) //Food is up then run up
+        {
+            direction = 1;
+        }
+        else if(getX() == xTarget && getY() - yTarget < 0) //Food is down then run down
+        {
+            direction = 5;
+        }
+        else if(getX() - xTarget > 0 && getY() - yTarget > 0) //Food is on the diagonal (upper left) then run upper left
+        {
+            direction = 8;
+        }
+        else if(getX() - xTarget > 0 && getY() - yTarget < 0) //Food is on the diagonal (lower left) then run lower left
+        {
+            direction = 6;
+        }
+        else if(getX() - xTarget < 0 && getY() - yTarget > 0) //Food is on the diagonal (upper right) then run upper right
+        {
+            direction = 2;
+        }
+        else if(getX() - xTarget < 0 && getY() - yTarget < 0) //Food is on the diagonal (lower right) then run lower right
+        {
+            direction = 4;
+        }
+    }
+    else
+    {
+        std::uniform_int_distribution <> random_direction(1, 8);
         direction = random_direction(generator);
-    }
-    else if(choice == 1)
-    {
-        if(x_target - getX() < 0)
-        {
-            direction = 4; //left
-        }
-        else if(x_target - getX() > 0)
-        {
-            direction = 2; //right
-        }
-    }
-    else if(choice == 2)
-    {
-        if(y_target - getY() < 0)
-        {
-            direction = 1; //up
-        }
-        else if(y_target - getY() > 0)
-        {
-            direction = 3; //down
-        }
-    }
-    else if(choice == 3)
-    {
-        if(x_target - getX() < 0)
-        {
-            direction = 2; //right
-        }
-        else if(x_target - getX() > 0)
-        {
-            direction = 4; //left
-        }
-    }
-    else if(choice == 4)
-    {
-        if(y_target - getY() < 0)
-        {
-            direction = 3; //down
-        }
-        else if(y_target - getY() > 0)
-        {
-            direction = 1; //up
-        }
     }
 
     if(getHunger() >= 15)
@@ -568,11 +571,6 @@ void Ovelha::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, c
         steps = random_steps(generator);
     }
     else
-    {
-        steps = 1;
-    }
-
-    if((choice == 1 || choice == 2) && (abs(y_target - getY()) == 1 || abs(x_target - getX()) == 1))
     {
         steps = 1;
     }
