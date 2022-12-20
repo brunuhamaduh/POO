@@ -363,7 +363,8 @@ void startGame(term::Window &comando, std:: string &input, Reserva &principal)
         principal.setSize(200);
     }
     */
-    principal.newAnimal(25,25,'g');
+    principal.newAnimal(10,10,'g');
+    principal.newAnimal(16,16,'l');
 }
 
 void loopGame(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string input, std::vector<std::string> &listComando)

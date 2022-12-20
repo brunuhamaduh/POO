@@ -29,6 +29,8 @@ public:
     ~BaseAnimal();
     int getX() const;
     int getY() const;
+    void setX(const int &num);
+    void setY(const int &num);
     int getID() const;
     void setPos(int &direction, int &num, const int &tamanho);
     char getEspecie() const;
@@ -54,7 +56,8 @@ public:
     virtual BaseAnimal* Child() const = 0;
     virtual bool checkChild() = 0;
     virtual BaseAlimento* Die() = 0;
-
+    //only canguru has this
+    virtual bool getHide() const;
 };
 
 class AnimalH: virtual public BaseAnimal
@@ -153,6 +156,7 @@ public:
     Canguru* Child() const override;
     bool checkChild() override;
     Corpo* Die() override;
+    bool getHide() const override;
 };
 
 #endif //POO_ANIMAL_H

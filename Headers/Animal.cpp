@@ -5,9 +5,9 @@
 #include <sstream>
 #include "Reserva.h"
 
-BaseAnimal::BaseAnimal() : ID(Reserva::getID()), HP(100), instante(0), campoVisao(0), Peso(0.0), especie('X') {}
-BaseAnimal::BaseAnimal(const int &x, const int &y, const int &hp) : Location(x,y), ID(Reserva::getID()), HP(hp), instante(0), campoVisao(0), Peso(0.0), especie('X') {}
-BaseAnimal::BaseAnimal(const int &x, const int &y) : Location(x,y), ID(Reserva::getID()), HP(100), instante(0), campoVisao(0), Peso(0.0), especie('X') {}
+BaseAnimal::BaseAnimal() : ID(Reserva::getID()), HP(100), instante(0), campoVisao(0), Peso(0.0), especie('X'), kill(false) {}
+BaseAnimal::BaseAnimal(const int &x, const int &y, const int &hp) : Location(x,y), ID(Reserva::getID()), HP(hp), instante(0), campoVisao(0), Peso(0.0), especie('X'), kill(false) {}
+BaseAnimal::BaseAnimal(const int &x, const int &y) : Location(x,y), ID(Reserva::getID()), HP(100), instante(0), campoVisao(0), Peso(0.0), especie('X'), kill(false) {}
 BaseAnimal::~BaseAnimal() = default;
 void BaseAnimal::InitEspecie(const char &chara) {especie = chara;}
 void BaseAnimal::InitCampoVisao(const int &num) {campoVisao = num;}
@@ -26,6 +26,9 @@ int BaseAnimal::getInstante() const {return instante;}
 void BaseAnimal::incInstante() {instante++;}
 void BaseAnimal::Kill() {kill = true;}
 bool BaseAnimal::getKill() const {return kill;}
+bool BaseAnimal::getHide() const {return false;}
+void BaseAnimal::setX(const int &num) {Location.setX(num);}
+void BaseAnimal::setY(const int &num) {Location.setY(num);}
 std::vector<BaseAnimal*> BaseAnimal::checkAroundAnimais(const std::vector<BaseAnimal*> &animais,  const int &visionRange, const int &x, const int &y, const int &id) const
 {
     std::vector<BaseAnimal*> temp;
@@ -75,7 +78,7 @@ void AnimalL::InitLifeTick(const int &num) {lifeTick = num;}
 void AnimalL::LifeTick() {lifeTick--;}
 int AnimalL::getLifeTick() const {return lifeTick;}
 
-CompleteAnimal::CompleteAnimal() {}
+CompleteAnimal::CompleteAnimal() = default;
 CompleteAnimal::CompleteAnimal(const int &x, const int &y) : BaseAnimal{x, y}, AnimalH{x, y}, AnimalL{x, y} {}
 CompleteAnimal::CompleteAnimal(const int &x, const int &y, const int &hp) : BaseAnimal{x, y, hp}, AnimalH{x, y, hp}, AnimalL{x, y, hp} {}
 CompleteAnimal::~CompleteAnimal() = default;
@@ -790,7 +793,8 @@ void Lobo::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, con
 
     bool ChaseAnimal = false;
     bool ChaseFood = false;
-    int xTarget = -1, yTarget = -1, direction, steps, biggestAnimal = 0;
+    int xTarget = -1, yTarget = -1, direction, steps;
+    double biggestAnimal = 0.0;
 
     for(auto &it: AroundAlimentos)
     {
@@ -864,11 +868,13 @@ void Lobo::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, con
     {
         if(getHunger() >= 15)
         {
-            steps = 3;
+            //steps = 3;
+            steps = 1;
         }
         else
         {
-            steps = 2;
+            //steps = 2;
+            steps = 1;
         }
     }
     else
@@ -978,8 +984,12 @@ void Lobo::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &al
 
     for(auto &it : Copy)
     {
-        if((it->getX() == getX() && it->getY() == getY() || abs(getX()-it->getX()) == 1 || abs(getY()-it->getY()) == 1) && getID() != it->getID())
+        if(it->getID() != getID() && (it->getX() == getX() && it->getY() == getY() || abs(it->getX() == getX()) == 1 && abs(it->getY() == getY()) == 1))
         {
+            if(it->getHide())
+            {
+                continue;
+            }
             if(getPeso() > it->getPeso())
             {
                 it->Kill();
@@ -1113,9 +1123,13 @@ Canguru::~Canguru() = default;
 
 void Canguru::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos)
 {
-    int xTarget = -1, yTarget = -1;
+    int xTarget = -1;
+    int yTarget = -1;
+    int direction;
+    int steps = 1;
+    std::vector<BaseAnimal*> AroundAnimais = checkAroundAnimais(animais, getcampoVisao(), getX(), getY(), getID());
 
-    if(getInstante() == 10)
+    if(getInstante() == 10 && child)
     {
         child = false;
         run = false;
@@ -1128,7 +1142,15 @@ void Canguru::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, 
         setPeso(20);
     }
 
-    if(hide)
+    if(!child)
+    {
+        std::random_device random;
+        std::mt19937 generator(random());
+        std::uniform_int_distribution <> random_direction(1,  8);
+        direction = random_direction(generator);
+    }
+
+    else
     {
         for(auto const &it : animais)
         {
@@ -1139,99 +1161,73 @@ void Canguru::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, 
             }
         }
 
-        if(xTarget == -1 && yTarget == -1)
+        if(hide)
         {
-            Kill();
-        }
-        else if(hidetick == 5)
-        {
-            hide = false;
-            hidetick = 0;
-        }
-        else
-        {
-            hidetick++;
-            return;
-        }
-    }
-
-    int direction;
-    int steps = 1;
-    std::vector<BaseAnimal*> AroundAnimais = checkAroundAnimais(animais, getcampoVisao(), getX(), getY(), getID());
-
-    if(!child) //parent
-    {
-        std::random_device random;
-        std::mt19937 generator(random());
-        std::uniform_int_distribution <> random_direction(1,  8);
-
-        direction = random_direction(generator);
-    }
-    else //child
-    {
-        if(getInstante() < 10)
-        {
-            for(auto const &it : animais)
+            if(xTarget == -1 && yTarget == -1) //if the parent is dead while he's hiding then he dies too
             {
-                if(it->getID() == idparent)
-                {
-                    xTarget = it->getX();
-                    yTarget = it->getY();
-                }
+                Kill();
             }
-        }
-
-        if(xTarget != -1 && yTarget != -1) //parent still alive, follow it
-        {
-            if(getX() - xTarget > 0 && getY() == yTarget) //Parent on the left then run left
+            else if(hidetick == 5)
             {
-                direction = 7;
+                hide = false;
+                hidetick = 0;
             }
-            else if(getX() - xTarget < 0 && getY() == yTarget) //Parent on the right then run right
+            else
             {
-                direction = 3;
-            }
-            else if(getX() == xTarget && getY() - yTarget > 0) //Parent is up then run up
-            {
-                direction = 1;
-            }
-            else if(getX() == xTarget && getY() - yTarget < 0) //Parent is down then run down
-            {
-                direction = 5;
-            }
-            else if(getX() - xTarget > 0 && getY() - yTarget > 0) //Parent is on the diagonal (upper left) then run upper left
-            {
-                direction = 8;
-            }
-            else if(getX() - xTarget > 0 && getY() - yTarget < 0) //Parent is on the diagonal (lower left) then run lower left
-            {
-                direction = 6;
-            }
-            else if(getX() - xTarget < 0 && getY() - yTarget > 0) //Parent is on the diagonal (upper right) then run upper right
-            {
-                direction = 2;
-            }
-            else if(getX() - xTarget < 0 && getY() - yTarget < 0) //Parent is on the diagonal (lower right) then run lower right
-            {
-                direction = 4;
-            }
-        }
-
-        if(run)
-        {
-            if(getX() == xTarget && getY() == yTarget)
-            {
-                hide = true;
-                run = false;
+                setX(xTarget);
+                setY(yTarget);
+                hidetick++;
                 return;
             }
         }
         else
         {
-            if(getX() + steps == xTarget || getY() + steps == yTarget)
+            if(run)
             {
-                direction = 0;
-                steps = 0;
+                if((abs(getX() - xTarget) <= 1 && abs(getY() - yTarget) <= 1))
+                {
+                    setX(xTarget);
+                    setY(yTarget);
+                    hide = true;
+                    run = false;
+                    return;
+                }
+                steps = 2;
+            }
+            if(xTarget != -1 && yTarget != -1) //parent still alive, follow it
+            {
+                if(getX() - xTarget > 0 && getY() == yTarget) //Parent on the left then run left
+                {
+                    direction = 7;
+                }
+                else if(getX() - xTarget < 0 && getY() == yTarget) //Parent on the right then run right
+                {
+                    direction = 3;
+                }
+                else if(getX() == xTarget && getY() - yTarget > 0) //Parent is up then run up
+                {
+                    direction = 1;
+                }
+                else if(getX() == xTarget && getY() - yTarget < 0) //Parent is down then run down
+                {
+                    direction = 5;
+                }
+                else if(getX() - xTarget > 0 && getY() - yTarget > 0) //Parent is on the diagonal (upper left) then run upper left
+                {
+                    direction = 8;
+                }
+                else if(getX() - xTarget > 0 && getY() - yTarget < 0) //Parent is on the diagonal (lower left) then run lower left
+                {
+                    direction = 6;
+                }
+                else if(getX() - xTarget < 0 && getY() - yTarget > 0) //Parent is on the diagonal (upper right) then run upper right
+                {
+                    direction = 2;
+                }
+                else if(getX() - xTarget < 0 && getY() - yTarget < 0) //Parent is on the diagonal (lower right) then run lower right
+                {
+                    direction = 4;
+                }
             }
 
             for(auto const &it: AroundAnimais)
@@ -1306,4 +1302,9 @@ Canguru* Canguru::Child() const
 Corpo* Canguru::Die()
 {
     return new Corpo(getX(), getY(), 15, 5);
+}
+
+bool Canguru::getHide() const
+{
+    return hide;
 }
