@@ -720,109 +720,104 @@ Lobo::~Lobo() = default;
 
 void Lobo::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos, term::Window &out)
 {
-    std::vector<std::string> cheiros;
-    int x_target, y_target, steps = 1, direction, choice = 0;
-    double biggestAnimal = 0.0;
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::vector<BaseAnimal*> AroundAnimais = checkAroundAnimais(animais, getcampoVisao(), getX(), getY(), getID());
+    std::vector<BaseAlimento*> AroundAlimentos = checkAroundAlimentos(alimentos, getcampoVisao(), getX(), getY(), getID());
+    std::vector<std::string> Cheiros;
 
-    for(auto &it: alimentos)
+    bool ChaseAnimal = false;
+    bool ChaseFood = false;
+    int xTarget = -1, yTarget = -1, direction, steps, biggestAnimal = 0;
+
+    for(auto &it: AroundAlimentos)
     {
-        cheiros = it->getCheiro();
-        if(abs(it->getX() - getX()) <= getcampoVisao() && it->getX() == getX())
+        Cheiros = it->getCheiro();
+        if(std::count(Cheiros.begin(), Cheiros.end(), "carne"))
         {
-            for(auto const &it1: cheiros)
+            ChaseAnimal = false;
+            ChaseFood = true;
+            if(it->getX() < xTarget && it->getY() < yTarget || (xTarget == -1 && yTarget == -1)) //if it's closer
             {
-                if(it1 == "carne")
-                {
-                    x_target = it->getX();
-                    choice = 1;
-                    goto End;
-                }
-            }
-        }
-
-        if(abs(it->getY() - getY()) <= getcampoVisao() && it->getY() == getY())
-        {
-            for(auto const &it1: cheiros)
-            {
-                if(it1 == "carne")
-                {
-                    y_target = it->getY();
-                    choice = 2;
-                    goto End;
-                }
+                xTarget = it->getX();
+                yTarget = it->getY();
             }
         }
     }
 
-    End:
-    for(auto &it: animais)
+    for(auto &it: AroundAnimais)
     {
-        if(abs(it->getX() - getX()) <= getcampoVisao() && it->getID() != getID() && it->getY() == getY())
+        ChaseAnimal = true;
+        ChaseFood = false;
+        if(it->getPeso() > biggestAnimal)
         {
-            if(it->getPeso() > biggestAnimal)
-            {
-                biggestAnimal = it->getPeso();
-                x_target = it->getX();
-                choice = 3;
-            }
-        }
-
-        if(abs(it->getY() - getY()) <= getcampoVisao() && it->getID() != getID() && it->getX() == getX())
-        {
-            if(it->getPeso() > biggestAnimal)
-            {
-                biggestAnimal = it->getPeso();
-                y_target = it->getY();
-                choice = 4;
-            }
+            xTarget = it->getX();
+            yTarget = it->getY();
+            biggestAnimal = it->getPeso();
         }
     }
 
-    if(choice == 0)
+    if(ChaseAnimal || ChaseFood)
     {
-        std::random_device random;
-        std::mt19937 generator(random());
-        std::uniform_int_distribution <> random_direction(1, 4);
-        direction = random_direction(generator);
-    }
-
-    else if(choice == 1 || choice == 3)
-    {
-        if(x_target - getX() < 0)
+        if(getX() - xTarget > 0 && getY() == yTarget) //Food/Animal on the left then run left
         {
-            direction = 4; //left
+            direction = 7;
         }
-        else if(x_target - getX() > 0)
+        else if(getX() - xTarget < 0 && getY() == yTarget) //Food/Animal on the right then run right
         {
-            direction = 2; //right
+            direction = 3;
         }
-    }
-    else if(choice == 2 || choice == 4)
-    {
-        if(y_target - getY() < 0)
+        else if(getX() == xTarget && getY() - yTarget > 0) //Food/Animal is up then run up
         {
-            direction = 1; //up
+            direction = 1;
         }
-        else if(y_target - getY() > 0)
+        else if(getX() == xTarget && getY() - yTarget < 0) //Food/Animal is down then run down
         {
-            direction = 3; //down
+            direction = 5;
         }
-    }
-
-    if(choice == 3 || choice == 4)
-    {
-        steps = 2;
-        if(getHunger() >= 15)
+        else if(getX() - xTarget > 0 && getY() - yTarget > 0) //Food/Animal is on the diagonal (upper left) then run upper left
         {
-            steps = 3;
+            direction = 8;
+        }
+        else if(getX() - xTarget > 0 && getY() - yTarget < 0) //Food/Animal is on the diagonal (lower left) then run lower left
+        {
+            direction = 6;
+        }
+        else if(getX() - xTarget < 0 && getY() - yTarget > 0) //Food/Animal is on the diagonal (upper right) then run upper right
+        {
+            direction = 2;
+        }
+        else if(getX() - xTarget < 0 && getY() - yTarget < 0) //Food/Animal is on the diagonal (lower right) then run lower right
+        {
+            direction = 4;
         }
     }
     else
     {
-        steps = 1;
+        std::uniform_int_distribution <> random_direction(1, 8);
+        direction = random_direction(generator);
+    }
+
+    if(ChaseAnimal)
+    {
+        if(getHunger() >= 15)
+        {
+            steps = 3;
+        }
+        else
+        {
+            steps = 2;
+        }
+    }
+    else
+    {
         if(getHunger() >= 15)
         {
             steps = 2;
+        }
+        else
+        {
+            steps = 1;
         }
     }
 
