@@ -35,6 +35,8 @@ public:
     int getHP() const;
     void setHP(const int &num);
     void incInstante();
+    std::vector<BaseAnimal*> checkAroundAnimais(const std::vector<BaseAnimal*> &animais, const int &visionRange, const int &x, const int &y, const int &id) const;
+    std::vector<BaseAlimento*> checkAroundAlimentos(const std::vector<BaseAlimento*> &alimentos, const int &visionRange, const int &x, const int &y, const int &id) const;
     //wolf doesn't have this
     virtual void InitLifeTick(const int &num);
     virtual int getLifeTick() const;
