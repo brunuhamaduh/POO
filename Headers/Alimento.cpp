@@ -23,7 +23,7 @@ int BaseAlimento::getInstante() const {return Instante;}
 void BaseAlimento::incInstante() {Instante++;}
 int BaseAlimento::getTV() const {return -1;}
 char BaseAlimento::getLetra() const {return letra;}
-BaseAlimento* BaseAlimento::Child() {return nullptr;}
+BaseAlimento* BaseAlimento::Child(std::vector<BaseAlimento*> &alimentos) {return nullptr;}
 void BaseAlimento::Kill() {kill = true;}
 bool BaseAlimento::getKill() const {return kill;}
 void BaseAlimento::InitDescription(const std::string &descrip) {Description = descrip;}
@@ -59,7 +59,8 @@ Relva::Relva()
         }
     }
     constantes.close();
-    instanteSpawn = round(getTV() * 0.75);
+    instanteSpawn =
+    spawned = false;
 }
 
 Relva::Relva(const int &x, const int &y) : BaseAlimento{x,y}, AlimentoTV{x, y}
@@ -86,67 +87,61 @@ Relva::Relva(const int &x, const int &y) : BaseAlimento{x,y}, AlimentoTV{x, y}
         }
     }
     constantes.close();
-    int temp = getTV() * 0.75;
-    instanteSpawn = temp;
+    instanteSpawn = round(getTV() * 0.75);
+    spawned = false;
 }
 Relva::~Relva() = default;
 
 bool Relva::Action()
 {
     InitTV(getTV() - 1);
-    if(instanteSpawn == getInstante())
+    if(instanteSpawn >= getInstante() && !spawned)
     {
         return true;
     }
     return false;
 }
 
-Relva* Relva::Child()
+Relva* Relva::Child(std::vector<BaseAlimento*> &alimentos)
 {
     std::random_device random;
     std::mt19937 generator(random());
     std::uniform_int_distribution <> distr(4, 8);
     std::uniform_int_distribution <> sinal(1, 4);
-    int xRandom, yRandom, area = Reserva::getArea(), tentativa = 0, sinalconta;
+    int xRandom, yRandom, area = Reserva::getArea(), sinalconta;
 
-    while(true) //making sure the child doesn't spawn outside area if parent is on the edges
+    sinalconta = sinal(generator);
+
+    if (sinalconta == 1)
     {
-        tentativa++;
-        sinalconta = sinal(generator);
+        xRandom = distr(generator) + getX();
+        yRandom = distr(generator) + getY();
+    }
+    else if (sinalconta == 2)
+    {
+        xRandom = distr(generator) - getX();
+        yRandom = distr(generator) + getY();
+    }
+    else if (sinalconta == 3)
+    {
+        xRandom = distr(generator) + getX();
+        yRandom = distr(generator) - getY();
+    }
+    else if (sinalconta == 4)
+    {
+        xRandom = distr(generator) - getX();
+        yRandom = distr(generator) - getY();
+    }
 
-        if (sinalconta == 1)
+    for(auto const &it: alimentos)
+    {
+        if(xRandom == it->getX() && yRandom == it->getY())
         {
-            xRandom = distr(generator) + getX();
-            yRandom = distr(generator) + getY();
-        }
-        else if (sinalconta == 2)
-        {
-            xRandom = distr(generator) - getX();
-            yRandom = distr(generator) + getY();
-        }
-        else if (sinalconta == 3)
-        {
-            xRandom = distr(generator) + getX();
-            yRandom = distr(generator) - getY();
-        }
-        else if (sinalconta == 4)
-        {
-            xRandom = distr(generator) - getX();
-            yRandom = distr(generator) - getY();
-        }
-
-        if (xRandom > 0 && xRandom < area && yRandom > 0 && yRandom < area)
-        {
-            break;
-        }
-        else if (tentativa == 50) //in case it gets stuck in an infinite loop
-        {
-            xRandom = 0;
-            yRandom = 0;
-            break;
+            return nullptr;
         }
     }
 
+    spawned = true;
     return new Relva(xRandom, yRandom);
 }
 

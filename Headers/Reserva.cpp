@@ -224,7 +224,11 @@ void Reserva::advanceInstant(const int &num)
         for (auto& it : Alimentos)
         {
             it->incInstante();
-            if(it->Action()) {Copy2.emplace_back(it->Child());}
+            if(it->Action())
+            {
+                auto teste = it->Child(Alimentos);
+                if(teste != nullptr) {Copy2.emplace_back(teste);}
+            }
         }
 
         auto ptr = Animais.begin();

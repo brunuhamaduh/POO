@@ -37,7 +37,7 @@ public:
     void InitCheiro(const std::vector<std::string> &cheiros);
     std::vector<std::string> getCheiro() const;
     virtual bool Action() = 0;
-    virtual BaseAlimento* Child();
+    virtual BaseAlimento* Child(std::vector<BaseAlimento*> &alimentos);
     int getInstante() const;
     void incInstante();
     void InitDescription(const std::string &descrip);
@@ -57,13 +57,13 @@ protected:
 class Relva: public AlimentoTV
 {
     int instanteSpawn;
+    bool spawned;
 public:
     Relva();
     Relva(const int &x, const int &y);
     ~Relva();
     bool Action() override;
-    Relva* Child() override;
-    //Se a posicao ja tiver um alimento, nao acontece nada e tenta novamente no instante seguinte
+    Relva* Child(std::vector<BaseAlimento*> &alimentos) override;
 };
 
 class Cenoura: public BaseAlimento
