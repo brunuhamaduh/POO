@@ -108,29 +108,43 @@ Relva* Relva::Child(std::vector<BaseAlimento*> &alimentos)
     std::mt19937 generator(random());
     std::uniform_int_distribution <> distr(4, 8);
     std::uniform_int_distribution <> sinal(1, 4);
-    int xRandom, yRandom, area = Reserva::getArea(), sinalconta;
+    int xRandom, yRandom, area = Reserva::getArea(), sinalconta, tentativa = 0;
 
-    sinalconta = sinal(generator);
+    while(true)
+    {
+        sinalconta = sinal(generator);
+        tentativa++;
+        if (sinalconta == 1)
+        {
+            xRandom = distr(generator) + getX();
+            yRandom = distr(generator) + getY();
+        }
+        else if (sinalconta == 2)
+        {
+            xRandom = distr(generator) - getX();
+            yRandom = distr(generator) + getY();
+        }
+        else if (sinalconta == 3)
+        {
+            xRandom = distr(generator) + getX();
+            yRandom = distr(generator) - getY();
+        }
+        else if (sinalconta == 4)
+        {
+            xRandom = distr(generator) - getX();
+            yRandom = distr(generator) - getY();
+        }
 
-    if (sinalconta == 1)
-    {
-        xRandom = distr(generator) + getX();
-        yRandom = distr(generator) + getY();
-    }
-    else if (sinalconta == 2)
-    {
-        xRandom = distr(generator) - getX();
-        yRandom = distr(generator) + getY();
-    }
-    else if (sinalconta == 3)
-    {
-        xRandom = distr(generator) + getX();
-        yRandom = distr(generator) - getY();
-    }
-    else if (sinalconta == 4)
-    {
-        xRandom = distr(generator) - getX();
-        yRandom = distr(generator) - getY();
+        if (xRandom > 0 && xRandom < area && yRandom > 0 && yRandom < area)
+        {
+            break;
+        }
+        else if (tentativa == 50) //in case it gets stuck in an infinite loop
+        {
+            xRandom = 0;
+            yRandom = 0;
+            break;
+        }
     }
 
     for(auto const &it: alimentos)
