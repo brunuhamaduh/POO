@@ -396,6 +396,43 @@ void Reserva::killID(const int &ID)
     }
 }
 
+void Reserva::nofood(const int &XorID, const int &y)
+{
+    if(y == -1)
+    {
+        for (auto& it : Alimentos)
+        {
+            if(it->getID() == XorID)
+            {
+                it->Kill();
+            }
+        }
+    }
+    else
+    {
+        for (auto& it : Alimentos)
+        {
+            if(it->getX() == XorID && it->getY() == y)
+            {
+                it->Kill();
+            }
+        }
+    }
+
+    auto ptr = Alimentos.begin();
+    while(ptr != Alimentos.end())
+    {
+        if ((*ptr)->getTV() == 0 || (*ptr)->getKill())
+        {
+            ptr = Alimentos.erase(ptr);
+        }
+        else
+        {
+            ptr++;
+        }
+    }
+}
+
 int Reserva::getID() {return ++ID;}
 int Reserva::ID = 0;
 int Reserva::tamanho = 0;

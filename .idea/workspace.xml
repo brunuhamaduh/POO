@@ -20,7 +20,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8002510f-ec06-4c29-a2a8-fd6e4825d3a6" name="Changes" comment="new feed and feedID command">
+    <list default="true" id="8002510f-ec06-4c29-a2a8-fd6e4825d3a6" name="Changes" comment="new kill and killID command">
+      <change beforePath="$PROJECT_DIR$/Headers/Functions.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Functions.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Headers/Reserva.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Reserva.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Headers/Reserva.h" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Reserva.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/POO - 2223 - Enunciado Trabalho Pratico v.1.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/POO - 2223 - Enunciado Trabalho Pratico v.1.pdf" afterDir="false" />
@@ -336,7 +337,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671751192022</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="new kill and killID command">
+      <created>1671751633943</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1671751633943</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -357,7 +365,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="each instant animals gain hunger (lose hp)" />
     <MESSAGE value="Coelho child" />
     <MESSAGE value="Coelho children" />
     <MESSAGE value="Ovelha children" />
@@ -382,7 +389,8 @@
     <MESSAGE value="Food history now contains the name of food and not the letter" />
     <MESSAGE value="animal and food creation slightly changed" />
     <MESSAGE value="new feed and feedID command" />
-    <option name="LAST_COMMIT_MESSAGE" value="new feed and feedID command" />
+    <MESSAGE value="new kill and killID command" />
+    <option name="LAST_COMMIT_MESSAGE" value="new kill and killID command" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

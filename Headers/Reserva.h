@@ -33,6 +33,7 @@ public:
     void feedID(const int &ID, const int &VN, const int &TOXIC);
     void kill(const int &x, const int &y);
     void killID(const int &ID);
+    void nofood(const int &XorID, const int &y = -1);
     void change_VArea(const int &index, bool op);
     void advanceInstant(const int &num = 1);
     std::string getInfo(const int &ID);

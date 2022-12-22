@@ -177,7 +177,7 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
         {
             try
             {
-                principal.newAlimento(stoi(listComando.at(2)), stoi(listComando.at(3)), listComando.at(1)[0]);
+                principal.newAlimento(listComando.at(1)[0], stoi(listComando.at(2)), stoi(listComando.at(3)));
             }
             catch(...)
             {
@@ -237,6 +237,17 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
                 principal.killID(stoi(listComando.at(1)));
             }
             catch(...) {}
+        }
+        else if(listComando.at(0) == "nofood")
+        {
+            try
+            {
+                principal.nofood(stoi(listComando.at(1)), stoi(listComando.at(2)));
+            }
+            catch(...)
+            {
+                principal.nofood(stoi(listComando.at(1)));
+            }
         }
     }
 }
