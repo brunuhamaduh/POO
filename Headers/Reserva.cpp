@@ -1,5 +1,7 @@
 #include "Reserva.h"
 #include <iomanip>
+#include <algorithm>
+#include <random>
 
 Reserva::Reserva() : instante(0){ }
 Reserva::~Reserva()
@@ -155,8 +157,17 @@ void Reserva::change_VArea(const int &index, bool op)
         viewarea[index]--;
 }
 
-void Reserva::newAnimal(const int &x, const int &y, const char &especie)
+void Reserva::newAnimal(const char &especie, int x, int y)
 {
+    if(x == -1 && y == -1)
+    {
+        std::random_device random;
+        std::mt19937 generator(random());
+        std::uniform_int_distribution <> distr(0, tamanho);
+        x = distr(generator);
+        y = distr(generator);
+    }
+
     if(especie == 'c')
     {
         Animais.emplace_back(new Coelho(x,y));
@@ -175,8 +186,17 @@ void Reserva::newAnimal(const int &x, const int &y, const char &especie)
     }
 }
 
-void Reserva::newAlimento(const int &x, const int &y, const char &tipo)
+void Reserva::newAlimento(const char &tipo, int x, int y)
 {
+    if(x == -1 && y == -1)
+    {
+        std::random_device random;
+        std::mt19937 generator(random());
+        std::uniform_int_distribution <> distr(0, tamanho);
+        x = distr(generator);
+        y = distr(generator);
+    }
+
     if(tipo == 'r')
     {
         Alimentos.emplace_back(new Relva(x,y));
@@ -184,10 +204,6 @@ void Reserva::newAlimento(const int &x, const int &y, const char &tipo)
     else if(tipo == 't')
     {
         Alimentos.emplace_back(new Cenoura(x, y));
-    }
-    else if(tipo == 'p')
-    {
-        Alimentos.emplace_back(new Corpo(x, y, 5));
     }
     else if(tipo == 'b')
     {
@@ -276,4 +292,4 @@ std::string Reserva::getInfo(const int &ID1)
 
 int Reserva::getID() {return ++ID;}
 int Reserva::ID = 0;
-int Reserva::tamanho = 200;
+int Reserva::tamanho = 0;

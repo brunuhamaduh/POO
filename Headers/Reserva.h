@@ -27,8 +27,8 @@ public:
     int getInstante() const;
     size_t countAnimal() const;
     size_t countAlimento() const;
-    void newAnimal(const int &x, const int &y, const char &especie);
-    void newAlimento(const int &x, const int &y, const char &tipo);
+    void newAnimal(const char &especie, int x = -1, int y = -1);
+    void newAlimento(const char &tipo, int x = -1, int y = -1);
     void change_VArea(const int &index, bool op);
     void advanceInstant(const int &num = 1);
     std::string getInfo(const int &ID);

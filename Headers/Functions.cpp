@@ -151,7 +151,7 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
         out << "";
         if(listComando.at(0) == "load")
         {
-            leComandos(out, listComando, principal);
+            //leComandos(out, listComando, principal);
         }
         else if(listComando.at(0) == "anim")
         {
@@ -165,14 +165,26 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
         {
             try
             {
-                principal.newAnimal(stoi(listComando.at(2)), stoi(listComando.at(3)), listComando.at(1)[0]);
+                principal.newAnimal(listComando.at(1)[0], stoi(listComando.at(2)), stoi(listComando.at(3)));
+            }
+            catch(...)
+            {
+
+                principal.newAnimal(listComando.at(1)[0]);
+            }
+        }
+        else if(listComando.at(0) == "food")
+        {
+            try
+            {
+                principal.newAlimento(stoi(listComando.at(2)), stoi(listComando.at(3)), listComando.at(1)[0]);
             }
             catch(...)
             {
                 std::random_device random;
                 std::mt19937 generator(random());
                 std::uniform_int_distribution <> distr(0, principal.getArea());
-                principal.newAnimal(distr(generator), distr(generator), listComando.at(1)[0]);
+                principal.newAlimento(listComando.at(1)[0], distr(generator), distr(generator));
             }
         }
         else if(listComando.at(0) == "n")
@@ -305,55 +317,11 @@ void mostra(Reserva &principal, term::Window &reserva, term::Window &comando, te
 
 void leComandos(term::Window &out, std::vector<std::string> &listComando, Reserva &principal)
 {
-    std::vector<int> viewarea = principal.getVArea();
-    std::string line;
-    std::ifstream comandos(listComando[1]);
-    if (comandos.is_open())
-    {
-        while (getline(comandos,line))
-        {
-            if(!isValid(line, listComando, principal.getArea()))
-            {
-                out << "Comando invalido";
-            }
-            else if(line != "KEY_UP" && line != "KEY_DOWN" && line != "KEY_RIGHT" && line != "KEY_LEFT")
-            {
-                out << "";
-                 if(listComando.at(0) == "anim")
-                {
-                    displayEverything(principal, out);
-                }
-                else if(listComando.at(0) == "visanim")
-                {
-                    displayScreen(principal, out);
-                }
-                else if(listComando.at(0) == "animal")
-                {
-                    try
-                    {
-                        principal.newAnimal(stoi(listComando.at(2)), stoi(listComando.at(3)), listComando.at(1)[0]);
-                    }
-                    catch(...)
-                    {
-                        std::random_device random;
-                        std::mt19937 generator(random());
-                        std::uniform_int_distribution <> distr(0, principal.getArea());
-                        principal.newAnimal(distr(generator), distr(generator), listComando.at(1)[0]);
-                    }
-                }
-            }
-        }
-        comandos.close();
-    }
-    else
-    {
-        out << "Erro ao abrir ficheiro\n";
-    }
+
 }
 
 void startGame(term::Window &comando, std:: string &input, Reserva &principal)
 {
-    /*
     try
     {
         do
@@ -370,12 +338,6 @@ void startGame(term::Window &comando, std:: string &input, Reserva &principal)
     {
         principal.setSize(200);
     }
-    */
-    principal.newAnimal(30,30,'c');
-    principal.newAlimento(31,31,'r');
-    principal.newAnimal(14,14,'o');
-    principal.newAnimal(15,15,'o');
-    principal.newAnimal(16,16,'l');
 }
 
 void loopGame(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string input, std::vector<std::string> &listComando)
