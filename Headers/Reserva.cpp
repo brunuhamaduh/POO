@@ -197,6 +197,14 @@ void Reserva::newAlimento(const char &tipo, int x, int y)
         y = distr(generator);
     }
 
+    for (auto& it : Alimentos)
+    {
+        if(it->getX() == x && it->getY() == y)
+        {
+            return;
+        }
+    }
+
     if(tipo == 'r')
     {
         Alimentos.emplace_back(new Relva(x,y));

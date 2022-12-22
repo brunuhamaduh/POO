@@ -20,10 +20,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8002510f-ec06-4c29-a2a8-fd6e4825d3a6" name="Changes" comment="new kill and killID command">
-      <change beforePath="$PROJECT_DIR$/Headers/Functions.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Functions.cpp" afterDir="false" />
+    <list default="true" id="8002510f-ec06-4c29-a2a8-fd6e4825d3a6" name="Changes" comment="new nofood command (both x/y and ID)">
       <change beforePath="$PROJECT_DIR$/Headers/Reserva.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Reserva.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Headers/Reserva.h" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Reserva.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/POO - 2223 - Enunciado Trabalho Pratico v.1.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/POO - 2223 - Enunciado Trabalho Pratico v.1.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -344,7 +342,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671751633943</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="new nofood command (both x/y and ID)">
+      <created>1671752262283</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1671752262283</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -365,7 +370,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Coelho child" />
     <MESSAGE value="Coelho children" />
     <MESSAGE value="Ovelha children" />
     <MESSAGE value="way better constructors" />
@@ -390,7 +394,8 @@
     <MESSAGE value="animal and food creation slightly changed" />
     <MESSAGE value="new feed and feedID command" />
     <MESSAGE value="new kill and killID command" />
-    <option name="LAST_COMMIT_MESSAGE" value="new kill and killID command" />
+    <MESSAGE value="new nofood command (both x/y and ID)" />
+    <option name="LAST_COMMIT_MESSAGE" value="new nofood command (both x/y and ID)" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
