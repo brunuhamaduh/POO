@@ -206,6 +206,22 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
             }
             catch(...) {}
         }
+        else if(listComando.at(0) == "feed")
+        {
+            try
+            {
+                principal.feed(stoi(listComando.at(1)), stoi(listComando.at(2)), stoi(listComando.at(3)), stoi(listComando.at(4)));
+            }
+            catch(...) {}
+        }
+        else if(listComando.at(0) == "feedid")
+        {
+            try
+            {
+                principal.feedID(stoi(listComando.at(1)), stoi(listComando.at(2)), stoi(listComando.at(3)));
+            }
+            catch(...) {}
+        }
     }
 }
 

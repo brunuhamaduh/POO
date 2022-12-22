@@ -290,6 +290,34 @@ std::string Reserva::getInfo(const int &ID1)
     return {};
 }
 
+void Reserva::feed(const int &x, const int &y, const int &VN, const int &TOXIC)
+{
+    for(auto &it : Animais)
+    {
+        if(it->getX() == x && it->getY() == y)
+        {
+            it->setHP(it->getHP() + VN - TOXIC);
+            it->setHunger(0);
+            it->addFood(new History(VN, TOXIC, "User"));
+            if(it->getHP() <= 0){it->Kill();}
+        }
+    }
+}
+
+void Reserva::feedID(const int &ID, const int &VN, const int &TOXIC)
+{
+    for(auto &it : Animais)
+    {
+        if(it->getID() == ID)
+        {
+            it->setHP(it->getHP() + VN - TOXIC);
+            it->setHunger(0);
+            it->addFood(new History(VN, TOXIC, "User"));
+            if(it->getHP() <= 0){it->Kill();}
+        }
+    }
+}
+
 int Reserva::getID() {return ++ID;}
 int Reserva::ID = 0;
 int Reserva::tamanho = 0;

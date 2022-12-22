@@ -20,12 +20,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8002510f-ec06-4c29-a2a8-fd6e4825d3a6" name="Changes" comment="animals should now be able to go through limits">
+    <list default="true" id="8002510f-ec06-4c29-a2a8-fd6e4825d3a6" name="Changes" comment="animal and food creation slightly changed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Headers/Animal.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Animal.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Headers/Animal.h" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Animal.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Headers/Functions.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Functions.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Headers/Reserva.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Reserva.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Headers/Reserva.h" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Reserva.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/POO - 2223 - Enunciado Trabalho Pratico v.1.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/POO - 2223 - Enunciado Trabalho Pratico v.1.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Alimento.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Alimento.cpp.obj" afterDir="false" />
@@ -333,7 +334,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671724302998</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="animal and food creation slightly changed">
+      <created>1671749471993</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1671749471993</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -354,7 +362,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Coelho Move done" />
     <MESSAGE value="dying animals done" />
     <MESSAGE value="each instant animals gain hunger (lose hp)" />
     <MESSAGE value="Coelho child" />
@@ -379,7 +386,8 @@
     <MESSAGE value="kangaroo child mechanics" />
     <MESSAGE value="Animals now have food history" />
     <MESSAGE value="Food history now contains the name of food and not the letter" />
-    <option name="LAST_COMMIT_MESSAGE" value="Food history now contains the name of food and not the letter" />
+    <MESSAGE value="animal and food creation slightly changed" />
+    <option name="LAST_COMMIT_MESSAGE" value="animal and food creation slightly changed" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

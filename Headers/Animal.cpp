@@ -62,6 +62,7 @@ int BaseAnimal::getHunger() const {return -1;}
 void BaseAnimal::setHunger(const int &num) {}
 void BaseAnimal::Hunger() {}
 void BaseAnimal::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &alimentos) {}
+void BaseAnimal::addFood(History *food) {}
 
 AnimalH::AnimalH() : FoodHistory(nullptr), eatenfood(0), hunger(0) {}
 AnimalH::AnimalH(const int &x, const int &y) : FoodHistory(nullptr), eatenfood(0), hunger(0), BaseAnimal{x,y} {}
@@ -1044,7 +1045,6 @@ void Lobo::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &al
             if(getHP() + it->getVN() - it->getToxic() >= 0)
             {
                 setHP(getHP() + it->getVN() - it->getToxic());
-
             }
             else if(getHP() + it->getVN() - it->getToxic() <= 0)
             {

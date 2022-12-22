@@ -53,6 +53,7 @@ public:
     virtual void Hunger();
     virtual void Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &alimentos);
     virtual std::string getFoodHistory() const;
+    virtual void addFood(History *food);
     //all classes have it
     virtual void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos) = 0;
     virtual BaseAnimal* Child() const = 0;
@@ -76,7 +77,7 @@ public:
     int getHunger() const override;
     void setHunger(const int &num) override;
     virtual void Hunger();
-    void addFood(History *food);
+    void addFood(History *food) override;
     std::string getFoodHistory() const override;
 };
 
