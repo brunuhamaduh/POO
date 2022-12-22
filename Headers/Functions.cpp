@@ -222,6 +222,22 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
             }
             catch(...) {}
         }
+        else if(listComando.at(0) == "kill")
+        {
+            try
+            {
+                principal.kill(stoi(listComando.at(1)), stoi(listComando.at(2)));
+            }
+            catch(...) {}
+        }
+        else if(listComando.at(0) == "killid")
+        {
+            try
+            {
+                principal.killID(stoi(listComando.at(1)));
+            }
+            catch(...) {}
+        }
     }
 }
 

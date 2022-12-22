@@ -302,6 +302,20 @@ void Reserva::feed(const int &x, const int &y, const int &VN, const int &TOXIC)
             if(it->getHP() <= 0){it->Kill();}
         }
     }
+
+    auto ptr = Animais.begin();
+    while(ptr != Animais.end())
+    {
+        if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0 || (*ptr)->getKill())
+        {
+            if((*ptr)->Die() != nullptr) {Alimentos.emplace_back((*ptr)->Die());}
+            ptr = Animais.erase(ptr);
+        }
+        else
+        {
+            ptr++;
+        }
+    }
 }
 
 void Reserva::feedID(const int &ID, const int &VN, const int &TOXIC)
@@ -314,6 +328,70 @@ void Reserva::feedID(const int &ID, const int &VN, const int &TOXIC)
             it->setHunger(0);
             it->addFood(new History(VN, TOXIC, "User"));
             if(it->getHP() <= 0){it->Kill();}
+        }
+    }
+
+    auto ptr = Animais.begin();
+    while(ptr != Animais.end())
+    {
+        if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0 || (*ptr)->getKill())
+        {
+            if((*ptr)->Die() != nullptr) {Alimentos.emplace_back((*ptr)->Die());}
+            ptr = Animais.erase(ptr);
+        }
+        else
+        {
+            ptr++;
+        }
+    }
+}
+
+void Reserva::kill(const int &x, const int &y)
+{
+    for(auto &it : Animais)
+    {
+        if(it->getX() == x && it->getY() == y)
+        {
+            it->Kill();
+        }
+    }
+
+    auto ptr = Animais.begin();
+    while(ptr != Animais.end())
+    {
+        if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0 || (*ptr)->getKill())
+        {
+            if((*ptr)->Die() != nullptr) {Alimentos.emplace_back((*ptr)->Die());}
+            ptr = Animais.erase(ptr);
+        }
+        else
+        {
+            ptr++;
+        }
+    }
+}
+
+void Reserva::killID(const int &ID)
+{
+    for(auto &it : Animais)
+    {
+        if(it->getID() == ID)
+        {
+            it->Kill();
+        }
+    }
+
+    auto ptr = Animais.begin();
+    while(ptr != Animais.end())
+    {
+        if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0 || (*ptr)->getKill())
+        {
+            if((*ptr)->Die() != nullptr) {Alimentos.emplace_back((*ptr)->Die());}
+            ptr = Animais.erase(ptr);
+        }
+        else
+        {
+            ptr++;
         }
     }
 }
