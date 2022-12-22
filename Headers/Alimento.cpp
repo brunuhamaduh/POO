@@ -26,6 +26,8 @@ char BaseAlimento::getLetra() const {return letra;}
 BaseAlimento* BaseAlimento::Child() {return nullptr;}
 void BaseAlimento::Kill() {kill = true;}
 bool BaseAlimento::getKill() const {return kill;}
+void BaseAlimento::InitDescription(const std::string &descrip) {Description = descrip;}
+std::string BaseAlimento::getDescription() const {return Description;}
 
 AlimentoTV::AlimentoTV() : TempodeVida(30) {}
 AlimentoTV::AlimentoTV(const int &x, const int &y) : BaseAlimento{x, y}, TempodeVida(30) {}
@@ -39,6 +41,7 @@ Relva::Relva()
     InitVN(3);
     InitLetra('r');
     InitCheiro(cheiros);
+    InitDescription("Relva");
 
     std::string line, variable;
     int num;
@@ -65,6 +68,7 @@ Relva::Relva(const int &x, const int &y) : BaseAlimento{x,y}, AlimentoTV{x, y}
     InitVN(3);
     InitLetra('r');
     InitCheiro(cheiros);
+    InitDescription("Relva");
 
     std::string line, variable;
     int num;
@@ -82,7 +86,8 @@ Relva::Relva(const int &x, const int &y) : BaseAlimento{x,y}, AlimentoTV{x, y}
         }
     }
     constantes.close();
-    instanteSpawn = round(getTV() * 0.75);
+    int temp = getTV() * 0.75;
+    instanteSpawn = temp;
 }
 Relva::~Relva() = default;
 
@@ -151,6 +156,7 @@ Cenoura::Cenoura()
     InitVN(4);
     InitLetra('t');
     InitCheiro(cheiros);
+    InitDescription("Cenoura");
 }
 
 Cenoura::Cenoura(const int &x, const int &y) : BaseAlimento{x,y}
@@ -159,6 +165,7 @@ Cenoura::Cenoura(const int &x, const int &y) : BaseAlimento{x,y}
     InitVN(4);
     InitLetra('t');
     InitCheiro(cheiros);
+    InitDescription("Cenoura");
 }
 Cenoura::~Cenoura() = default;
 
@@ -181,6 +188,7 @@ Corpo::Corpo(const int &x, const int &y, const int &oldcorpse) : BaseAlimento{x,
     InitLetra('p');
     InitCheiro(cheiros);
     ogVN = oldcorpse;
+    InitDescription("Corpo");
 }
 
 Corpo::Corpo(const int &x, const int &y, const int &oldcorpse, const int &Toxic) : BaseAlimento{x, y}
@@ -191,6 +199,7 @@ Corpo::Corpo(const int &x, const int &y, const int &oldcorpse, const int &Toxic)
     InitCheiro(cheiros);
     InitToxic(Toxic);
     ogVN = oldcorpse;
+    InitDescription("Corpo");
 }
 
 Corpo::~Corpo() = default;
@@ -216,6 +225,7 @@ Bife::Bife()
     InitVN(10);
     InitToxic(2);
     InitCheiro(cheiros);
+    InitDescription("Bife");
 }
 
 Bife::Bife(const int &x, const int &y) : BaseAlimento{x,y}, AlimentoTV{x, y}
@@ -226,6 +236,7 @@ Bife::Bife(const int &x, const int &y) : BaseAlimento{x,y}, AlimentoTV{x, y}
     InitVN(10);
     InitToxic(2);
     InitCheiro(cheiros);
+    InitDescription("Bife");
 }
 Bife::~Bife() = default;
 

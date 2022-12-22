@@ -404,7 +404,7 @@ void Coelho::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &
                 Kill();
             }
 
-            addFood(new History(it->getVN(),it->getToxic(),it->getLetra()));
+            addFood(new History(it->getVN(),it->getToxic(),it->getDescription()));
             it->Kill();
             setHunger(0);
             break;
@@ -734,7 +734,7 @@ void Ovelha::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &
                 Kill();
             }
 
-            addFood(new History(it->getVN(),it->getToxic(),it->getLetra()));
+            addFood(new History(it->getVN(),it->getToxic(),it->getDescription()));
             it->Kill();
             setHunger(0);
             break;
@@ -1051,7 +1051,7 @@ void Lobo::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &al
                 Kill();
             }
 
-            addFood(new History(it->getVN(),it->getToxic(),it->getLetra()));
+            addFood(new History(it->getVN(),it->getToxic(),it->getDescription()));
             it->Kill();
             setHunger(0);
             break;

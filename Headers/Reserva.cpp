@@ -267,6 +267,7 @@ std::string Reserva::getInfo(const int &ID1)
             return it->getFoodHistory();
         }
     }
+    return {};
 }
 
 int Reserva::getID() {return ++ID;}

@@ -6,10 +6,10 @@ class History
 {
     int valorNutricional;
     int Toxicidade;
-    char letra;
+    std::string Description;
 
 public:
-    History(const int &VN, const int &Toxic, const char &letra);
+    History(const int &VN, const int &Toxic, const std::string &descrip);
     ~History();
     std::string getEntry() const;
 };

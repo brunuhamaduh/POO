@@ -27,6 +27,7 @@ public:
     int getVN() const;
     int getToxic() const;
     char getLetra() const;
+    std::string getDescription() const;
     virtual int getTV() const;
     void Kill();
     bool getKill() const;
@@ -39,6 +40,7 @@ public:
     virtual BaseAlimento* Child();
     int getInstante() const;
     void incInstante();
+    void InitDescription(const std::string &descrip);
 };
 
 class AlimentoTV: virtual public BaseAlimento
