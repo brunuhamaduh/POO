@@ -186,6 +186,14 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
                 principal.advanceInstant();
             }
         }
+        else if(listComando.at(0) == "info")
+        {
+            try
+            {
+                out << principal.getInfo(stoi(listComando.at(1)));
+            }
+            catch(...) {}
+        }
     }
 }
 
@@ -363,7 +371,10 @@ void startGame(term::Window &comando, std:: string &input, Reserva &principal)
         principal.setSize(200);
     }
     */
-    principal.newAnimal(10,10,'g');
+    principal.newAnimal(30,30,'c');
+    principal.newAlimento(31,31,'r');
+    principal.newAnimal(14,14,'o');
+    principal.newAnimal(15,15,'o');
     principal.newAnimal(16,16,'l');
 }
 

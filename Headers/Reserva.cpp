@@ -5,9 +5,14 @@ Reserva::Reserva() : instante(0){ }
 Reserva::~Reserva()
 {
     for(auto el: Animais)
+    {
         delete el;
+    }
+
     for(auto el: Alimentos)
+    {
         delete el;
+    }
 }
 
 int Reserva::getArea()
@@ -249,6 +254,17 @@ void Reserva::advanceInstant(const int &num)
             {
                 ptr1++;
             }
+        }
+    }
+}
+
+std::string Reserva::getInfo(const int &ID1)
+{
+    for (auto& it : Animais)
+    {
+        if(it->getID() == ID1)
+        {
+            return it->getFoodHistory();
         }
     }
 }

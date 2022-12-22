@@ -31,6 +31,7 @@ public:
     void newAlimento(const int &x, const int &y, const char &tipo);
     void change_VArea(const int &index, bool op);
     void advanceInstant(const int &num = 1);
+    std::string getInfo(const int &ID);
     static int getID();
 };
 

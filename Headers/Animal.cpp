@@ -29,6 +29,7 @@ bool BaseAnimal::getKill() const {return kill;}
 bool BaseAnimal::getHide() const {return false;}
 void BaseAnimal::setX(const int &num) {Location.setX(num);}
 void BaseAnimal::setY(const int &num) {Location.setY(num);}
+std::string BaseAnimal::getFoodHistory() const {return "";}
 std::vector<BaseAnimal*> BaseAnimal::checkAroundAnimais(const std::vector<BaseAnimal*> &animais,  const int &visionRange, const int &x, const int &y, const int &id) const
 {
     std::vector<BaseAnimal*> temp;
@@ -62,13 +63,35 @@ void BaseAnimal::setHunger(const int &num) {}
 void BaseAnimal::Hunger() {}
 void BaseAnimal::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &alimentos) {}
 
-AnimalH::AnimalH() : hunger(0) {}
-AnimalH::AnimalH(const int &x, const int &y) : hunger(0), BaseAnimal{x,y} {}
-AnimalH::AnimalH(const int &x, const int &y, const int &hp) : hunger(0), BaseAnimal{x,y, hp} {}
-AnimalH::~AnimalH() = default;
+AnimalH::AnimalH() : FoodHistory(nullptr), eatenfood(0), hunger(0) {}
+AnimalH::AnimalH(const int &x, const int &y) : FoodHistory(nullptr), eatenfood(0), hunger(0), BaseAnimal{x,y} {}
+AnimalH::AnimalH(const int &x, const int &y, const int &hp) : FoodHistory(nullptr), eatenfood(0), hunger(0), BaseAnimal{x,y, hp} {}
+AnimalH::~AnimalH() {delete [] FoodHistory[0]; delete[] FoodHistory;}
 int AnimalH::getHunger() const {return hunger;}
 void AnimalH::Hunger() {}
 void AnimalH::setHunger(const int &num) {hunger = num;}
+void AnimalH::addFood(History *food)
+{
+    int oldFood = eatenfood++, i;
+    auto **newFoodHistory = new History*[eatenfood];
+    for (i = 0; i < oldFood; i++)
+    {
+        newFoodHistory[i] = FoodHistory[i];
+    }
+    newFoodHistory[i] = food;
+    delete[] FoodHistory;
+    FoodHistory = newFoodHistory;
+}
+std::string AnimalH::getFoodHistory() const
+{
+    std::ostringstream out;
+    for(int i = 0; i < eatenfood; i++)
+    {
+        History temp = *FoodHistory[i];
+        out << temp.getEntry();
+    }
+    return out.str();
+}
 
 AnimalL::AnimalL() : lifeTick(50) {}
 AnimalL::AnimalL(const int &x, const int &y) : lifeTick(50), BaseAnimal{x,y} {}
@@ -381,6 +404,7 @@ void Coelho::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &
                 Kill();
             }
 
+            addFood(new History(it->getVN(),it->getToxic(),it->getLetra()));
             it->Kill();
             setHunger(0);
             break;
@@ -710,6 +734,7 @@ void Ovelha::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &
                 Kill();
             }
 
+            addFood(new History(it->getVN(),it->getToxic(),it->getLetra()));
             it->Kill();
             setHunger(0);
             break;
@@ -868,13 +893,11 @@ void Lobo::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, con
     {
         if(getHunger() >= 15)
         {
-            //steps = 3;
-            steps = 1;
+            steps = 3;
         }
         else
         {
-            //steps = 2;
-            steps = 1;
+            steps = 2;
         }
     }
     else
@@ -1028,8 +1051,9 @@ void Lobo::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &al
                 Kill();
             }
 
-            setHunger(0);
+            addFood(new History(it->getVN(),it->getToxic(),it->getLetra()));
             it->Kill();
+            setHunger(0);
             break;
         }
     }

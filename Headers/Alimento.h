@@ -11,6 +11,7 @@ class BaseAlimento
     int Instante;
     char letra;
     std::vector<std::string> Cheiro;
+    std::string Description;
     Coordenadas Location;
     bool kill;
 

@@ -2,6 +2,7 @@
 #define POO_ANIMAL_H
 
 #include "Alimento.h"
+#include "History.h"
 
 class BaseAnimal
 {
@@ -51,6 +52,7 @@ public:
     virtual void setHunger(const int &num);
     virtual void Hunger();
     virtual void Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &alimentos);
+    virtual std::string getFoodHistory() const;
     //all classes have it
     virtual void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos) = 0;
     virtual BaseAnimal* Child() const = 0;
@@ -63,8 +65,10 @@ public:
 class AnimalH: virtual public BaseAnimal
 {
     int hunger;
+    History **FoodHistory;
+    int eatenfood;
 
-protected:
+public:
     AnimalH();
     AnimalH(const int &x, const int &y);
     AnimalH(const int &x, const int &y, const int &hp);
@@ -72,13 +76,15 @@ protected:
     int getHunger() const override;
     void setHunger(const int &num) override;
     virtual void Hunger();
+    void addFood(History *food);
+    std::string getFoodHistory() const override;
 };
 
 class AnimalL: virtual public BaseAnimal
 {
     int lifeTick;
 
-protected:
+public:
     AnimalL();
     AnimalL(const int &x, const int &y);
     AnimalL(const int &x, const int &y, const int &hp);
@@ -90,7 +96,7 @@ protected:
 
 class CompleteAnimal: public AnimalH, public AnimalL
 {
-protected:
+public:
     CompleteAnimal();
     CompleteAnimal(const int &x, const int &y);
     CompleteAnimal(const int &x, const int &y, const int &hp);
