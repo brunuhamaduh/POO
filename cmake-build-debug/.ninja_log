@@ -62,3 +62,11 @@
 1597	1803	6935007638914017	POO.exe	21bc375c578d667e
 3	775	6935009170981965	CMakeFiles/POO.dir/Headers/Functions.cpp.obj	bfeea6f986bbf6d6
 775	1017	6935009173364135	POO.exe	21bc375c578d667e
+5	432	6935019228119984	CMakeFiles/POO.dir/main.cpp.obj	21825eb62595f558
+2	513	6935019228841907	CMakeFiles/POO.dir/Headers/Coordenadas.cpp.obj	e4b921d7639699da
+8	909	6935019232875878	CMakeFiles/POO.dir/Headers/Alimento.cpp.obj	755a3e23ec51e7da
+13	1166	6935019235434421	CMakeFiles/POO.dir/Headers/Reserva.cpp.obj	e2c8254b865640bf
+10	1202	6935019235794749	CMakeFiles/POO.dir/Headers/Animal.cpp.obj	53e867bd2f37a8c
+3	736	6935019318678893	CMakeFiles/POO.dir/Headers/Functions.cpp.obj	bfeea6f986bbf6d6
+3	632	6935019534989653	CMakeFiles/POO.dir/Headers/Functions.cpp.obj	bfeea6f986bbf6d6
+632	836	6935019537001486	POO.exe	21bc375c578d667e

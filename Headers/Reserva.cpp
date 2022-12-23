@@ -32,78 +32,61 @@ std::vector<int> Reserva::getVArea() const
     return viewarea;
 }
 
-//rework this
 std::string Reserva::getAnimaisPos(const int &xinf, const int &xsup, const int &yinf, const int &ysup) const
 {
-    std::ostringstream output;
+    std::ostringstream out;
     for (auto& it : Animais)
     {
         if(it->getX() >= xinf && it->getX() <= xsup && it->getY() >= yinf && it->getY() <= ysup)
         {
-            output << it->getID() << " " <<  it->getEspecie() << " " << " " << it->getX() << " " << it->getY() << "\n";
+            out << "ID: " << it->getID() << " X: " << it->getX() << "Y: " << it->getY() << " Especie: " << it->getDescription() << " Peso: " << std::setprecision(2) << it->getPeso() << " HP: " << it->getHP() << " ";
+            if(it->getLifeTick() == -1)
+            {
+                out << "LT: -";
+            }
+            else
+            {
+                out << "LT: " << it->getLifeTick();
+            }
+            if(it->getHunger() == -1)
+            {
+                out << " H: -" << std::endl;
+            }
+            else
+            {
+                out << " H: " << it->getHunger() << std::endl;
+                if(!(it->getFoodHistory() == "")) {out << "historico: " << it->getFoodHistory() << std::endl;}
+            }
         }
     }
-    return output.str();
-}
-
-//rework this
-std::string Reserva::getAlimentosPos(const int &xinf, const int &xsup, const int &yinf, const int &ysup) const
-{
-    std::ostringstream output;
-    for (auto& it : Alimentos)
-    {
-        if(it->getX() >= xinf && it->getX() <= xsup && it->getY() >= yinf && it->getY() <= ysup)
-        {
-            output << it->getID() << " " << it->getVN() << " " << it->getToxic() << " " << it->getTV() << " " << it->getX() << " " << it->getY() << std::endl;
-        }
-    }
-    return output.str();
+    return out.str();
 }
 
 std::string Reserva::getAnimais() const
 {
-    std::ostringstream output;
-    output << "ID X Y P HP LT H" << std::endl;
+    std::ostringstream out;
     for (auto& it : Animais)
     {
-        output << it->getID() << " " << it->getX() << " " << it->getY() << " " << std::setprecision(2) << it->getPeso() << " " << it->getHP() << " ";
+        out << "ID: " << it->getID() << " X: " << it->getX() << "Y: " << it->getY() << " Especie: " << it->getDescription() << " Peso: " << std::setprecision(2) << it->getPeso() << " HP: " << it->getHP() << " ";
         if(it->getLifeTick() == -1)
         {
-            output << "-";
+            out << "LT: -";
         }
         else
         {
-            output << it->getLifeTick();
+            out << "LT: " << it->getLifeTick();
         }
         if(it->getHunger() == -1)
         {
-            output << " -" << std::endl;
+            out << " H: -" << std::endl;
         }
         else
         {
-            output << " " << it->getHunger() << std::endl;
+            out << " H: " << it->getHunger() << std::endl;
+            if(!(it->getFoodHistory() == "")) {out << "historico: " << it->getFoodHistory() << std::endl;}
         }
     }
-    return output.str();
-}
-
-std::string Reserva::getAlimentos() const
-{
-    std::ostringstream output;
-    output << "ID X Y VN TX TV" << std::endl;
-    for (auto& it : Alimentos)
-    {
-        output << it->getID() << " " << it->getX() << " " << it->getY() << " " << it->getVN() << " " << it->getToxic() << " ";
-        if(it->getTV() == -1)
-        {
-            output << "-" << std::endl;
-        }
-        else
-        {
-            output << it->getTV() << std::endl;
-        }
-    }
-    return output.str();
+    return out.str();
 }
 
 std::string Reserva::displayAnimals() const

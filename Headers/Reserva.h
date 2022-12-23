@@ -20,7 +20,6 @@ public:
     std::string getAnimaisPos(const int &xinf, const int &xsup, const int &yinf, const int &ysup) const;
     std::string getAlimentosPos(const int &xinf, const int &xsup, const int &yinf, const int &ysup) const;
     std::string getAnimais() const;
-    std::string getAlimentos() const;
     std::string displayAnimals() const;
     std::string displayAlimentos() const;
     void setSize(const int &num);

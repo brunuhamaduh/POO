@@ -292,14 +292,7 @@ void displayEverything(Reserva &principal, term::Window &out)
 {
     if(principal.countAnimal() != 0)
     {
-        out << "ANIMAIS\n";
         out << principal.getAnimais();
-    }
-
-    if(principal.countAlimento() != 0)
-    {
-        out << "ALIMENTOS\n";
-        out << principal.getAlimentos();
     }
 }
 
@@ -311,19 +304,11 @@ void displayScreen(Reserva &principal, term::Window &out)
 
     if(!processa.str().empty())
     {
-        out << "ANIMAIS\n";
         out << processa.str();
     }
 
     processa.clear();
     processa.str("");
-
-    processa.str(principal.getAlimentosPos(viewarea[0],viewarea[1],viewarea[2],viewarea[3]));
-    if(!processa.str().empty())
-    {
-        out << "ALIMENTOS\n";
-        out << processa.str();
-    }
 }
 
 void mostra(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string &input)
