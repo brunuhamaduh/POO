@@ -288,13 +288,51 @@ void Reserva::advanceInstant(const int &num)
 
 std::string Reserva::getInfo(const int &ID1)
 {
-    for (auto& it : Animais)
+    std::ostringstream out;
+
+    for (auto& it : Alimentos)
     {
         if(it->getID() == ID1)
         {
-            return it->getFoodHistory();
+            out << "X: " << it->getX() << " Y: " << it->getY() << " VN: " << it->getVN() << " TX: " << it->getToxic() << " DESCRIP: " << it->getDescription() << " ";
+            if(it->getTV() == -1)
+            {
+                out << "TV: -" << std::endl;
+            }
+            else
+            {
+                out << "TV: " << it->getTV() << std::endl;
+            }
+            return out.str();
         }
     }
+
+    for(auto &it : Animais)
+    {
+        if(it->getID() == ID1)
+        {
+            out << "X: " << it->getX() << " Y: " << it->getY() << " Especie: " << it->getDescription() << " Peso: " << std::setprecision(2) << it->getPeso() << " HP: " << it->getHP() << " ";
+            if(it->getLifeTick() == -1)
+            {
+                out << "LT: -";
+            }
+            else
+            {
+                out << "LT: " << it->getLifeTick();
+            }
+            if(it->getHunger() == -1)
+            {
+                out << " H: -" << std::endl;
+            }
+            else
+            {
+                out << " H: " << it->getHunger() << std::endl;
+                if(!(it->getFoodHistory() == "")) {out << "historico: " << it->getFoodHistory() << std::endl;}
+            }
+            return out.str();
+        }
+    }
+
     return {};
 }
 
