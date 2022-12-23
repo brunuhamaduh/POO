@@ -29,6 +29,8 @@ bool BaseAnimal::getKill() const {return kill;}
 bool BaseAnimal::getHide() const {return false;}
 void BaseAnimal::setX(const int &num) {Location.setX(num);}
 void BaseAnimal::setY(const int &num) {Location.setY(num);}
+void BaseAnimal::setDescription(const std::string &str) {Description = str;}
+std::string BaseAnimal::getDescription() const {return Description;}
 std::string BaseAnimal::getFoodHistory() const {return "";}
 std::vector<BaseAnimal*> BaseAnimal::checkAroundAnimais(const std::vector<BaseAnimal*> &animais,  const int &visionRange, const int &x, const int &y, const int &id) const
 {
@@ -113,9 +115,10 @@ Coelho::Coelho()
     std::mt19937 generator(random());
     std::uniform_real_distribution <> distr(1, 4);
 
-    this->InitEspecie('C');
-    this->InitCampoVisao(4);
-    this->InitPeso(distr(generator));
+    InitEspecie('C');
+    InitCampoVisao(4);
+    InitPeso(distr(generator));
+    setDescription("Coelho");
 
     std::string line, variable;
     int num;
@@ -145,9 +148,10 @@ Coelho::Coelho(const int &x, const int &y) : BaseAnimal{x,y}, CompleteAnimal{x, 
     std::mt19937 generator(random());
     std::uniform_real_distribution <> distr(1, 4);
 
-    this->InitEspecie('C');
-    this->InitCampoVisao(4);
-    this->InitPeso(distr(generator));
+    InitEspecie('C');
+    InitCampoVisao(4);
+    InitPeso(distr(generator));
+    setDescription("Coelho");
 
     std::string line, variable;
     int num;
@@ -419,9 +423,10 @@ Ovelha::Ovelha()
     std::mt19937 generator(random());
     std::uniform_real_distribution <> distr(4, 8);
 
-    this->InitEspecie('O');
-    this->InitCampoVisao(3);
-    this->InitPeso(distr(generator));
+    InitEspecie('O');
+    InitCampoVisao(3);
+    InitPeso(distr(generator));
+    setDescription("Ovelha");
 
     std::string line, variable;
     int num;
@@ -451,9 +456,10 @@ Ovelha::Ovelha(const int &x, const int &y) : BaseAnimal{x,y}, CompleteAnimal{x, 
     std::mt19937 generator(random());
     std::uniform_real_distribution <> distr(4, 8);
 
-    this->InitEspecie('O');
-    this->InitCampoVisao(3);
-    this->InitPeso(distr(generator));
+    InitEspecie('O');
+    InitCampoVisao(3);
+    InitPeso(distr(generator));
+    setDescription("Ovelha");
 
     std::string line, variable;
     int num;
@@ -483,9 +489,10 @@ Ovelha::Ovelha(const int &x, const int &y, const int &hp) : BaseAnimal{x, y, hp}
     std::mt19937 generator(random());
     std::uniform_real_distribution <> distr(4, 8);
 
-    this->InitEspecie('O');
-    this->InitCampoVisao(3);
-    this->InitPeso(distr(generator));
+    InitEspecie('O');
+    InitCampoVisao(3);
+    InitPeso(distr(generator));
+    setDescription("Ovelha");
 
     std::string line, variable;
     int num;
@@ -745,9 +752,10 @@ void Ovelha::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &
 
 Lobo::Lobo()
 {
-    this->InitEspecie('L');
-    this->InitCampoVisao(5);
-    this->InitPeso(15);
+    InitEspecie('L');
+    InitCampoVisao(5);
+    InitPeso(15);
+    setDescription("Lobo");
 
     std::string line, variable;
     int num;
@@ -777,9 +785,10 @@ Lobo::Lobo()
 
 Lobo::Lobo(const int &x, const int &y) : BaseAnimal{x,y}, AnimalH{x, y}, VLobo(50)
 {
-    this->InitEspecie('L');
-    this->InitCampoVisao(5);
-    this->InitPeso(15);
+    InitEspecie('L');
+    InitCampoVisao(5);
+    InitPeso(15);
+    setDescription("Lobo");
 
     std::string line, variable;
     int num;
@@ -1062,9 +1071,10 @@ void Lobo::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &al
 
 Canguru::Canguru() : idparent(0), child(false), run(false), hide(false), hidetick(0)
 {
-    this->InitEspecie('G');
-    this->InitCampoVisao(7);
-    this->InitPeso(10);
+    InitEspecie('G');
+    InitCampoVisao(7);
+    InitPeso(10);
+    setDescription("Canguru");
 
     std::string line, variable;
     int num;
@@ -1090,9 +1100,10 @@ Canguru::Canguru() : idparent(0), child(false), run(false), hide(false), hidetic
 
 Canguru::Canguru(const int &x, const int &y) : BaseAnimal{x,y}, AnimalL{x, y}, idparent(0), child(false), run(false), hide(false), hidetick(0)
 {
-    this->InitEspecie('G');
-    this->InitCampoVisao(7);
-    this->InitPeso(10);
+    InitEspecie('G');
+    InitCampoVisao(7);
+    InitPeso(10);
+    setDescription("Canguru");
 
     std::string line, variable;
     int num;
@@ -1118,9 +1129,10 @@ Canguru::Canguru(const int &x, const int &y) : BaseAnimal{x,y}, AnimalL{x, y}, i
 
 Canguru::Canguru(const int &x, const int &y, const int &idparent) : BaseAnimal{x,y}, AnimalL{x, y}, idparent(idparent), child(true), run(false), hide(false), hidetick(0)
 {
-    this->InitEspecie('G');
-    this->InitCampoVisao(7);
-    this->InitPeso(10);
+    InitEspecie('G');
+    InitCampoVisao(7);
+    InitPeso(10);
+    setDescription("Canguru");
 
     std::string line, variable;
     int num;

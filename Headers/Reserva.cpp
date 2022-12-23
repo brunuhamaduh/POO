@@ -486,6 +486,64 @@ void Reserva::empty(const int &x, const int &y)
     }
 }
 
+std::string Reserva::see(const int &x, const int &y)
+{
+    std::ostringstream out;
+
+    if(!Alimentos.empty())
+    {
+        out << "ALIMENTOS:" << std::endl;
+    }
+
+    for (auto& it : Alimentos)
+    {
+        if(it->getX() == x && it->getY() == y)
+        {
+            out << "ID: " << it->getID() << " VN: " << it->getVN() << " TX: " << it->getToxic() << " DESCRIP: " << it->getDescription() << " ";
+            if(it->getTV() == -1)
+            {
+                out << "TV: -" << std::endl;
+            }
+            else
+            {
+                out << "TV: " << it->getTV() << std::endl;
+            }
+        }
+    }
+
+    if(!Animais.empty())
+    {
+        out << "ANIMAIS:" << std::endl;
+    }
+
+    for(auto &it : Animais)
+    {
+        if(it->getX() == x && it->getY() == y)
+        {
+            out << "ID: " << it->getID() << " Especie: " << it->getDescription() << " Peso: " << std::setprecision(2) << it->getPeso() << " HP: " << it->getHP() << " ";
+            if(it->getLifeTick() == -1)
+            {
+                out << "LT: -";
+            }
+            else
+            {
+                out << "LT: " << it->getLifeTick();
+            }
+            if(it->getHunger() == -1)
+            {
+                out << " H: -" << std::endl;
+            }
+            else
+            {
+                out << " H: " << it->getHunger() << std::endl;
+                if(!(it->getFoodHistory() == "")) {out << "historico: " << it->getFoodHistory() << std::endl;}
+            }
+        }
+    }
+
+    return out.str();
+}
+
 int Reserva::getID() {return ++ID;}
 int Reserva::ID = 0;
 int Reserva::tamanho = 0;

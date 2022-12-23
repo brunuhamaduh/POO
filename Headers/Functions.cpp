@@ -257,6 +257,14 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
             }
             catch(...) {}
         }
+        else if(listComando.at(0) == "see")
+        {
+            try
+            {
+                out << principal.see(stoi(listComando.at(1)), stoi(listComando.at(2)));
+            }
+            catch(...) {}
+        }
     }
 }
 

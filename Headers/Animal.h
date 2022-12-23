@@ -12,6 +12,7 @@ class BaseAnimal
     int instante;
     double Peso;
     Coordenadas Location;
+    std::string Description;
     char especie;
     bool kill;
 
@@ -39,6 +40,8 @@ public:
     int getHP() const;
     void setHP(const int &num);
     void incInstante();
+    void setDescription(const std::string &str);
+    std::string getDescription() const;
     std::vector<BaseAnimal*> checkAroundAnimais(const std::vector<BaseAnimal*> &animais, const int &visionRange, const int &x, const int &y, const int &id) const;
     std::vector<BaseAlimento*> checkAroundAlimentos(const std::vector<BaseAlimento*> &alimentos, const int &visionRange, const int &x, const int &y, const int &id) const;
     void Kill();
