@@ -1329,3 +1329,236 @@ bool Canguru::getHide() const
 {
     return hide;
 }
+
+Misterio::Misterio()
+{
+    InitEspecie('M');
+    InitCampoVisao(1);
+    InitPeso(20);
+    setHP(200);
+    setDescription("Misterio");
+}
+
+Misterio::Misterio(const int &x, const int &y) : BaseAnimal{x,y}, AnimalH{x, y}
+{
+    InitEspecie('M');
+    InitCampoVisao(1);
+    InitPeso(20);
+    setHP(200);
+    setDescription("Misterio");
+}
+
+Misterio::~Misterio() = default;
+
+void Misterio::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos)
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::vector<BaseAnimal*> AroundAnimais = checkAroundAnimais(animais, getcampoVisao(), getX(), getY(), getID());
+    std::vector<BaseAlimento*> AroundAlimentos = checkAroundAlimentos(alimentos, getcampoVisao(), getX(), getY(), getID());
+    std::vector<std::string> Cheiros;
+
+    bool Run = false;
+    bool Chase = false;
+    int xTarget = -1, yTarget = -1, direction, steps = 1;
+
+    for(auto &it: AroundAlimentos)
+    {
+        Cheiros = it->getCheiro();
+        if(std::count(Cheiros.begin(), Cheiros.end(), "especial"))
+        {
+            Run = false;
+            Chase = true;
+            if(it->getX() < xTarget && it->getY() < yTarget || (xTarget == -1 && yTarget == -1)) //if it's closer
+            {
+                xTarget = it->getX();
+                yTarget = it->getY();
+            }
+        }
+    }
+
+    for(auto &it: AroundAnimais) //Running from animals has priority
+    {
+        if(it->getPeso() >= 15)
+        {
+            Run = true;
+            Chase = false;
+            xTarget = it->getX();
+            yTarget = it->getY();
+        }
+    }
+
+    if(Run)
+    {
+        if(getX() - xTarget > 0 && getY() == yTarget) //Animal on the left then run right
+        {
+            direction = 3;
+        }
+        else if(getX() - xTarget < 0 && getY() == yTarget) //Animal on the right then run left
+        {
+            direction = 7;
+        }
+        else if(getX() == xTarget && getY() - yTarget > 0) //Animal is up then run down
+        {
+            direction = 5;
+        }
+        else if(getX() == xTarget && getY() - yTarget < 0) //Animal is down then run up
+        {
+            direction = 1;
+        }
+        else if(getX() - xTarget > 0 && getY() - yTarget > 0) //Animal is on the diagonal (upper left) then run lower right
+        {
+            direction = 4;
+        }
+        else if(getX() - xTarget > 0 && getY() - yTarget < 0) //Animal is on the diagonal (lower left) then run upper right
+        {
+            direction = 2;
+        }
+        else if(getX() - xTarget < 0 && getY() - yTarget > 0) //Animal is on the diagonal (upper right) then run lower left
+        {
+            direction = 6;
+        }
+        else if(getX() - xTarget < 0 && getY() - yTarget < 0) //Animal is on the diagonal (lower right) then run upper left
+        {
+            direction = 8;
+        }
+    }
+    else if(Chase)
+    {
+        if(getX() - xTarget > 0 && getY() == yTarget) //Food on the left then run left
+        {
+            direction = 7;
+        }
+        else if(getX() - xTarget < 0 && getY() == yTarget) //Food on the right then run right
+        {
+            direction = 3;
+        }
+        else if(getX() == xTarget && getY() - yTarget > 0) //Food is up then run up
+        {
+            direction = 1;
+        }
+        else if(getX() == xTarget && getY() - yTarget < 0) //Food is down then run down
+        {
+            direction = 5;
+        }
+        else if(getX() - xTarget > 0 && getY() - yTarget > 0) //Food is on the diagonal (upper left) then run upper left
+        {
+            direction = 8;
+        }
+        else if(getX() - xTarget > 0 && getY() - yTarget < 0) //Food is on the diagonal (lower left) then run lower left
+        {
+            direction = 6;
+        }
+        else if(getX() - xTarget < 0 && getY() - yTarget > 0) //Food is on the diagonal (upper right) then run upper right
+        {
+            direction = 2;
+        }
+        else if(getX() - xTarget < 0 && getY() - yTarget < 0) //Food is on the diagonal (lower right) then run lower right
+        {
+            direction = 4;
+        }
+    }
+    else
+    {
+        std::uniform_int_distribution <> random_direction(1, 8);
+        direction = random_direction(generator);
+    }
+
+    setPos(direction, steps, tamanho);
+}
+
+AMisterio* Misterio::Die()
+{
+    return new AMisterio(getX(), getY());
+}
+
+bool Misterio::checkChild()
+{
+    if(getInstante() % 50 == 0)
+    {
+        return true;
+    }
+    return false;
+}
+
+Misterio* Misterio::Child() const
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    std::uniform_int_distribution <> sinal(1, 4);
+    int xRandom, yRandom, area = Reserva::getArea(), tentativa = 0, sinalconta;
+    while(true) //making sure the child doesn't spawn outside area if parent is on the edges
+    {
+        tentativa++;
+        sinalconta = sinal(generator);
+
+        if(sinalconta == 1)
+        {
+            xRandom = 1 + getX();
+            yRandom = 1 + getY();
+        }
+        else if(sinalconta == 2)
+        {
+            xRandom = 1 - getX();
+            yRandom = 1 + getY();
+        }
+        else if(sinalconta == 3)
+        {
+            xRandom = 1 + getX();
+            yRandom = 1 - getY();
+        }
+        else if(sinalconta == 4)
+        {
+            xRandom = 1 - getX();
+            yRandom = 1 - getY();
+        }
+
+        if(xRandom > 0 && xRandom < area && yRandom > 0 && yRandom < area)
+        {
+            break;
+        }
+        else if(tentativa == 50) //in case it gets stuck in an infinite loop
+        {
+            xRandom = 0;
+            yRandom = 0;
+            break;
+        }
+    }
+    return new Misterio(xRandom, yRandom);
+}
+
+void Misterio::Hunger()
+{
+    if(getHunger() >= 10)
+    {
+        setHP(getHP() - 5);
+    }
+
+    setHunger(getHunger() + 2);
+}
+
+void Misterio::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &alimentos)
+{
+    std::vector<std::string> Cheiros;
+    for(auto &it : alimentos)
+    {
+        Cheiros = it->getCheiro();
+        if(it->getX() == getX() && it->getY() == getY() && std::count(Cheiros.begin(), Cheiros.end(), "especial"))
+        {
+            if(getHP() + it->getVN() - it->getToxic() >= 0)
+            {
+                setHP(getHP() + it->getVN() - it->getToxic());
+
+            }
+            else if(getHP() + it->getVN() - it->getToxic() <= 0)
+            {
+                Kill();
+            }
+
+            addFood(new History(it->getVN(),it->getToxic(),it->getDescription()));
+            it->Kill();
+            setHunger(0);
+            break;
+        }
+    }
+}

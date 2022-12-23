@@ -258,3 +258,37 @@ bool Bife::Action()
     }
     return false;
 }
+
+AMisterio::AMisterio()
+{
+    std::vector<std::string> cheiros = {"especial"};
+    InitLetra('a');
+    InitTV(50);
+    InitVN(100);
+    InitToxic(0);
+    InitCheiro(cheiros);
+    InitDescription("Misterio");
+}
+
+AMisterio::AMisterio(const int &x, const int &y) : BaseAlimento{x,y}, AlimentoTV{x, y}
+{
+    std::vector<std::string> cheiros = {"especial"};
+    InitLetra('a');
+    InitTV(50);
+    InitVN(100);
+    InitToxic(0);
+    InitCheiro(cheiros);
+    InitDescription("Misterio");
+}
+AMisterio::~AMisterio() = default;
+
+bool AMisterio::Action()
+{
+    InitTV(getTV() - 1);
+    if(getVN() > 0)
+    {
+        InitVN(getVN() - 1);
+        InitToxic(getToxic() + 1);
+    }
+    return false;
+}

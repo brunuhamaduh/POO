@@ -4,7 +4,7 @@
 #include <random>
 
 Reserva::Reserva() : instante(0){ }
-Reserva::Reserva(const Reserva &old)
+Reserva::Reserva(const Reserva &old) : instante(0)
 {
     *this = old;
 }
@@ -176,6 +176,10 @@ void Reserva::newAnimal(const char &especie, int x, int y)
     {
         Animais.emplace_back(new Canguru(x, y));
     }
+    else if(especie == 'm')
+    {
+        Animais.emplace_back(new Misterio(x, y));
+    }
 }
 
 void Reserva::newAlimento(const char &tipo, int x, int y)
@@ -208,6 +212,10 @@ void Reserva::newAlimento(const char &tipo, int x, int y)
     else if(tipo == 'b')
     {
         Alimentos.emplace_back(new Bife(x, y));
+    }
+    else if(tipo == 'a')
+    {
+        Alimentos.emplace_back(new AMisterio(x, y));
     }
 }
 

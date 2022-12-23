@@ -94,4 +94,13 @@ public:
     bool Action() override;
 };
 
+class AMisterio: public AlimentoTV
+{
+public:
+    AMisterio();
+    AMisterio(const int &x, const int &y);
+    ~AMisterio();
+    bool Action() override;
+};
+
 #endif //POO_ALIMENTO_H

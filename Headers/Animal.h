@@ -169,4 +169,18 @@ public:
     bool getHide() const override;
 };
 
+class Misterio: public AnimalH
+{
+public:
+    Misterio();
+    Misterio(const int &x, const int &y);
+    ~Misterio();
+    void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos) override;
+    AMisterio* Die() override;
+    void Hunger() override;
+    Misterio* Child() const override;
+    bool checkChild() override;
+    void Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &alimentos) override;
+};
+
 #endif //POO_ANIMAL_H
