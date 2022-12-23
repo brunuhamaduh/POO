@@ -307,11 +307,6 @@ void Coelho::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, c
         steps = random_steps(generator);
     }
 
-    if(abs(getX()-xTarget) == 1 || abs(getY()-yTarget) == 1 && Chase) //making sure the animal doesn't overshoot the target
-    {
-        steps = 1;
-    }
-
     setPos(direction, steps, tamanho);
 }
 
@@ -642,11 +637,6 @@ void Ovelha::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, c
         steps = 1;
     }
 
-    if(abs(getX()-xTarget) == 1 || abs(getY()-yTarget) == 1 && Chase) //making sure the animal doesn't overshoot the target
-    {
-        steps = 1;
-    }
-
     setPos(direction, steps, tamanho);
 }
 
@@ -920,11 +910,6 @@ void Lobo::Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, con
         {
             steps = 1;
         }
-    }
-
-    if(abs(getX()-xTarget) == 1 || abs(getY()-yTarget) == 1 && (ChaseAnimal || ChaseFood)) //making sure the animal doesn't overshoot the target
-    {
-        steps = 1;
     }
 
     setPos(direction, steps, tamanho);

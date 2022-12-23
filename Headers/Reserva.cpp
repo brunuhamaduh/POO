@@ -4,6 +4,10 @@
 #include <random>
 
 Reserva::Reserva() : instante(0){ }
+Reserva::Reserva(const Reserva &old)
+{
+    *this = old;
+}
 Reserva::~Reserva()
 {
     for(auto el: Animais)
@@ -12,6 +16,11 @@ Reserva::~Reserva()
     }
 
     for(auto el: Alimentos)
+    {
+        delete el;
+    }
+
+    for(auto el: Copias)
     {
         delete el;
     }
@@ -619,6 +628,34 @@ std::string Reserva::slide(const std::string &direction, const int &steps)
         out << "Comando Inválido" << std::endl;
     }
     return out.str();
+}
+
+void Reserva::Copia(const std::string &nome)
+{
+    auto copia = new Reserva(*this);
+    CopiaName.emplace_back(nome);
+    Copias.emplace_back(copia);
+}
+
+int Reserva::Exists(const std::string &nome)
+{
+    int i;
+    for (i = 0; i < CopiaName.size(); i++)
+    {
+        if(CopiaName.at(i) == nome)
+        {
+            return true;
+        }
+    }
+
+    i = -1;
+    return i;
+}
+
+Reserva& Reserva::Getit(const int &index)
+{
+    auto copia = Copias[index-1];
+    return *copia;
 }
 
 int Reserva::getID() {return ++ID;}

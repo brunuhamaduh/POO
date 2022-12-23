@@ -12,9 +12,11 @@ int main()
 
     std::string input;
     std::vector<std::string> listComando;
-    Reserva principal;
 
-    startGame(comando, input, principal);
-    loopGame(principal, reserva, comando, info, out, input, listComando);
+
+    Reserva *atual = new Reserva;
+
+    startGame(comando, input, *atual);
+    loopGame(*atual, reserva, comando, info, out, input, listComando);
     return 0;
 }

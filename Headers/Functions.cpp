@@ -293,6 +293,29 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
             }
             catch(...) {}
         }
+        else if(listComando.at(0) == "store")
+        {
+            if(principal.Exists(listComando.at(1)) != -1)
+            {
+                out << "Copia ja existe com este nome";
+            }
+            else
+            {
+                principal.Copia(listComando.at(1));
+            }
+        }
+        else if(listComando.at(0) == "restore")
+        {
+            int num = principal.Exists(listComando.at(1));
+            if(num == -1)
+            {
+                out << "Nao existe copia com este nome";
+            }
+            else
+            {
+                principal = principal.Getit(num);
+            }
+        }
     }
 }
 
@@ -368,7 +391,6 @@ void mostra(Reserva &principal, term::Window &reserva, term::Window &comando, te
 
     processa.clear();
     processa.str("");
-
 
     processa.str(principal.displayAlimentos());
 

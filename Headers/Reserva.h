@@ -10,15 +10,20 @@ class Reserva
     int instante;
     std::vector<BaseAnimal*> Animais;
     std::vector<BaseAlimento*> Alimentos;
+    std::vector<Reserva*> Copias;
+    std::vector<std::string> CopiaName;
     std::vector<int> viewarea = {0, 87, 0, 24};
 
 public:
     Reserva();
+    Reserva(const Reserva &old);
     ~Reserva();
+    void Copia(const std::string &nome);
+    int Exists(const std::string &nome);
+    Reserva& Getit(const int &index);
     static int getArea();
     std::vector<int> getVArea() const;
     std::string getAnimaisPos(const int &xinf, const int &xsup, const int &yinf, const int &ysup) const;
-    std::string getAlimentosPos(const int &xinf, const int &xsup, const int &yinf, const int &ysup) const;
     std::string getAnimais() const;
     std::string displayAnimals() const;
     std::string displayAlimentos() const;
