@@ -2,3 +2,7 @@ animal c 5 5
 animal o 10 10
 animal l 15 15
 animal g 20 20
+feed 5 5 5 0
+feedid 2 5 0
+empty 20 20
+kill 15 15

@@ -10,7 +10,7 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
 void displayEverything(Reserva &principal, term::Window &out);
 void displayScreen(Reserva &principal, term::Window &out);
 void mostra(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string &input);
-void leComandos(term::Window &out, std::vector<std::string> &listComando, Reserva &principal);
+void leComandos(term::Window &out, std::vector<std::string> &listComando, Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info);
 void startGame(term::Window &comando, std:: string &input, Reserva &principal);
 void loopGame(Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info, term::Window &out, std::string input, std::vector<std::string> &listComando);
 

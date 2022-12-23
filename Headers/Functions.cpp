@@ -153,7 +153,7 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
         out << "";
         if(listComando.at(0) == "load")
         {
-            //leComandos(out, listComando, principal);
+            leComandos(out, listComando, principal, reserva, comando, info);
         }
         else if(listComando.at(0) == "anim")
         {
@@ -409,9 +409,168 @@ void mostra(Reserva &principal, term::Window &reserva, term::Window &comando, te
     info << viewarea[0] << " " << viewarea[3] << " | " << viewarea[1] << " " << viewarea[3];
 }
 
-void leComandos(term::Window &out, std::vector<std::string> &listComando, Reserva &principal)
-{
+void leComandos(term::Window &out, std::vector<std::string> &listComando, Reserva &principal, term::Window &reserva, term::Window &comando, term::Window &info)
 
+{
+    std::vector<int> viewarea = principal.getVArea();
+    std::string line;
+    std::ifstream comandos(listComando[1]);
+    if (comandos.is_open())
+    {
+        while (getline(comandos,line))
+        {
+            if(!isValid(line, listComando, principal.getArea()))
+            {
+                out << "Comando invalido";
+            }
+            else
+            {
+                out << "";
+                if(listComando.at(0) == "animal")
+                {
+                    try
+                    {
+                        principal.newAnimal(listComando.at(1)[0], stoi(listComando.at(2)), stoi(listComando.at(3)));
+                    }
+                    catch(...)
+                    {
+
+                        principal.newAnimal(listComando.at(1)[0]);
+                    }
+                }
+                else if(listComando.at(0) == "food")
+                {
+                    try
+                    {
+                        principal.newAlimento(listComando.at(1)[0], stoi(listComando.at(2)), stoi(listComando.at(3)));
+                    }
+                    catch(...)
+                    {
+                        std::random_device random;
+                        std::mt19937 generator(random());
+                        std::uniform_int_distribution <> distr(0, principal.getArea());
+                        principal.newAlimento(listComando.at(1)[0], distr(generator), distr(generator));
+                    }
+                }
+                else if(listComando.at(0) == "n")
+                {
+                    try
+                    {
+                        int num = stoi(listComando.at(1));
+                        int nsleep = stoi(listComando.at(2));
+                        for(int i = 0; i < num; i++)
+                        {
+                            principal.advanceInstant();
+                            mostra(principal, reserva, comando, info, out, listComando.at(0));
+                            std::this_thread::sleep_for(std::chrono::milliseconds(nsleep * 1000));
+                        }
+                    }
+                    catch(...)
+                    {
+                        try
+                        {
+                            int num = stoi(listComando.at(1));
+                            for(int i = 0; i < num; i++)
+                            {
+                                principal.advanceInstant();
+                            }
+                        }
+                        catch(...)
+                        {
+                            principal.advanceInstant();
+                        }
+                    }
+                }
+                else if(listComando.at(0) == "feed")
+                {
+                    try
+                    {
+                        principal.feed(stoi(listComando.at(1)), stoi(listComando.at(2)), stoi(listComando.at(3)), stoi(listComando.at(4)));
+                    }
+                    catch(...) {}
+                }
+                else if(listComando.at(0) == "feedid")
+                {
+                    try
+                    {
+                        principal.feedID(stoi(listComando.at(1)), stoi(listComando.at(2)), stoi(listComando.at(3)));
+                    }
+                    catch(...) {}
+                }
+                else if(listComando.at(0) == "kill")
+                {
+                    try
+                    {
+                        principal.kill(stoi(listComando.at(1)), stoi(listComando.at(2)));
+                    }
+                    catch(...) {}
+                }
+                else if(listComando.at(0) == "killid")
+                {
+                    try
+                    {
+                        principal.killID(stoi(listComando.at(1)));
+                    }
+                    catch(...) {}
+                }
+                else if(listComando.at(0) == "nofood")
+                {
+                    try
+                    {
+                        principal.nofood(stoi(listComando.at(1)), stoi(listComando.at(2)));
+                    }
+                    catch(...)
+                    {
+                        principal.nofood(stoi(listComando.at(1)));
+                    }
+                }
+                else if(listComando.at(0) == "empty")
+                {
+                    try
+                    {
+                        principal.empty(stoi(listComando.at(1)), stoi(listComando.at(2)));
+                    }
+                    catch(...) {}
+                }
+                else if(listComando.at(0) == "slide")
+                {
+                    try
+                    {
+                        out << principal.slide(listComando.at(1), stoi(listComando.at(2)));
+                    }
+                    catch(...) {}
+                }
+                else if(listComando.at(0) == "store")
+                {
+                    if(principal.Exists(listComando.at(1)) != -1)
+                    {
+                        out << "Copia ja existe com este nome";
+                    }
+                    else
+                    {
+                        principal.Copia(listComando.at(1));
+                    }
+                }
+                else if(listComando.at(0) == "restore")
+                {
+                    int num = principal.Exists(listComando.at(1));
+                    if(num == -1)
+                    {
+                        out << "Nao existe copia com este nome";
+                    }
+                    else
+                    {
+                        principal = principal.Getit(num);
+                    }
+                }
+            }
+        }
+        comandos.close();
+    }
+    else
+    {
+        out << "Erro ao abrir ficheiro\n";
+    }
 }
 
 void startGame(term::Window &comando, std:: string &input, Reserva &principal)

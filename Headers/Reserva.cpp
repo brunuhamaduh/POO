@@ -48,7 +48,7 @@ std::string Reserva::getAnimaisPos(const int &xinf, const int &xsup, const int &
     {
         if(it->getX() >= xinf && it->getX() <= xsup && it->getY() >= yinf && it->getY() <= ysup)
         {
-            out << "ID: " << it->getID() << " X: " << it->getX() << "Y: " << it->getY() << " Especie: " << it->getDescription() << " Peso: " << std::setprecision(2) << it->getPeso() << " HP: " << it->getHP() << " ";
+            out << "ID: " << it->getID() << " X: " << it->getX() << " Y: " << it->getY() << " Especie: " << it->getDescription() << " Peso: " << std::setprecision(2) << it->getPeso() << " HP: " << it->getHP() << " ";
             if(it->getLifeTick() == -1)
             {
                 out << "LT: -";
@@ -76,7 +76,7 @@ std::string Reserva::getAnimais() const
     std::ostringstream out;
     for (auto& it : Animais)
     {
-        out << "ID: " << it->getID() << " X: " << it->getX() << "Y: " << it->getY() << " Especie: " << it->getDescription() << " Peso: " << std::setprecision(2) << it->getPeso() << " HP: " << it->getHP() << " ";
+        out << "ID: " << it->getID() << " X: " << it->getX() << " Y: " << it->getY() << " Especie: " << it->getDescription() << " Peso: " << std::setprecision(2) << it->getPeso() << " HP: " << it->getHP() << " ";
         if(it->getLifeTick() == -1)
         {
             out << "LT: -";
