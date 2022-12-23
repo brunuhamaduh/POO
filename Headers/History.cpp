@@ -1,7 +1,7 @@
 #include "History.h"
 #include <sstream>
 
-History::History(const int &VN, const int &Toxic, const std::string &descrip) : valorNutricional(VN), Toxicidade(Toxic), Description(descrip){}
+History::History(const int &VN, const int &Toxic, std::string descrip) : valorNutricional(VN), Toxicidade(Toxic), Description(std::move(descrip)){}
 History::~History() = default;
 std::string History::getEntry() const
 {

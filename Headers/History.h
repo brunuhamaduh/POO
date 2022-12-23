@@ -9,7 +9,7 @@ class History
     std::string Description;
 
 public:
-    History(const int &VN, const int &Toxic, const std::string &descrip);
+    History(const int &VN, const int &Toxic, std::string descrip);
     ~History();
     std::string getEntry() const;
 };
