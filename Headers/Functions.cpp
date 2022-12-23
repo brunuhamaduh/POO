@@ -3,6 +3,8 @@
 #include <fstream>
 #include <random>
 #include <algorithm>
+#include <chrono>
+#include <thread>
 
 int getID()
 {
@@ -140,7 +142,7 @@ bool isValid(const std::string &comando, std::vector<std::string> &listComando, 
     return false;
 }
 
-void executeInput(std::string &input, std::vector<std::string> &listComando, Reserva &principal, term::Window &out)
+void executeInput(std::string &input, std::vector<std::string> &listComando, Reserva &principal, term::Window &out, term::Window &reserva, term::Window &comando, term::Window &info)
 {
     if(!isValid(input, listComando, principal.getArea()))
     {
@@ -191,11 +193,29 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
         {
             try
             {
-                principal.advanceInstant(stoi(listComando.at(1)));
+                int num = stoi(listComando.at(1));
+                int nsleep = stoi(listComando.at(2));
+                for(int i = 0; i < num; i++)
+                {
+                    principal.advanceInstant();
+                    mostra(principal, reserva, comando, info, out, input);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(nsleep * 1000));
+                }
             }
             catch(...)
             {
-                principal.advanceInstant();
+                try
+                {
+                    int num = stoi(listComando.at(1));
+                    for(int i = 0; i < num; i++)
+                    {
+                        principal.advanceInstant();
+                    }
+                }
+                catch(...)
+                {
+                    principal.advanceInstant();
+                }
             }
         }
         else if(listComando.at(0) == "info")
@@ -405,6 +425,6 @@ void loopGame(Reserva &principal, term::Window &reserva, term::Window &comando, 
     {
         mostra(principal, reserva, comando, info, out, input);
         comando >> input;
-        executeInput(input, listComando, principal, out);
+        executeInput(input, listComando, principal, out, reserva, comando, info);
     } while(input != "exit");
 }

@@ -219,71 +219,70 @@ void Reserva::newAlimento(const char &tipo, int x, int y)
     }
 }
 
-void Reserva::advanceInstant(const int &num)
+void Reserva::advanceInstant()
 {
     std::vector<BaseAnimal*> Copy;
     std::vector<BaseAlimento*> Copy2;
-    for(int i = 0; i < num; i++)
+
+    instante++;
+    Copy = Animais;
+    Copy2 = Alimentos;
+
+    for (auto& it : Animais)
     {
-        instante++;
-        Copy = Animais;
-        Copy2 = Alimentos;
+        it->incInstante();
+        it->Move(tamanho, Animais, Alimentos);
+        it->LifeTick();
+        it->Hunger();
+        if(it->checkChild()) {Copy.emplace_back(it->Child());}
+    }
 
-        for (auto& it : Animais)
+    for(auto& it : Animais)
+    {
+        it->Eat(Animais, Alimentos);
+    }
+
+    Animais = Copy;
+
+    for (auto& it : Alimentos)
+    {
+        it->incInstante();
+        if(it->Action())
         {
-            it->incInstante();
-            it->Move(tamanho, Animais, Alimentos);
-            it->LifeTick();
-            it->Hunger();
-            if(it->checkChild()) {Copy.emplace_back(it->Child());}
-        }
-
-        for(auto& it : Animais)
-        {
-            it->Eat(Animais, Alimentos);
-        }
-
-        Animais = Copy;
-
-        for (auto& it : Alimentos)
-        {
-            it->incInstante();
-            if(it->Action())
-            {
-                auto teste = it->Child(Alimentos);
-                if(teste != nullptr) {Copy2.emplace_back(teste);}
-            }
-        }
-
-        auto ptr = Animais.begin();
-        while(ptr != Animais.end())
-        {
-            if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0 || (*ptr)->getKill())
-            {
-                if((*ptr)->Die() != nullptr) {Copy2.emplace_back((*ptr)->Die());}
-                ptr = Animais.erase(ptr);
-            }
-            else
-            {
-                ptr++;
-            }
-        }
-
-        Alimentos = Copy2;
-
-        auto ptr1 = Alimentos.begin();
-        while(ptr1 != Alimentos.end())
-        {
-            if ((*ptr1)->getTV() == 0 || (*ptr1)->getKill())
-            {
-                ptr1 = Alimentos.erase(ptr1);
-            }
-            else
-            {
-                ptr1++;
-            }
+            auto teste = it->Child(Alimentos);
+            if(teste != nullptr) {Copy2.emplace_back(teste);}
         }
     }
+
+    auto ptr = Animais.begin();
+    while(ptr != Animais.end())
+    {
+        if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0 || (*ptr)->getKill())
+        {
+            if((*ptr)->Die() != nullptr) {Copy2.emplace_back((*ptr)->Die());}
+            ptr = Animais.erase(ptr);
+        }
+        else
+        {
+            ptr++;
+        }
+    }
+
+    Alimentos = Copy2;
+
+    auto ptr1 = Alimentos.begin();
+    while(ptr1 != Alimentos.end())
+    {
+        if ((*ptr1)->getTV() == 0 || (*ptr1)->getKill())
+        {
+            ptr1 = Alimentos.erase(ptr1);
+        }
+        else
+        {
+            ptr1++;
+        }
+    }
+
 }
 
 std::string Reserva::getInfo(const int &ID1)

@@ -37,7 +37,7 @@ public:
     void empty(const int &x, const int &y);
     std::string see(const int &x, const int &y);
     void change_VArea(const int &index, bool op);
-    void advanceInstant(const int &num = 1);
+    void advanceInstant();
     std::string getInfo(const int &ID);
     static int getID();
 };
