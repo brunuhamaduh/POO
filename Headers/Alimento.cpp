@@ -4,7 +4,6 @@
 #include <random>
 #include <fstream>
 #include <sstream>
-#include <cmath>
 
 BaseAlimento::BaseAlimento() : ID(Reserva::getID()), ValorNutritivo(0), letra('x'), Toxicidade(0), Instante(0), kill(false) {}
 BaseAlimento::BaseAlimento(const int &x, const int &y) : Location(x, y), ID(Reserva::getID()), ValorNutritivo(0), letra('x'), Toxicidade(0), Instante(0), kill(false) {}
@@ -30,9 +29,9 @@ void BaseAlimento::InitDescription(const std::string &descrip) {Description = de
 std::string BaseAlimento::getDescription() const {return Description;}
 
 AlimentoTV::AlimentoTV() : TempodeVida(30) {}
-AlimentoTV::AlimentoTV(const int &x, const int &y) : BaseAlimento{x, y}, TempodeVida(30) {}
 AlimentoTV::~AlimentoTV() = default;
 int AlimentoTV::getTV() const {return TempodeVida;}
+int AlimentoTV::getTV2() const {return TempodeVida;}
 void AlimentoTV::InitTV(const int &num) {TempodeVida = num;}
 
 Relva::Relva()
@@ -59,11 +58,11 @@ Relva::Relva()
         }
     }
     constantes.close();
-    instanteSpawn =
+    instanteSpawn = getTV2() * 0.75;
     spawned = false;
 }
 
-Relva::Relva(const int &x, const int &y) : BaseAlimento{x,y}, AlimentoTV{x, y}
+Relva::Relva(const int &x, const int &y) : BaseAlimento{x,y}
 {
     std::vector<std::string> cheiros = {"erva", "verdura"};
     InitVN(3);
@@ -87,7 +86,7 @@ Relva::Relva(const int &x, const int &y) : BaseAlimento{x,y}, AlimentoTV{x, y}
         }
     }
     constantes.close();
-    instanteSpawn = round(getTV() * 0.75);
+    instanteSpawn = getTV2() * 0.75;
     spawned = false;
 }
 Relva::~Relva() = default;
@@ -95,7 +94,7 @@ Relva::~Relva() = default;
 bool Relva::Action()
 {
     InitTV(getTV() - 1);
-    if(instanteSpawn >= getInstante() && !spawned)
+    if(round(instanteSpawn) >= getInstante() && !spawned)
     {
         return true;
     }
@@ -237,7 +236,7 @@ Bife::Bife()
     InitDescription("Bife");
 }
 
-Bife::Bife(const int &x, const int &y) : BaseAlimento{x,y}, AlimentoTV{x, y}
+Bife::Bife(const int &x, const int &y) : BaseAlimento{x,y}
 {
     std::vector<std::string> cheiros = {"carne", "ketchup"};
     InitLetra('b');
@@ -270,7 +269,7 @@ AMisterio::AMisterio()
     InitDescription("Misterio");
 }
 
-AMisterio::AMisterio(const int &x, const int &y) : BaseAlimento{x,y}, AlimentoTV{x, y}
+AMisterio::AMisterio(const int &x, const int &y) : BaseAlimento{x,y}
 {
     std::vector<std::string> cheiros = {"especial"};
     InitLetra('a');

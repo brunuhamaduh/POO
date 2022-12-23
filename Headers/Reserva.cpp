@@ -64,7 +64,7 @@ std::string Reserva::getAnimaisPos(const int &xinf, const int &xsup, const int &
             else
             {
                 out << " H: " << it->getHunger() << std::endl;
-                if(!(it->getFoodHistory() == "")) {out << "historico: " << it->getFoodHistory() << std::endl;}
+                if(!(it->getFoodHistory().empty())) {out << "historico: " << it->getFoodHistory() << std::endl;}
             }
         }
     }
@@ -92,7 +92,7 @@ std::string Reserva::getAnimais() const
         else
         {
             out << " H: " << it->getHunger() << std::endl;
-            if(!(it->getFoodHistory() == "")) {out << "historico: " << it->getFoodHistory() << std::endl;}
+            if(!(it->getFoodHistory().empty())) {out << "historico: " << it->getFoodHistory() << std::endl;}
         }
     }
     return out.str();
@@ -326,7 +326,7 @@ std::string Reserva::getInfo(const int &ID1)
             else
             {
                 out << " H: " << it->getHunger() << std::endl;
-                if(!(it->getFoodHistory() == "")) {out << "historico: " << it->getFoodHistory() << std::endl;}
+                if(!(it->getFoodHistory().empty())) {out << "historico: " << it->getFoodHistory() << std::endl;}
             }
             return out.str();
         }
@@ -363,11 +363,11 @@ void Reserva::feed(const int &x, const int &y, const int &VN, const int &TOXIC)
     }
 }
 
-void Reserva::feedID(const int &ID, const int &VN, const int &TOXIC)
+void Reserva::feedID(const int &ID1, const int &VN, const int &TOXIC)
 {
     for(auto &it : Animais)
     {
-        if(it->getID() == ID)
+        if(it->getID() == ID1)
         {
             it->setHP(it->getHP() + VN - TOXIC);
             it->setHunger(0);
@@ -416,11 +416,11 @@ void Reserva::kill(const int &x, const int &y)
     }
 }
 
-void Reserva::killID(const int &ID)
+void Reserva::killID(const int &ID1)
 {
     for(auto &it : Animais)
     {
-        if(it->getID() == ID)
+        if(it->getID() == ID1)
         {
             it->Kill();
         }
@@ -573,7 +573,7 @@ std::string Reserva::see(const int &x, const int &y)
             else
             {
                 out << " H: " << it->getHunger() << std::endl;
-                if(!(it->getFoodHistory() == "")) {out << "historico: " << it->getFoodHistory() << std::endl;}
+                if(!(it->getFoodHistory().empty())) {out << "historico: " << it->getFoodHistory() << std::endl;}
             }
         }
     }

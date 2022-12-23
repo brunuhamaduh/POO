@@ -28,7 +28,7 @@ protected:
     BaseAnimal(const int &x, const int &y);
 
 public:
-    ~BaseAnimal();
+    virtual ~BaseAnimal();
     int getX() const;
     int getY() const;
     void setX(const int &num);
@@ -42,12 +42,11 @@ public:
     void incInstante();
     void setDescription(const std::string &str);
     std::string getDescription() const;
-    std::vector<BaseAnimal*> checkAroundAnimais(const std::vector<BaseAnimal*> &animais, const int &visionRange, const int &x, const int &y, const int &id) const;
-    std::vector<BaseAlimento*> checkAroundAlimentos(const std::vector<BaseAlimento*> &alimentos, const int &visionRange, const int &x, const int &y, const int &id) const;
+    static std::vector<BaseAnimal*> checkAroundAnimais(const std::vector<BaseAnimal*> &animais, const int &visionRange, const int &x, const int &y, const int &id) ;
+    static std::vector<BaseAlimento*> checkAroundAlimentos(const std::vector<BaseAlimento*> &alimentos, const int &visionRange, const int &x, const int &y, const int &id) ;
     void Kill();
     bool getKill() const;
     //wolf doesn't have this
-    virtual void InitLifeTick(const int &num);
     virtual int getLifeTick() const;
     virtual void LifeTick();
     //canguru doesn't have this
@@ -74,12 +73,10 @@ class AnimalH: virtual public BaseAnimal
 
 public:
     AnimalH();
-    AnimalH(const int &x, const int &y);
-    AnimalH(const int &x, const int &y, const int &hp);
-    ~AnimalH();
+    ~AnimalH() override;
     int getHunger() const override;
     void setHunger(const int &num) override;
-    virtual void Hunger();
+    void Hunger() override;
     void addFood(History *food) override;
     std::string getFoodHistory() const override;
 };
@@ -90,10 +87,8 @@ class AnimalL: virtual public BaseAnimal
 
 public:
     AnimalL();
-    AnimalL(const int &x, const int &y);
-    AnimalL(const int &x, const int &y, const int &hp);
-    ~AnimalL();
-    void InitLifeTick(const int &num) override;
+    ~AnimalL() override;
+    void InitLifeTick(const int &num);
     void LifeTick() override;
     int getLifeTick() const override;
 };
@@ -102,9 +97,7 @@ class CompleteAnimal: public AnimalH, public AnimalL
 {
 public:
     CompleteAnimal();
-    CompleteAnimal(const int &x, const int &y);
-    CompleteAnimal(const int &x, const int &y, const int &hp);
-    ~CompleteAnimal();
+    ~CompleteAnimal() override;
 };
 
 class Coelho: public CompleteAnimal
@@ -112,7 +105,7 @@ class Coelho: public CompleteAnimal
 public:
     Coelho();
     Coelho(const int &x, const int &y);
-    ~Coelho();
+    ~Coelho() override;
     void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos) override;
     void Hunger() override;
     Coelho* Child() const override;
@@ -127,7 +120,7 @@ public:
     Ovelha();
     Ovelha(const int &x, const int &y);
     Ovelha(const int &x, const int &y, const int &hp);
-    ~Ovelha();
+    ~Ovelha() override;
     void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos) override;
     void Hunger() override;
     Ovelha* Child() const override;
@@ -143,7 +136,7 @@ class Lobo: public AnimalH
 public:
     Lobo();
     Lobo(const int &x, const int &y);
-    ~Lobo();
+    ~Lobo() override;
     void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos) override;
     void Hunger() override;
     Lobo* Child() const override;
@@ -161,7 +154,7 @@ public:
     Canguru();
     Canguru(const int &x, const int &y);
     Canguru(const int &x, const int &y, const int &idparent);
-    ~Canguru();
+    ~Canguru() override;
     void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos) override;
     Canguru* Child() const override;
     bool checkChild() override;
@@ -174,7 +167,7 @@ class Misterio: public AnimalH
 public:
     Misterio();
     Misterio(const int &x, const int &y);
-    ~Misterio();
+    ~Misterio() override;
     void Move(const int &tamanho, const std::vector<BaseAnimal*> &animais, const std::vector<BaseAlimento*> &alimentos) override;
     AMisterio* Die() override;
     void Hunger() override;

@@ -20,7 +20,7 @@ protected:
     BaseAlimento(const int &x, const int &y);
 
 public:
-    ~BaseAlimento();
+    virtual ~BaseAlimento();
     int getX() const;
     int getY() const;
     int getID() const;
@@ -48,20 +48,20 @@ class AlimentoTV: virtual public BaseAlimento
     int TempodeVida;
 protected:
     AlimentoTV();
-    AlimentoTV(const int &x, const int &y);
-    ~AlimentoTV();
+    ~AlimentoTV() override;
     int getTV() const override;
+    int getTV2() const;
     void InitTV(const int &num);
 };
 
 class Relva: public AlimentoTV
 {
-    int instanteSpawn;
+    double instanteSpawn;
     bool spawned;
 public:
     Relva();
     Relva(const int &x, const int &y);
-    ~Relva();
+    ~Relva() override;
     bool Action() override;
     Relva* Child(std::vector<BaseAlimento*> &alimentos) override;
 };
@@ -71,7 +71,7 @@ class Cenoura: public BaseAlimento
 public:
     Cenoura();
     Cenoura(const int &x, const int &y);
-    ~Cenoura();
+    ~Cenoura() override;
     bool Action() override;
 };
 
@@ -81,7 +81,7 @@ class Corpo: public BaseAlimento
 public:
     Corpo(const int &x, const int &y, const int &oldcorpse);
     Corpo(const int &x, const int &y, const int &oldcorpse, const int &Toxic);
-    ~Corpo();
+    ~Corpo() override;
     bool Action() override;
 };
 
@@ -90,7 +90,7 @@ class Bife: public AlimentoTV
 public:
     Bife();
     Bife(const int &x, const int &y);
-    ~Bife();
+    ~Bife() override;
     bool Action() override;
 };
 
@@ -99,7 +99,7 @@ class AMisterio: public AlimentoTV
 public:
     AMisterio();
     AMisterio(const int &x, const int &y);
-    ~AMisterio();
+    ~AMisterio() override;
     bool Action() override;
 };
 

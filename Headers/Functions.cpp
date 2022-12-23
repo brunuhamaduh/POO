@@ -6,12 +6,6 @@
 #include <chrono>
 #include <thread>
 
-int getID()
-{
-    static int i = 0;
-    return ++i;
-}
-
 int isNumber(const std::string &listComando)
 {
     for(int i = 0; listComando[i] != '\0'; i++)
@@ -144,7 +138,7 @@ bool isValid(const std::string &comando, std::vector<std::string> &listComando, 
 
 void executeInput(std::string &input, std::vector<std::string> &listComando, Reserva &principal, term::Window &out, term::Window &reserva, term::Window &comando, term::Window &info)
 {
-    if(!isValid(input, listComando, principal.getArea()))
+    if(!isValid(input, listComando, Reserva::getArea()))
     {
         out << "Comando invalido";
     }
@@ -185,7 +179,7 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
             {
                 std::random_device random;
                 std::mt19937 generator(random());
-                std::uniform_int_distribution <> distr(0, principal.getArea());
+                std::uniform_int_distribution <> distr(0, Reserva::getArea());
                 principal.newAlimento(listComando.at(1)[0], distr(generator), distr(generator));
             }
         }
@@ -348,7 +342,7 @@ void mostra(Reserva &principal, term::Window &reserva, term::Window &comando, te
     char especie;
     std::stringstream processa;
     std::vector<int> viewarea = principal.getVArea();
-    int limite = principal.getArea();
+    int limite = Reserva::getArea();
 
     reserva.clear();
     out.clear();
@@ -419,7 +413,7 @@ void leComandos(term::Window &out, std::vector<std::string> &listComando, Reserv
     {
         while (getline(comandos,line))
         {
-            if(!isValid(line, listComando, principal.getArea()))
+            if(!isValid(line, listComando, Reserva::getArea()))
             {
                 out << "Comando invalido";
             }
@@ -448,7 +442,7 @@ void leComandos(term::Window &out, std::vector<std::string> &listComando, Reserv
                     {
                         std::random_device random;
                         std::mt19937 generator(random());
-                        std::uniform_int_distribution <> distr(0, principal.getArea());
+                        std::uniform_int_distribution <> distr(0, Reserva::getArea());
                         principal.newAlimento(listComando.at(1)[0], distr(generator), distr(generator));
                     }
                 }
@@ -585,11 +579,11 @@ void startGame(term::Window &comando, std:: string &input, Reserva &principal)
             comando << "";
         } while(stoi(input) < 16 || stoi(input) > 500);
 
-        principal.setSize(stoi(input));
+        Reserva::setSize(stoi(input));
     }
     catch(...)
     {
-        principal.setSize(200);
+        Reserva::setSize(200);
     }
 }
 

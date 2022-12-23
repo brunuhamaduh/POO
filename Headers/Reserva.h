@@ -27,7 +27,7 @@ public:
     std::string getAnimais() const;
     std::string displayAnimals() const;
     std::string displayAlimentos() const;
-    void setSize(const int &num);
+    static void setSize(const int &num);
     int getInstante() const;
     size_t countAnimal() const;
     size_t countAlimento() const;

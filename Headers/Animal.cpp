@@ -32,7 +32,7 @@ void BaseAnimal::setY(const int &num) {Location.setY(num);}
 void BaseAnimal::setDescription(const std::string &str) {Description = str;}
 std::string BaseAnimal::getDescription() const {return Description;}
 std::string BaseAnimal::getFoodHistory() const {return "";}
-std::vector<BaseAnimal*> BaseAnimal::checkAroundAnimais(const std::vector<BaseAnimal*> &animais,  const int &visionRange, const int &x, const int &y, const int &id) const
+std::vector<BaseAnimal*> BaseAnimal::checkAroundAnimais(const std::vector<BaseAnimal*> &animais,  const int &visionRange, const int &x, const int &y, const int &id)
 {
     std::vector<BaseAnimal*> temp;
     for(auto const &it : animais)
@@ -44,7 +44,7 @@ std::vector<BaseAnimal*> BaseAnimal::checkAroundAnimais(const std::vector<BaseAn
     }
     return temp;
 }
-std::vector<BaseAlimento*> BaseAnimal::checkAroundAlimentos(const std::vector<BaseAlimento*> &alimentos, const int &visionRange, const int &x, const int &y, const int &id) const
+std::vector<BaseAlimento*> BaseAnimal::checkAroundAlimentos(const std::vector<BaseAlimento*> &alimentos, const int &visionRange, const int &x, const int &y, const int &id)
 {
     std::vector<BaseAlimento*> temp;
     for(auto const &it : alimentos)
@@ -57,7 +57,6 @@ std::vector<BaseAlimento*> BaseAnimal::checkAroundAlimentos(const std::vector<Ba
     return temp;
 }
 //virtual functions
-void BaseAnimal::InitLifeTick(const int &num) {}
 int BaseAnimal::getLifeTick() const {return -1;}
 void BaseAnimal::LifeTick() {}
 int BaseAnimal::getHunger() const {return -1;}
@@ -67,8 +66,6 @@ void BaseAnimal::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento
 void BaseAnimal::addFood(History *food) {}
 
 AnimalH::AnimalH() : FoodHistory(nullptr), eatenfood(0), hunger(0) {}
-AnimalH::AnimalH(const int &x, const int &y) : FoodHistory(nullptr), eatenfood(0), hunger(0), BaseAnimal{x,y} {}
-AnimalH::AnimalH(const int &x, const int &y, const int &hp) : FoodHistory(nullptr), eatenfood(0), hunger(0), BaseAnimal{x,y, hp} {}
 AnimalH::~AnimalH() {delete [] FoodHistory[0]; delete[] FoodHistory;}
 int AnimalH::getHunger() const {return hunger;}
 void AnimalH::Hunger() {}
@@ -97,16 +94,12 @@ std::string AnimalH::getFoodHistory() const
 }
 
 AnimalL::AnimalL() : lifeTick(50) {}
-AnimalL::AnimalL(const int &x, const int &y) : lifeTick(50), BaseAnimal{x,y} {}
-AnimalL::AnimalL(const int &x, const int &y, const int &hp) : lifeTick(50), BaseAnimal{x,y,hp} {}
 AnimalL::~AnimalL() = default;
 void AnimalL::InitLifeTick(const int &num) {lifeTick = num;}
 void AnimalL::LifeTick() {lifeTick--;}
 int AnimalL::getLifeTick() const {return lifeTick;}
 
 CompleteAnimal::CompleteAnimal() = default;
-CompleteAnimal::CompleteAnimal(const int &x, const int &y) : BaseAnimal{x, y}, AnimalH{x, y}, AnimalL{x, y} {}
-CompleteAnimal::CompleteAnimal(const int &x, const int &y, const int &hp) : BaseAnimal{x, y, hp}, AnimalH{x, y, hp}, AnimalL{x, y, hp} {}
 CompleteAnimal::~CompleteAnimal() = default;
 
 Coelho::Coelho()
@@ -142,7 +135,7 @@ Coelho::Coelho()
     constantes.close();
 }
 
-Coelho::Coelho(const int &x, const int &y) : BaseAnimal{x,y}, CompleteAnimal{x, y}
+Coelho::Coelho(const int &x, const int &y) : BaseAnimal{x,y}
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -445,7 +438,7 @@ Ovelha::Ovelha()
     constantes.close();
 }
 
-Ovelha::Ovelha(const int &x, const int &y) : BaseAnimal{x,y}, CompleteAnimal{x, y}
+Ovelha::Ovelha(const int &x, const int &y) : BaseAnimal{x,y}
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -478,7 +471,7 @@ Ovelha::Ovelha(const int &x, const int &y) : BaseAnimal{x,y}, CompleteAnimal{x, 
     constantes.close();
 }
 
-Ovelha::Ovelha(const int &x, const int &y, const int &hp) : BaseAnimal{x, y, hp}, CompleteAnimal{x, y, hp}
+Ovelha::Ovelha(const int &x, const int &y, const int &hp) : BaseAnimal{x, y, hp}
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -773,7 +766,7 @@ Lobo::Lobo()
     constantes.close();
 }
 
-Lobo::Lobo(const int &x, const int &y) : BaseAnimal{x,y}, AnimalH{x, y}, VLobo(50)
+Lobo::Lobo(const int &x, const int &y) : BaseAnimal{x,y},  VLobo(50)
 {
     InitEspecie('L');
     InitCampoVisao(5);
@@ -1002,7 +995,7 @@ void Lobo::Eat(std::vector<BaseAnimal*> &animais, std::vector<BaseAlimento*> &al
 
     for(auto &it : Copy)
     {
-        if(it->getID() != getID() && (it->getX() == getX() && it->getY() == getY() || abs(it->getX() == getX()) == 1 && abs(it->getY() == getY()) == 1))
+        if(it->getID() != getID() && (it->getX() == getX() && it->getY() == getY() || abs(it->getX() - getX()) == 1 && abs(it->getY() - getY()) == 1))
         {
             if(it->getHide())
             {
@@ -1083,7 +1076,7 @@ Canguru::Canguru() : idparent(0), child(false), run(false), hide(false), hidetic
     constantes.close();
 }
 
-Canguru::Canguru(const int &x, const int &y) : BaseAnimal{x,y}, AnimalL{x, y}, idparent(0), child(false), run(false), hide(false), hidetick(0)
+Canguru::Canguru(const int &x, const int &y) : BaseAnimal{x,y}, idparent(0), child(false), run(false), hide(false), hidetick(0)
 {
     InitEspecie('G');
     InitCampoVisao(7);
@@ -1112,7 +1105,7 @@ Canguru::Canguru(const int &x, const int &y) : BaseAnimal{x,y}, AnimalL{x, y}, i
     constantes.close();
 }
 
-Canguru::Canguru(const int &x, const int &y, const int &idparent) : BaseAnimal{x,y}, AnimalL{x, y}, idparent(idparent), child(true), run(false), hide(false), hidetick(0)
+Canguru::Canguru(const int &x, const int &y, const int &idparent) : BaseAnimal{x,y}, idparent(idparent), child(true), run(false), hide(false), hidetick(0)
 {
     InitEspecie('G');
     InitCampoVisao(7);
@@ -1339,7 +1332,7 @@ Misterio::Misterio()
     setDescription("Misterio");
 }
 
-Misterio::Misterio(const int &x, const int &y) : BaseAnimal{x,y}, AnimalH{x, y}
+Misterio::Misterio(const int &x, const int &y) : BaseAnimal{x,y}
 {
     InitEspecie('M');
     InitCampoVisao(1);
