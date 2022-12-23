@@ -131,7 +131,7 @@ bool isValid(const std::string &comando, std::vector<std::string> &listComando, 
     }
     else if(listComando[0] == "slide") //deslocar a area de visualizacao
     {
-        if((listComando.size() == 4 && isNumber(listComando[2]) == 1 && isNumber(listComando[3]) == 1))
+        if((listComando.size() == 3 && isNumber(listComando[2]) == 1))
         {
             if(listComando[1] == "up" || listComando[1] == "down" || listComando[1] == "right" || listComando[1] == "left")
             {
@@ -282,6 +282,14 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
             try
             {
                 out << principal.see(stoi(listComando.at(1)), stoi(listComando.at(2)));
+            }
+            catch(...) {}
+        }
+        else if(listComando.at(0) == "slide")
+        {
+            try
+            {
+                out << principal.slide(listComando.at(1), stoi(listComando.at(2)));
             }
             catch(...) {}
         }

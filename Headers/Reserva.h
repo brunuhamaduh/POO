@@ -34,6 +34,7 @@ public:
     void killID(const int &ID);
     void nofood(const int &XorID, const int &y = -1);
     void empty(const int &x, const int &y);
+    std::string slide(const std::string &direction, const int &steps);
     std::string see(const int &x, const int &y);
     void change_VArea(const int &index, bool op);
     void advanceInstant();

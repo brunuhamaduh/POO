@@ -560,7 +560,64 @@ std::string Reserva::see(const int &x, const int &y)
             }
         }
     }
+    return out.str();
+}
 
+std::string Reserva::slide(const std::string &direction, const int &steps)
+{
+    std::ostringstream out;
+    if(direction == "up")
+    {
+        if(viewarea[2] - steps < 0 && viewarea[3] - steps < 0)
+        {
+            out << "Passa do limite" << std::endl;
+        }
+        else
+        {
+            viewarea[2] -= steps;
+            viewarea[3] -= steps;
+        }
+    }
+    else if(direction == "down")
+    {
+        if(viewarea[2] + steps > tamanho && viewarea[3] + steps > tamanho)
+        {
+            out << "Passa do limite" << std::endl;
+        }
+        else
+        {
+            viewarea[2] += steps;
+            viewarea[3] += steps;
+        }
+    }
+    else if(direction == "right")
+    {
+        if(viewarea[1] + steps > tamanho)
+        {
+            out << "Passa do limite" << std::endl;
+        }
+        else
+        {
+            viewarea[0] += steps;
+            viewarea[1] += steps;
+        }
+    }
+    else if(direction == "left")
+    {
+        if(viewarea[0] - steps < 0)
+        {
+            out << "Passa do limite" << std::endl;
+        }
+        else
+        {
+            viewarea[0] -= steps;
+            viewarea[1] -= steps;
+        }
+    }
+    else
+    {
+        out << "Comando Inválido" << std::endl;
+    }
     return out.str();
 }
 
