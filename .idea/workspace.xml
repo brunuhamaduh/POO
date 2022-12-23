@@ -20,9 +20,21 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8002510f-ec06-4c29-a2a8-fd6e4825d3a6" name="Changes" comment="new nofood command (both x/y and ID)">
+    <list default="true" id="8002510f-ec06-4c29-a2a8-fd6e4825d3a6" name="Changes" comment="grass should now spawn inside area">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Headers/Functions.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Functions.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Headers/Reserva.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Reserva.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Headers/Reserva.h" beforeDir="false" afterPath="$PROJECT_DIR$/Headers/Reserva.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/POO - 2223 - Enunciado Trabalho Pratico v.1.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/POO - 2223 - Enunciado Trabalho Pratico v.1.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Alimento.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Alimento.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Animal.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Animal.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Coordenadas.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Coordenadas.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Functions.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Functions.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Reserva.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/Headers/Reserva.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/POO.dir/main.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,6 +136,7 @@
       <workItem from="1671537722889" duration="24063000" />
       <workItem from="1671647100335" duration="1503000" />
       <workItem from="1671707077795" duration="12883000" />
+      <workItem from="1671792113137" duration="1187000" />
     </task>
     <task id="LOCAL-00001" summary="changed file location">
       <created>1670689369970</created>
@@ -349,7 +362,21 @@
       <option name="project" value="LOCAL" />
       <updated>1671752262283</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="each x and y can only have one food">
+      <created>1671752568320</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1671752568320</updated>
+    </task>
+    <task id="LOCAL-00034" summary="grass should now spawn inside area">
+      <created>1671752707191</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1671752707191</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -370,8 +397,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Coelho children" />
-    <MESSAGE value="Ovelha children" />
     <MESSAGE value="way better constructors" />
     <MESSAGE value="some functions went from public to protected" />
     <MESSAGE value="wolf and canguru children, pure virtual functions" />
@@ -395,7 +420,9 @@
     <MESSAGE value="new feed and feedID command" />
     <MESSAGE value="new kill and killID command" />
     <MESSAGE value="new nofood command (both x/y and ID)" />
-    <option name="LAST_COMMIT_MESSAGE" value="new nofood command (both x/y and ID)" />
+    <MESSAGE value="each x and y can only have one food" />
+    <MESSAGE value="grass should now spawn inside area" />
+    <option name="LAST_COMMIT_MESSAGE" value="grass should now spawn inside area" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

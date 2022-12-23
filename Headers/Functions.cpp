@@ -249,6 +249,14 @@ void executeInput(std::string &input, std::vector<std::string> &listComando, Res
                 principal.nofood(stoi(listComando.at(1)));
             }
         }
+        else if(listComando.at(0) == "empty")
+        {
+            try
+            {
+                principal.empty(stoi(listComando.at(1)), stoi(listComando.at(2)));
+            }
+            catch(...) {}
+        }
     }
 }
 

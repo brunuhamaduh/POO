@@ -441,6 +441,51 @@ void Reserva::nofood(const int &XorID, const int &y)
     }
 }
 
+void Reserva::empty(const int &x, const int &y)
+{
+    for (auto& it : Alimentos)
+    {
+        if(it->getX() == x && it->getY() == y)
+        {
+            it->Kill();
+        }
+    }
+
+    for(auto &it : Animais)
+    {
+        if(it->getX() == x && it->getY() == y)
+        {
+            it->Kill();
+        }
+    }
+
+    auto ptr = Animais.begin();
+    while(ptr != Animais.end())
+    {
+        if ((*ptr)->getLifeTick() == 0 || (*ptr)->getHP() == 0 || (*ptr)->getKill())
+        {
+            ptr = Animais.erase(ptr);
+        }
+        else
+        {
+            ptr++;
+        }
+    }
+
+    auto ptr1 = Alimentos.begin();
+    while(ptr1 != Alimentos.end())
+    {
+        if ((*ptr1)->getTV() == 0 || (*ptr1)->getKill())
+        {
+            ptr1 = Alimentos.erase(ptr1);
+        }
+        else
+        {
+            ptr1++;
+        }
+    }
+}
+
 int Reserva::getID() {return ++ID;}
 int Reserva::ID = 0;
 int Reserva::tamanho = 0;
